@@ -17,28 +17,32 @@
         >
             <div>
                 <a href="#" class="flex justify-center items-center">
-                    <img src="~/assets/images/logo.png" class="w-[70px]" alt="E-Learning Logo">
-                    <div class="text-lg 2xl:text-2xl ml-4 font-semibold">
-                        <div>DDPM</div> 
-                        <div class="text-[#FFA133]">E-Learning</div> 
+                    <img src="~/assets/images/logo.png" class="w-[50px]" alt="E-Learning Logo">
+                    <div class="text-lg 2xl:text-2xl ml-4">
+                        <div class="font-semibold">ระบบงานดิจิทัล</div> 
+                        <div class="text-[#FFA133]">กรมป้องกันและบรรเทาสาธารณภัย</div> 
                     </div>
                 </a>
             </div>
-            <div class="flex relative">
+            <div class="flex space-x-2 relative">
+                <button type="button" class="relative">
+                    <Icon name="i-mdi:home" color="#FFA133" size="40"/>
+                </button>
                 <button type="button" class="relative" @click="notificationBar = true" ref="buttonNotificationRef">
-                    <img src="~/assets/images/notification.svg" class="w-[50px]" alt="">
+                    <Icon name="i-mdi:bell" color="#FFA133" size="35"/>
                 </button>
 
                 <USlideover v-model="notificationBar">
-                    <Notification/>
+                    Noti
                 </USlideover>
                 
                 <button type="button" class="flex justify-center items-center space-x-4 relative" @click="toggleMenuBar"  ref="buttonProfileRef">
-                    <div class="flex justify-center items-center">
-                        <img src="~/assets/images/user.svg" class="w-[38px] ml-4 mr-2" alt="">
-                    </div>
-                    <Icon name="solar:alt-arrow-down-outline" class="text-3xl" color="#3E3E3E" />
-                     <ProfileMenu  v-if="menuBar"/>
+
+                    <Icon name="i-mdi:account-circle" color="#FFA133" size="35"/>
+                    <div>ชื่อ</div>
+                    <Icon name="i-material-symbols:arrow-drop-down" size="40" color="#3E3E3E" />
+
+                    <MenuProfile  v-if="menuBar"/>
                 </button>
                
             </div>
