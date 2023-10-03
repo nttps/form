@@ -1,5 +1,5 @@
 <template>
-    <header class="flex w-full justify-between px-2 lg:py-4 shadow-md">
+    <header class="flex w-full justify-between px-2 py-2 shadow-primary border-b border-black bg-white">
         <nav
             class="
             flex
@@ -8,7 +8,6 @@
             2xl:gap-x-0
             justify-between
             w-full
-            py-4
             md:py-0
             2xl:px-4
             text-lg text-gray-700

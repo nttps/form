@@ -1,11 +1,43 @@
 <template>
-    <div>
-
+    <PartialsTitle title="โหวตและแบบสอบถาม" icon="i-ri-chat-poll-fill"/>
+    <div class="px-8 mt-4">
+        <h3 class="text-2xl font-bold mb-4">เข้าร่วมการ<span class="color-primary">โหวตและแบบสอบถาม</span></h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-10">
+            <Card :item="row" v-for="row in rows"/>
+        </div>
     </div>
 </template>
 
 <script setup>
 
+const isCreate = ref(false)
+
+const rows = ref([
+    {
+        id: '1',
+        title: '(หัวข้อแบบสอบถาม)',
+        image: 'default1.png',
+        description: 'แบบสอบถามโครงอาหาร สถานที่....'
+    },
+    {
+        id: '2',
+        title: '(หัวข้อการโหวต)',
+        image: 'default2.png',
+        description: 'โหวตเพื่อการ...'
+    },
+    {
+        id: '3',
+        title: '(หัวข้อแบบสอบถาม)',
+        image: 'default1.png',
+        description: 'แบบสอบถามโครงอาหาร สถานที่....'
+    },
+    {
+        id: '4',
+        title: '(หัวข้อการโหวต)',
+        image: 'default2.png',
+        description: 'โหวตเพื่อการ...'
+    },
+])
 </script>
 
 <style lang="scss" scoped>

@@ -1,6 +1,6 @@
 <template>
-    <footer>
-        <div class="bg-[#FFA133] px-10 py-6">
+    <footer class="bg-white">
+        <div class="px-10 py-6">
             <div class="font-bold text-xl">กรมป้องกันและบรรเทาสาธารณภัย กระทรวงมหาดไทย</div>
             <div class="font-bold text-xl">Department of Disaster Prevention and Mitigation. Ministry of Interior. Thailand</div>
 
