@@ -14,6 +14,9 @@ export default defineNuxtConfig({
         // CSS file in the project
         "@/assets/css/main.css",
     ],
+    colorMode: {
+        preference: "light",
+    },
     runtimeConfig: {
         public: {
             version: "",
