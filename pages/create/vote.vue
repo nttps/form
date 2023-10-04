@@ -7,7 +7,7 @@
             <Icon name="i-mdi-pencil" size="25" color="black" />
         </h3>
 
-        <UForm>
+        <UForm :state="vote">
             <div class="px-6 py-4 bg-white rounded-lg mb-4">
                 <div class="font-bold text-xl mb-2">การโหวต</div>
                 <UFormGroup label="หัวข้อการโหวต" name="title" size="xl" class="mb-2">
@@ -17,13 +17,13 @@
                     <UTextarea :rows="5"/>
                 </UFormGroup>
                 <UFormGroup label="ประเภทตัวเลือก" name="description" size="xl" class="mb-3">
-                    <USelect size="md" :options="types" v-model="stage.type" option-attribute="name" />
+                    <USelect size="md" :options="types"  option-attribute="name" />
                 </UFormGroup>
-                <draggable class="dragArea list-group w-full" :list="stage.choices" v-bind="dragOptions" @move="draggableMove" handle=".list-group-item-drag">
+                <draggable class="dragArea list-group w-full" v-model="vote.choices" v-bind="dragOptions" @move="draggableMove" handle=".list-group-item-drag">
                     <transition-group type="transition" name="flip-list">
                         <div
                             class="list-group-item rounded-md mb-2 relative"
-                            v-for="(choice, index) in stage.choices" :key="index"
+                            v-for="(choice, index) in vote.choices" :key="index"
                         >
                             <div class="flex items-center space-x-2">
                                 <div class="min-w-max px-1 list-group-item-drag">
@@ -35,7 +35,7 @@
                                 <div class="min-w-max px-1">
                                     <button><Icon name="i-mdi-file-image-box" size="25" /></button>
                                 </div>
-                                <div class="min-w-max px-1" v-if="stage.choices.length > 1">
+                                <div class="min-w-max px-1" v-if="vote.choices.length > 1">
                                     <button @click="deleteChoice(index)"><Icon name="i-mdi-close" /></button>
                                 </div>
                             </div>
@@ -69,7 +69,7 @@
         value: 'checkbox'
     },]
 
-    const stage = ref({
+    const vote = ref({
         title: '',
         type: 'type',
         description: '',
@@ -94,12 +94,12 @@
     }
 
     const addChoice = () => {
-        stage.value.choices.push({
-                value: 'ตัวเลือกที่ ' + (stage.value.choices.length + 1)
+        vote.value.choices.push({
+                value: 'ตัวเลือกที่ ' + (vote.value.choices.length + 1)
         })
     }
     const deleteChoice = (index) => {
-        stage.value.choices.splice(index, 1)
+        vote.value.choices.splice(index, 1)
     }
 
     const submit = () => {

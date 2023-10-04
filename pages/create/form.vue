@@ -7,7 +7,7 @@
             <Icon name="i-mdi-pencil" size="25" color="black" />
         </h3>
 
-        <UForm>
+        <UForm :state="form">
             <div class="px-6 py-4 bg-white rounded-lg mb-4">
                 <div class="font-bold text-xl mb-2">แบบสอบถาม</div>
                 <UFormGroup label="ชื่อแบบสอบถาม" name="title" size="xl" class="mb-2">
@@ -19,11 +19,12 @@
             </div>
 
 
-            <draggable class="dragArea list-group w-full mb-4" :list="form.quitions" v-bind="dragOptions" @move="draggableMove" handle=".list-group-item-drag">
-                <transition-group type="transition" name="flip-list">
+            <draggable class="dragArea list-group w-full mb-4" item-key="position" v-model="form.quitions" v-bind="dragOptions" :move="draggableMove"  @start="drag = true"
+        @end="dragEnd" handle=".list-group-item-drag">
+                <transition-group type="transition" name="flip-list" :name="!drag ? 'flip-list' : null">
                     <div
                         class="list-group-item rounded-md mb-2 bg- relative"
-                        v-for="(quition, index) in form.quitions" :key="index"
+                        v-for="(quition, index) in form.quitions" :key="quition.position"
                     >
                         <div class="list-group-item-drag text-center bg-[#FFA133] rounded-t-lg cursor-move">
                             <button><Icon name="i-uil-draggabledots" /></button>
@@ -45,13 +46,22 @@
                 </transition-group>
             </draggable>
             <div class="flex justify-end mb-4">
-                <div class="border border-gray-400 rounded-lg bg-white flex">
-                    <button @click="addChoice" class="text-gray-600 flex items-center space-x-2 px-1">
-                        <Icon name="i-mdi-plus-circle-outline" size="35" />
-                    </button>
-                    <button @click="addChoice" class="text-gray-600 flex items-center space-x-2 px-1">
-                        <Icon name="i-mdi-plus-circle-outline" size="35" />
-                    </button>
+                <div class="border border-gray-400 rounded-lg bg-white flex px-2">
+                    <UTooltip text="เพิ่มคำถามทั่วไป">
+                        <button @click="addQuition" class="text-gray-600 flex items-center space-x-2 px-1">
+                            <Icon name="i-mdi-plus-circle-outline" size="35" />
+                        </button>
+                    </UTooltip>
+                    <UTooltip text="เพิ่มข้อความ">
+                        <button @click="addChoice" class="text-gray-600 flex items-center space-x-2 px-1">
+                            <Icon name="i-ic-twotone-text-fields" size="35" />
+                        </button>
+                    </UTooltip>
+                    <UTooltip text="เพิ่มรูปภาพ">
+                        <button @click="addChoice" class="text-gray-600 flex items-center space-x-2 px-1">
+                            <Icon name="i-ic-round-image" size="35" />
+                        </button>
+                    </UTooltip>
                 </div>
             </div>
 
@@ -69,7 +79,7 @@
 
     const types = [ {
         name: 'ตัวเลือกเดียว',
-        value: 'type',
+        value: 'radio',
     }, {
         name: 'หลายตัวเลือก',
         value: 'checkbox'
@@ -77,14 +87,25 @@
 
     const form = ref({
         title: '',
-        type: 'type',
         description: '',
         quitions: [
             {
-                value: 'ตัวเลือกที่ 1'
+                quition: '',
+                type: 'radio',
+                position: 1
             },
         ]
     })
+
+    const newPosition = computed(() => {
+        return form.value.quitions.map((quition, type, index) => {
+            return { quition, type, position: index + 1 };
+        })
+
+    })
+
+   
+    const drag = ref(false)
 
     const dragOptions = computed(() => {
       return {
@@ -95,17 +116,25 @@
       }
     })
 
+    const dragEnd = (e) => {
+        drag.value = false
+
+        console.log(newPosition.value);
+    }
+
     const draggableMove = (e) => {
-        console.log(e);
+
     }
 
     const addQuition = () => {
-        stage.value.quitions.push({
-                value: 'ตัวเลือกที่ ' + (stage.value.quitions.length + 1)
+        form.value.quitions.push({
+            quition: '',
+            type: 'radio',
+            position: (form.value.quitions.length + 1)
         })
     }
     const deleteQuition = (index) => {
-        stage.value.quitions.splice(index, 1)
+        form.value.quitions.splice(index, 1)
     }
 
     const submit = () => {
