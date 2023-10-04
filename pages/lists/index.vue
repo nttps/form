@@ -44,15 +44,6 @@
                   v-model="page" 
                   :page-count="pageCount" 
                   :total="lists.length" 
-                  :ui="{
-                    wrapper: 'flex items-center gap-2',
-                    rounded: '!rounded-full min-w-[32px] justify-center',
-                    default: {
-                      activeButton: {
-                        variant: 'outline'
-                      }
-                    }
-                  }" 
                 />
             </div>
         </div>

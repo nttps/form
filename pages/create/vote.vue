@@ -49,9 +49,14 @@
                     </button>
                 </div>
             </div>
-        </UForm>
 
-        <FormSetting />
+            <FormSetting />
+
+            <div class="text-right mt-4">
+                <button class="rounded-lg px-6 py-1.5 bg-[#FFA133]" @click="submit">สร้าง</button>
+                <NuxtLink to="/" class="ml-4 rounded-lg px-6 py-1.5 border border-gray-400">ยกเลิก</NuxtLink>
+            </div>
+        </UForm>
     </div>
 </template>
 
@@ -95,6 +100,10 @@
     }
     const deleteChoice = (index) => {
         stage.value.choices.splice(index, 1)
+    }
+
+    const submit = () => {
+        navigateTo('/')
     }
 </script>
 
