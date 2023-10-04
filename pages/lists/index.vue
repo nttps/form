@@ -37,11 +37,23 @@
                             </div>
                         </template>
                     </UTable>
-                   
                 </div>
             </div>
-            <div class="flex justify-end px-3 py-3.5">
-                <UPagination v-model="page" :page-count="pageCount" :total="lists.length" />
+            <div class="flex justify-center px-3 pt-3.5">
+                <UPagination 
+                  v-model="page" 
+                  :page-count="pageCount" 
+                  :total="lists.length" 
+                  :ui="{
+                    wrapper: 'flex items-center gap-2',
+                    rounded: '!rounded-full min-w-[32px] justify-center',
+                    default: {
+                      activeButton: {
+                        variant: 'outline'
+                      }
+                    }
+                  }" 
+                />
             </div>
         </div>
     </div>
@@ -111,14 +123,6 @@ const rows = computed(() => {
 
 const selected = ref([])
 
-function select (row) {
-  const index = selected.value.findIndex((item) => item.id === row.id)
-  if (index === -1) {
-    selected.value.push(row)
-  } else {
-    selected.value.splice(index, 1)
-  }
-}
 </script>
 
 <style lang="scss" scoped>

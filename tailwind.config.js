@@ -1,6 +1,5 @@
-import defaultTheme from "tailwindcss/defaultTheme";
-
 export default {
+    darkMode: "false",
     theme: {
         extend: {
             flexBasis: {

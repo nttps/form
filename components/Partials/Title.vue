@@ -21,8 +21,6 @@
             </ul>
         </div>
     </div>
-
-
     <UModal v-model="isCreate">
         <div class="bg-[#F3F3F3]">
             <div class="px-4 py-1 bg-[#FFA133] text-white text-xl">สร้างรายการ <Icon name="i-mdi-checkbox-marked-circle" /></div>
@@ -36,18 +34,13 @@
                 <NuxtLink to="/create/form-register" class="rounded-3xl basis-1/2-gap-4 h-[200px] bg-white text-center shadow-primary flex justify-center items-center text-3xl font-bold">
                     ฟอร์มสมัคร
                 </NuxtLink>
-
             </div>
         </div>
-    
     </UModal>
 </template>
 
 <script setup>
     const props = defineProps(['title', 'icon', 'back', 'prefix', 'export'])
-
-    console.log(props);
-
     const isCreate = ref(false)
 </script>
 
