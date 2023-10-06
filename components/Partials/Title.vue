@@ -31,7 +31,7 @@
                 <NuxtLink to="/create/form" class="rounded-3xl basis-1/2-gap-4 h-[200px] bg-white text-center shadow-primary flex justify-center items-center text-3xl font-bold">
                     ระบบแบบสอบถาม
                 </NuxtLink>
-                <NuxtLink to="/create/form-register" class="rounded-3xl basis-1/2-gap-4 h-[200px] bg-white text-center shadow-primary flex justify-center items-center text-3xl font-bold">
+                <NuxtLink to="/create/register-form" class="rounded-3xl basis-1/2-gap-4 h-[200px] bg-white text-center shadow-primary flex justify-center items-center text-3xl font-bold">
                     ฟอร์มสมัคร
                 </NuxtLink>
             </div>

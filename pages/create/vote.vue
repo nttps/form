@@ -71,7 +71,7 @@
 
     const vote = ref({
         title: '',
-        type: 'type',
+        type: 'vote',
         description: '',
         choices: [
             {
