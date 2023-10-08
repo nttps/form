@@ -14,7 +14,9 @@
                     <UInput placeholder="กรอกชื่อแบบสอบถาม" size="md" />
                 </UFormGroup>
                 <UFormGroup label="รายละเอียด" name="description" size="xl" class="mb-2">
-                    <UTextarea :rows="5"/>
+                    <ClientOnly>
+                        <Editor v-model="form.description" />
+                    </ClientOnly>
                 </UFormGroup>
             </div>
 
@@ -52,11 +54,13 @@
                             <div v-if="question.type === 'radio' || question.type === 'checkbox'" class="mt-2">
                                 <FormAnswer :index="index" :question="question" @delete-answer="deleteAnswer" @add-answer="addAnswer"/>
                             </div>
-                            <div v-if="question.type === 'image'" class="mt-2">
-                                <img :src="question.previewImage" alt="" />
+                            <div v-if="question.type === 'image'" class="mt-2 text-center">
+                                <img :src="question.previewImage" alt="" class="mx-auto" />
                             </div>
                             <div v-if="question.type === 'text'" class="mt-2">
-                                <UTextarea placeholder="คำอธิบาย" />
+                                <ClientOnly>
+                                    <Editor v-model="question.description" height="300px" />
+                                </ClientOnly>
                             </div>
                         </div>
                         <div class="text-right">
@@ -113,7 +117,7 @@
 
     const form = ref({
         title: '',
-        description: '',
+        description: 'รายละเอยีด',
         type: 'form',
         questions: [
             {
@@ -196,7 +200,7 @@
             description: '',
             image: fileImage.value,
             previewImage: previewImage.value,
-            placeholder: 'ชื่อภาพ ( ไม่จำเป็นต้องกรอก )',
+            placeholder: 'หัวข้อของภาพ ( ไม่จำเป็นต้องกรอก )',
             position: (form.value.questions.length + 1),
             answers: []
         })
@@ -246,9 +250,6 @@
         transition: transform 0.5s;
     }
 
-    .answer-list-move {
-        transition: transform 0.5s;
-    }
     .no-move {
         transition: transform 0s;
     }

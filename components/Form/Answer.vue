@@ -15,13 +15,12 @@
         >
             <div for="" v-for="(answer, indexA) in props.question.answers" :key="answer.position" class="flex items-center py-2 space-x-4 group list-group-item">
                 <div class="min-w-max items-center flex">
-                    <div class="w-[25px] answer-item-drag">
+                    <div class="w-[25px] answer-item-drag cursor-move">
                         <Icon name="i-uil-draggabledots" class="group-hover:!inline-block !hidden" size="25"/>
                     </div>
                     <div class="w-[30px]">
                         <Icon :name="`${props.question.type == 'radio' ? `i-ic-round-radio-button-unchecked` : `i-mdi-checkbox-blank-outline`}`" size="30"/>
                     </div>
-                
                 </div>
                 <div class="flex-1">
                     <UInput placeholder="กรอกคำตอบ" v-model="answer.title" />
@@ -63,4 +62,15 @@
         console.log(newPosition.value);
     }
 
+    const addImageAnswer = ( ) => {
+        
+    }
+
 </script>
+
+<style>
+    .answer-list-move {
+        transition: transform 0.5s;
+    }
+    
+</style>
