@@ -15,7 +15,7 @@
             "
         >
             <div>
-                <a href="#" class="flex justify-center items-center">
+                <a href="/" class="flex justify-center items-center">
                     <img src="~/assets/images/logo.png" class="w-[50px]" alt="E-Learning Logo">
                     <div class="text-lg 2xl:text-2xl ml-4">
                         <div class="font-semibold">ระบบงานดิจิทัล</div> 
@@ -24,9 +24,9 @@
                 </a>
             </div>
             <div class="flex space-x-2 relative">
-                <button type="button" class="relative">
+                <NuxtLink to="/" class="relative">
                     <Icon name="i-mdi:home" color="#FFA133" size="40"/>
-                </button>
+                </NuxtLink>
                 <button type="button" class="relative" @click="notificationBar = true" ref="buttonNotificationRef">
                     <Icon name="i-mdi:bell" color="#FFA133" size="35"/>
                 </button>
