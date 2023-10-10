@@ -19,8 +19,13 @@
                 <UFormGroup label="ประเภทตัวเลือก" name="description" size="xl" class="mb-3">
                     <USelect size="md" :options="types"  option-attribute="name" />
                 </UFormGroup>
-                <draggable class="dragArea list-group w-full" v-model="vote.choices" v-bind="dragOptions" @move="draggableMove" handle=".list-group-item-drag">
-                    <transition-group type="transition" name="flip-list">
+                <draggable class="dragArea list-group w-full" v-model="vote.choices" v-bind="dragOptions" 
+                    @start="drag = true"
+                    @end="drag = false"  
+                    @move="draggableMove" 
+                    handle=".list-group-item-drag"
+                >
+                    <transition-group type="transition"  :name="drag ? 'flip-list' : null">
                         <div
                             class="list-group-item rounded-md mb-2 relative"
                             v-for="(choice, index) in vote.choices" :key="index"
@@ -61,6 +66,8 @@
 </template>
 
 <script setup>
+
+    const drag = ref(false)
     const types = [ {
         name: 'ตัวเลือกเดียว',
         value: 'type',
