@@ -36,7 +36,7 @@
                     :name="dragQuestion ? 'question-list' : null"
                 >
                     <div
-                        class="list-group-item rounded-md mb-2 bg- relative"
+                        class="list-group-item rounded-md mb-2 relative"
                         v-for="(question, index) in form.questions" :key="question.position"
                     >
                         <div class="list-group-item-drag text-center bg-[#FFA133] rounded-t-lg cursor-move">

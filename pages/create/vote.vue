@@ -25,7 +25,7 @@
                     @move="draggableMove" 
                     handle=".list-group-item-drag"
                 >
-                    <transition-group type="transition"  :name="drag ? 'flip-list' : null">
+                    <transition-group type="transition" :name="drag ? 'drag-list' : null">
                         <div
                             class="list-group-item rounded-md mb-2 relative"
                             v-for="(choice, index) in vote.choices" :key="index"
@@ -115,7 +115,7 @@
 </script>
 
 <style lang="scss" scoped>
-    .flip-list-move {
+    .drag-list-move {
         transition: transform 0.5s;
     }
     .no-move {
