@@ -17,8 +17,6 @@
 
 <script setup>
 
-const isCreate = ref(false)
-
 const page = ref(1)
 const pageCount = 8
 
