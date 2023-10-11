@@ -27,7 +27,7 @@ export default defineAppConfig({
         },
         pagination: {
             wrapper: "flex items-center gap-2",
-            rounded: "!rounded-full min-w-[32px] justify-center",
+            rounded: "!rounded-full min-w-[32px] justify-center bg-white",
             default: {
                 activeButton: {
                     variant: "outline",

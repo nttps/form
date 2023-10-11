@@ -5,6 +5,13 @@
         <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-10">
             <CardItem :item="row" v-for="row in rows"/>
         </div>
+        <div class="flex justify-center px-3 pt-3.5">
+            <UPagination 
+                v-model="page" 
+                :page-count="pageCount" 
+                :total="forms.length" 
+            />
+        </div>
     </div>
 </template>
 
@@ -12,7 +19,13 @@
 
 const isCreate = ref(false)
 
-const rows = ref([
+const page = ref(1)
+const pageCount = 8
+
+const rows = computed(() => {
+    return forms.value.slice((page.value - 1) * pageCount, (page.value) * pageCount)
+})
+const forms = ref([
     {
         id: '1',
         title: '(หัวข้อแบบสอบถาม)',
@@ -32,6 +45,56 @@ const rows = ref([
         description: 'แบบสอบถามโครงอาหาร สถานที่....'
     },
     {
+        id: '4',
+        title: '(หัวข้อการโหวต)',
+        image: 'default2.png',
+        description: 'โหวตเพื่อการ...'
+    },{
+        id: '4',
+        title: '(หัวข้อการโหวต)',
+        image: 'default2.png',
+        description: 'โหวตเพื่อการ...'
+    },{
+        id: '4',
+        title: '(หัวข้อการโหวต)',
+        image: 'default2.png',
+        description: 'โหวตเพื่อการ...'
+    },{
+        id: '4',
+        title: '(หัวข้อการโหวต)',
+        image: 'default2.png',
+        description: 'โหวตเพื่อการ...'
+    },{
+        id: '4',
+        title: '(หัวข้อการโหวต)',
+        image: 'default2.png',
+        description: 'โหวตเพื่อการ...'
+    },{
+        id: '4',
+        title: '(หัวข้อการโหวต)',
+        image: 'default2.png',
+        description: 'โหวตเพื่อการ...'
+    },{
+        id: '4',
+        title: '(หัวข้อการโหวต)',
+        image: 'default2.png',
+        description: 'โหวตเพื่อการ...'
+    },{
+        id: '4',
+        title: '(หัวข้อการโหวต)',
+        image: 'default2.png',
+        description: 'โหวตเพื่อการ...'
+    },{
+        id: '4',
+        title: '(หัวข้อการโหวต)',
+        image: 'default2.png',
+        description: 'โหวตเพื่อการ...'
+    },{
+        id: '4',
+        title: '(หัวข้อการโหวต)',
+        image: 'default2.png',
+        description: 'โหวตเพื่อการ...'
+    },{
         id: '4',
         title: '(หัวข้อการโหวต)',
         image: 'default2.png',

@@ -83,7 +83,7 @@
                     @popup-block="onBlock"
                     @popup-focus="onFocus"
                 >
-                    <Icon name="i-jam-line" color="green" size="30" />
+                    <Icon name="i-bi-line" color="green" size="25" />
                 </s-line>
             </div>
         </UCard>
