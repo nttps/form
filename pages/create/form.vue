@@ -109,6 +109,9 @@
 </template>
 
 <script setup>
+    useHead({
+        title: `DDPM Questionnaire - สร้างแบบสอบถาม`,
+    })
 
     const types = [ {
         name: 'ตัวเลือกเดียว',

@@ -66,6 +66,9 @@
 </template>
 
 <script setup>
+    useHead({
+        title: `DDPM Questionnaire - สร้างโหวต`,
+    })
 
     const drag = ref(false)
     const types = [ {

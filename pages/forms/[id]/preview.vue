@@ -125,6 +125,20 @@
         ]
     })
 
+    const title = `DDPM Questionnaire - ${form.value.title}`
+    useSeoMeta({
+        ogTitle: () => title,
+        title: () => title,
+        description: () => form.value.description,
+        ogDescription: () => form.value.description,
+        ogImage: () => 'https://example.com/image.png',
+        ogImageUrl: () => 'https://example.com/image.png',
+        twitterCard: () => 'summary_large_image',
+        twitterTitle: () => title,
+        twitterDescription: () => form.value.description,
+        twitterImage: () => 'https://example.com/image.png'
+    })
+
     const submit = () => {
         na
     }

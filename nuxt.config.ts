@@ -1,7 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
     devtools: { enabled: true },
-    ssr: false,
     modules: ["@nuxtjs/google-fonts", "@vueuse/nuxt", "nuxt-icon", "@nuxt/ui"],
     googleFonts: {
         display: "swap",
@@ -21,7 +20,14 @@ export default defineNuxtConfig({
     runtimeConfig: {
         public: {
             version: "",
-            apiUrl: ""
+            apiUrl: "",
         },
+    },
+    routeRules: {
+        // Render these routes on the client (SPA)
+        "/**": { ssr: true },
+        "/lists/**": { ssr: false },
+        "/create/**": { ssr: false },
+        "/settings/**": { ssr: false },
     },
 });

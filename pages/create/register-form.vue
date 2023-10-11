@@ -33,6 +33,9 @@
 
 <script setup>
 
+    useHead({
+        title: `DDPM Questionnaire - สร้างฟอร์มสมัคร`,
+    })
     const form = ref({
         title: '',
         description: '',
