@@ -11,7 +11,7 @@
             <div class="px-6 py-4 bg-white rounded-lg mb-4">
                 <div class="font-bold text-xl mb-2">แบบสอบถาม</div>
                 <UFormGroup label="ชื่อแบบสอบถาม" name="title" size="xl" class="mb-2">
-                    <UInput placeholder="กรอกชื่อแบบสอบถาม" size="md" />
+                    <UInput v-model="form.title" placeholder="กรอกชื่อแบบสอบถาม" size="md" />
                 </UFormGroup>
                 <UFormGroup label="รายละเอียด" name="description" size="xl" class="mb-2">
                     <ClientOnly>
@@ -43,7 +43,7 @@
                             <Icon name="i-uil-draggabledots" class="rotate-90" size="25"/>
                         </div>
                         <div class="p-4 bg-white">
-                            <div class="flex flex-wrap space-x-4">
+                            <div class="flex flex-wrap space-x-4 mb-2">
                                 <div :class="`${question.type === 'radio' || question.type === 'checkbox' ? `basis-1/2-gap-4` : `w-full` }`">
                                     <UInput v-model="question.question" :placeholder="question.placeholder" size="md" />
                                 </div>
@@ -51,16 +51,19 @@
                                     <USelect size="md" :options="types" v-model="question.type" placeholder="ประเภทคำถาม" option-attribute="name" />
                                 </div>
                             </div>
+                            <div>
+                                <UFormGroup label="รายละเอียด" name="description" size="xl" class="mb-2">
+                                    <ClientOnly>
+                                        <Editor v-model="question.description" :height="question.type == 'text' ? `300px` : ``" />
+                                    </ClientOnly>
+                                </UFormGroup>
+                            </div>
                             <div v-if="question.type === 'radio' || question.type === 'checkbox'" class="mt-2">
+                                <label for="" class="px-6">ตัวเลือก</label>
                                 <FormAnswer :index="index" :question="question" @delete-answer="deleteAnswer" @add-answer="addAnswer"/>
                             </div>
                             <div v-if="question.type === 'image'" class="mt-2 text-center">
                                 <img :src="question.previewImage" alt="" class="mx-auto" />
-                            </div>
-                            <div v-if="question.type === 'text'" class="mt-2">
-                                <ClientOnly>
-                                    <Editor v-model="question.description" height="300px" />
-                                </ClientOnly>
                             </div>
                         </div>
                         <div class="text-right">

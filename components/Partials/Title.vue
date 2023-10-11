@@ -8,6 +8,9 @@
                 <span>Export</span>
                 <Icon name="i-uil-file-export" size="25" />
             </NuxtLink>
+            <button v-if="props.share == ''" @click="emit('share')" class="text-xl font-bold rounded-lg px-4 py-2 bg-[#FFA133]">
+                แบ่งปัน
+            </button>
         </div>
         <div class="mt-4 md:mr-8 mx-auto">
             <NuxtLink :to="`${props.back ? props.back : `/`}`" class="ml-8 md:ml-0" v-if="props.back !== undefined"><Icon name="i-mdi-arrow-left-circle" class="text-[#FFA133]" size="40" /></NuxtLink>
@@ -40,8 +43,10 @@
 </template>
 
 <script setup>
-    const props = defineProps(['title', 'icon', 'back', 'prefix', 'export'])
+    const props = defineProps(['title', 'icon', 'back', 'prefix', 'export', 'share'])
+    const emit = defineEmits(['share'])
     const isCreate = ref(false)
+
 </script>
 
 <style lang="scss" scoped>

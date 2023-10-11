@@ -3,7 +3,7 @@
     <div class="px-8 mt-4">
         <h3 class="text-2xl font-bold mb-4">เข้าร่วมการ<span class="color-primary">โหวตและแบบสอบถาม</span></h3>
         <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-10">
-            <Card :item="row" v-for="row in rows"/>
+            <CardItem :item="row" v-for="row in rows"/>
         </div>
     </div>
 </template>

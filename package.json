@@ -27,6 +27,8 @@
         "element-plus": "^2.3.14",
         "element-tiptap-vue3-fixed": "^1.2.3",
         "v-calendar": "^3.1.0",
-        "vue-draggable-next": "^2.2.1"
+        "vue-draggable-next": "^2.2.1",
+        "vue-social-sharing": "^4.0.0-alpha4",
+        "vue-socials": "^2.0.4"
     }
 }
