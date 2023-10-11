@@ -38,8 +38,10 @@
                 <button type="button" class="flex justify-center items-center space-x-4 relative" @click="toggleMenuBar"  ref="buttonProfileRef">
 
                     <Icon name="i-mdi:account-circle" color="#FFA133" size="35"/>
-                    <div>ชื่อ</div>
-                    <Icon name="i-material-symbols:arrow-drop-down" size="40" color="#3E3E3E" />
+                    <div class="hidden xl:block">ชื่อ</div>
+                    <div class="hidden xl:block">
+                        <Icon name="i-material-symbols:arrow-drop-down" size="40" color="#3E3E3E"/>
+                    </div>
 
                     <MenuProfile  v-if="menuBar"/>
                 </button>
