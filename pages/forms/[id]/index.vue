@@ -16,12 +16,12 @@
             <div class="text-center bg-[#FFA133] rounded-t-lg cursor-move py-4"></div>
             <div class="p-4 bg-white">
                 <div class="mb-2">
-                    <div class="text-lg font-bold">{{ question.question }}</div>
-                    <p>{{ question.description }}</p>
+                    <div class="text-xl font-bold">{{ question.question }}</div>
+                    <p class="text-lg">{{ question.description }}</p>
                 </div>
-                <URadio required v-if="question.type == 'radio'" v-for="answer of question.answers" :label="answer.title" :name="question.question" :value="answer.title" :key="answer.position" v-model="question.answer"/>
+                <URadio required v-if="question.type == 'radio'" :ui="{ wrapper: 'relative flex items-center mb-2' }" v-for="answer of question.answers" :label="answer.title" :name="question.question" :value="answer.title" :key="answer.position" v-model="question.answer"/>
                 <div v-if="question.type == 'checkbox'">
-                    <UCheckbox v-model="question.checkBoxAnswers" :ui="{ color: 'text-primary-500' }" v-for="answer of question.answers" :name="question.question" :label="answer.title" :value="answer.title" :required="question.checkBoxAnswers.length == 0" />
+                    <UCheckbox v-model="question.checkBoxAnswers" :ui="{ wrapper: 'relative flex items-center mb-2', color: 'text-primary-500' }" v-for="answer of question.answers" :name="question.question" :label="answer.title" :value="answer.title" :required="question.checkBoxAnswers.length == 0" />
                 </div>
                 
                 
@@ -100,20 +100,6 @@
     const shareUrl= ref()
 
     const urlShare = url.href
-
-    const shareTab = [{
-        slot: 'link',
-        label: 'ลิงก์',
-        icon: 'i-ic-outline-insert-link'
-    },{
-        slot: 'social',
-        label: 'แชร์',
-        icon: 'i-mdi-share-variant-outline'
-    },{
-        slot: 'email',
-        label: 'อีเมล',
-        icon: 'i-ic-sharp-mail-outline'
-    }]
     const form = ref({
         title: 'หัวข้อแบบสอบถาม',
         description: 'รายละเอียด',

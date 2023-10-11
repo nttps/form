@@ -8,7 +8,7 @@
                   <UInput placeholder="ค้นหาหัวข้อ" size="lg" />
                 </div>
                 <div class="md:w-2/12">
-                  <UInput placeholder="ค้นหาประเภท" size="lg" />
+                  <USelect size="lg" :options="types" v-model="question.type" placeholder="ประเภทคำถาม" option-attribute="name" />
                 </div>
                 <div class="md:w-2/12">
                   <UInput placeholder="วันที่สร้าง" size="lg" />
@@ -51,6 +51,17 @@
 </template>
 
 <script setup>
+
+const types = [{
+  name: 'โหวต',
+  value: 'vote',
+}, {
+  name: 'แบบสอบถาม',
+  value: 'form'
+}, {
+  name: 'ฟอร์มสมัคร',
+  value: 'register'
+}]
 
 const columns = [{
   key: 'title',

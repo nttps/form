@@ -14,7 +14,7 @@
 
   const title = route.meta.title ?? `หน้าแรก`
   useHead({
-    title: `DDPM Voting - ${title}`,
+    title: `DDPM Questionnaire - ${title}`,
     meta: [{ property: 'og:title', content: `DDPM Voting - ${title}` }]
   })
 </script>

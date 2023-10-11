@@ -25,6 +25,10 @@ export default defineAppConfig({
                 padding: "px-3 py-3",
             },
         },
+        radio: {
+            wrapper: "relative flex items-center",
+            label: "text-gray-700 dark:text-gray-200 text-base",
+        },
         pagination: {
             wrapper: "flex items-center gap-2",
             rounded: "!rounded-full min-w-[32px] justify-center bg-white",
@@ -45,6 +49,8 @@ export default defineAppConfig({
         checkbox: {
             color: "text-black dark:text-white",
             ring: "focus-visible:ring-2 focus-visible:ring-black dark:focus-visible:ring-black focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-gray-900",
+            wrapper: "relative flex items-center",
+            label: "text-gray-700 dark:text-gray-200 text-base",
         },
         loadingState: {
             label: "กำลังโหลด...",
