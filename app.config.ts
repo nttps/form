@@ -4,6 +4,13 @@ export default defineAppConfig({
         modal: {
             width: "sm:max-w-3xl",
         },
+        notifications: {
+            // Show toasts at the top right of the screen
+            position: "bottom-0 left-0",
+        },
+        notification: {
+            title: "text-xl font-bold text-gray-900 dark:text-white",
+        },
         table: {
             wrapper: "relative overflow-x-auto rounded-2xl",
             divide: "divide-[#FFA800]",
@@ -19,25 +26,25 @@ export default defineAppConfig({
             },
         },
         pagination: {
-            wrapper: 'flex items-center gap-2',
-            rounded: '!rounded-full min-w-[32px] justify-center',
+            wrapper: "flex items-center gap-2",
+            rounded: "!rounded-full min-w-[32px] justify-center",
             default: {
                 activeButton: {
-                    variant: 'outline'
-                }
-            }
+                    variant: "outline",
+                },
+            },
         },
         textarea: {
-             "color": {
-                "gray": {
-                    "outline": "shadow-sm bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-white ring-1 ring-inset ring-gray-300 dark:ring-gray-700 focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400"
-                }
+            color: {
+                gray: {
+                    outline:
+                        "shadow-sm bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-white ring-1 ring-inset ring-gray-300 dark:ring-gray-700 focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400",
+                },
             },
         },
         checkbox: {
             color: "text-black dark:text-white",
             ring: "focus-visible:ring-2 focus-visible:ring-black dark:focus-visible:ring-black focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-gray-900",
-
         },
         loadingState: {
             label: "กำลังโหลด...",

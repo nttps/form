@@ -55,13 +55,17 @@
                     </div>
                 </div>
             </template>
-            <UTabs :items="shareTab">
-
-            </UTabs>
-                
+               <div class="flex items-center space-x-2">
+                <div class="text-lg max-w-max">ลิงก์</div>
+                <input class="form-input relative block w-full disabled:cursor-not-allowed disabled:opacity-75 focus:outline-none border-0 rounded-md placeholder-gray-400 dark:placeholder-gray-500 text-sm px-3 py-2 shadow-sm bg-white dark:bg-gray-900 text-gray-900 dark:text-white ring-1 ring-inset ring-gray-300 dark:ring-gray-700 focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400" type="text" readonly  ref="shareUrl" @click="$event.target.select()" :value="urlShare" />
+                <UButton variant="outline" label="คัดลอก" size="xl" @click="copyToClipboard" />
+            </div>
+            <div class="flex items-center mt-4 space-x-2">
+                <div class="text-lg">แชร์</div>
                 <s-facebook
                     :window-features="{ width: 685, height: 600, }"
-                    :share-options="shareOptions"
+                    :use-native-behavior="true"
+                    :share-options="shareFBOptions"
                     @popup-close="onClose"
                     @popup-open="onOpen"
                     @popup-block="onBlock"
@@ -69,25 +73,46 @@
                 >
                     <Icon name="i-logos-facebook" size="25" />
                 </s-facebook>
+
+                <s-line
+                    :window-features="{ width: 685, height: 600, }"
+                    :use-native-behavior="true"
+                    :share-options="shareLineOptions"
+                    @popup-close="onClose"
+                    @popup-open="onOpen"
+                    @popup-block="onBlock"
+                    @popup-focus="onFocus"
+                >
+                    <Icon name="i-jam-line" color="green" size="30" />
+                </s-line>
             </div>
-            <template #footer>
-                <div class="text-right">
-                    <button type="button" @click="share = false" class="mr-4"> ยกเลิก</button>
-                    <UButton variant="outline" label="คัดลอก" size="xl" />
-                </div>
-            </template>
         </UCard>
         
     </UModal>
+    <UNotifications/>
 </template>
 
 <script setup>
-    import { SFacebook } from 'vue-socials';
+    import { SFacebook, SLine } from 'vue-socials';
+    const { copy } = useCopyToClipboard()
+    const url = useRequestURL()
     const share = ref(false)
+    const shareUrl= ref()
+
+    const urlShare = url.href
 
     const shareTab = [{
-        key: 'account',
-        label: 'Account',
+        slot: 'link',
+        label: 'ลิงก์',
+        icon: 'i-ic-outline-insert-link'
+    },{
+        slot: 'social',
+        label: 'แชร์',
+        icon: 'i-mdi-share-variant-outline'
+    },{
+        slot: 'email',
+        label: 'อีเมล',
+        icon: 'i-ic-sharp-mail-outline'
     }]
     const form = ref({
         title: 'หัวข้อแบบสอบถาม',
@@ -172,12 +197,24 @@
         share.value = true
     }
 
-    const shareOptions = ref({
-        url: 'https://ui.nuxt.com/elements/button#icon',
+    const copyToClipboard = () => {
+
+        shareUrl.value.click()
+        copy(urlShare, { title: 'คัดลอกลิงก์สำเร็จ', closeButton : false, timeout: 2000})
+    }
+
+    const shareFBOptions = ref({
+        url: urlShare,
         quote: 'Quote',
-        hashtag: '#Facenook',
+        hashtag: '#Facebook',
     })
 
+    const shareLineOptions = computed(() => {
+        return {
+            url: urlShare,
+            text: form.value.title,
+        }
+    })
     const onClose = () => {}
     const onOpen = () => {}
     const onBlock = () => {}
