@@ -1,7 +1,6 @@
 <template>
     <div>
         <PartialsTitle prefix="ระบบ" title="โหวตและแบบสอบถาม" icon="i-mdi-file-document-plus" back="/lists"/>
-
         <div class="px-8 mt-4">
             <h3 class="text-xl md:text-2xl font-bold mb-4 flex items-center space-x-2">
                 <div>แก้ไข<span class="color-primary">แบบฟอร์ม</span></div> 
@@ -13,8 +12,6 @@
             <FormQuestion v-if="form?.survey_type && form.survey_type == 'แบบสอบถาม'" :form="form" @submit="submit"/>
         </div>
     </div>
-
-
 </template>
 
 <script setup>
