@@ -7,11 +7,8 @@
                 <div>สร้าง<span class="color-primary">โหวต</span></div> 
                 <Icon name="i-mdi-pencil" size="25" color="black" />
             </h3>
-
             <FormVote v-if="vote" :vote="vote" @submit="submit"/>
-            
         </div>
-
         <ModalSuccess v-model="success" title="สร้างแบบฟอร์มโหวตเรียบร้อยแล้ว" close>
             <div class="flex justify-between">
                 <button type="button" class="px-4 py-2 bg-green-600 text-base rounded-[5px] text-white" @click="navigateTo(`/lists/${form.survey_id}/edit`)">เข้าแบบฟอร์มแบบสมัคร</button>
