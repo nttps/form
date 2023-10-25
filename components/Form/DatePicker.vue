@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import moment from 'moment';
 import { DatePicker as VCalendarDatePicker } from 'v-calendar'
 import 'v-calendar/dist/style.css'
 
@@ -13,7 +14,7 @@ const emit = defineEmits(['update:model-value', 'close'])
 const date = computed({
   get: () => props.modelValue,
   set: (value) => {
-    emit('update:model-value', value)
+    emit('update:model-value', moment(value).format('YYYY-MM-DDT00:00:00'))
     emit('close')
   }
 })
@@ -23,6 +24,9 @@ const attrs = [{
         color: 'orange',
         fillMode: 'outline',
         class: '!bg-gray-100 dark:!bg-gray-800'
+    },
+    masks: {
+      input: 'DD/MM/YYYY',
     },
     dates: new Date()
 }]
@@ -37,7 +41,7 @@ const attrs = [{
     color="orange"
     trim-weeks
     :first-day-of-week="2"
-    mode="dateTime" is24hr
+    :min-date="new Date()"
     hide-time-header
     locale="th"
   />

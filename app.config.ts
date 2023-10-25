@@ -3,6 +3,8 @@ export default defineAppConfig({
         primary: "amber",
         modal: {
             width: "sm:max-w-3xl",
+            container:
+                "flex min-h-full items-center justify-center text-center",
         },
         notifications: {
             // Show toasts at the top right of the screen

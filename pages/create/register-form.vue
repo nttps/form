@@ -7,122 +7,50 @@
             <Icon name="i-mdi-pencil" size="25" color="black" />
         </h3>
 
-        <UForm :state="form">
-            <div class="px-6 py-4 bg-white rounded-lg mb-4">
-                <div class="font-bold text-xl mb-2">แบบฟอร์มสมัคร</div>
-                <UFormGroup label="ชื่อแบบฟอร์มสมัคร" name="title" size="xl" class="mb-2">
-                    <UInput placeholder="กรอกชื่อแบบสอบถาม" size="md" />
-                </UFormGroup>
-                <UFormGroup label="รายละเอียด" name="description" size="xl" class="mb-2">
-                    <ClientOnly>
-                        <Editor v-model="form.description" height="300px" />
-                    </ClientOnly>
-                </UFormGroup>
-            </div>
-
-            <FormSetting />
-
-            <div class="text-right mt-4">
-                <button class="rounded-lg px-6 py-1.5 bg-[#FFA133]" @click="submit">สร้าง</button>
-                <NuxtLink to="/" class="ml-4 rounded-lg px-6 py-1.5 border border-gray-400">ยกเลิก</NuxtLink>
-            </div>
-        </UForm>
+        <FormRegister :form="form" @submit="submit"/>
     </div>
+
+    <ModalSuccess v-model="success" title="สร้างแบบฟอร์มสมัครเรียบร้อยแล้ว">
+        <div class="text-center text-2xl text-green-500">สร้างแบบฟอร์มสมัครเรียบร้อยแล้ว</div>
+    </ModalSuccess>
 
 </template>
 
 <script setup>
 
+    import moment from 'moment';
+   
     useHead({
         title: `DDPM Questionnaire - สร้างฟอร์มสมัคร`,
     })
+    const dateNow = moment().format('YYYY-MM-DDT00:00:00')
+
+    
     const form = ref({
-        title: '',
-        description: '',
-        type: 'form',
-        questions: []
+        survey_id: "",
+        ref_id:"",
+        survey_name: "",
+        description: "",
+        survey_type:"ฟอร์มสมัคร",
+        survey_cate: "",
+        department: "", 
+        survey_date_from:dateNow,
+        survey_date_to:dateNow,
+        is_require_login:true,
+        status: "เปิด",
+        remark:"",
+        created_by: "tammon.y",
+        modified_by: ""
     })
 
-    const uploadImageModal = ref(false)
-
-    const newPosition = computed(() => {
-        return form.value.questions.map((question, index) => {
-            return { title: question.title , type: question.type, position: index + 1, answers: question.answers };
-        })
-
-    })
-    const dragOptions = computed(() => {
-      return {
-        animation: 1,
-        disabled: false,
-        ghostClass: 'ghost',
-      }
-    })
-
-    const dragQuestion = ref(false)
-
-    const dragQuestionEnd = (e) => {
-        dragQuestion.value = false
-        console.log(newPosition.value);
-    }
-
-    const previewImage = ref(null)
-    const fileImage = ref(null)
-
-    const addImage = () => {
-        uploadImageModal.value = true
-    }
-
-    const pickImage = (e) => {
-        let file = e.target.files
-
-        fileImage.value = file[0]
-        if (file && file[0]) {
-          let reader = new FileReader
-          reader.onload = e => {
-            previewImage.value = e.target.result
-          }
-          reader.readAsDataURL(file[0])
+    const success = ref(false)
+    const submit = async () => {
+        const response = await surveySubmit(form.value);
+        if(response.outputAction.result === 'ok') {
+            success.value = true
         }
     }
-    const confirmImage = () => {
-        form.value.questions.push({
-            question: '',
-            type: 'image',
-            description: '',
-            image: fileImage.value,
-            previewImage: previewImage.value,
-            placeholder: 'ชื่อภาพ ( ไม่จำเป็นต้องกรอก )',
-            position: (form.value.questions.length + 1),
-            answers: []
-        })
 
-        uploadImageModal.value = false
-        fileImage.value = null
-        previewImage.value = null
-    }
-   
-    const addText = () => {
-        form.value.questions.push({
-            question: '',
-            type: 'text',
-            placeholder: 'หัวข้อ',
-            description: '',
-            previewImage: previewImage.value,
-            image: '',
-            position: (form.value.questions.length + 1),
-            answers: []
-        })
-    }
-
-
-    const deleteQuestion = (index) => {
-        form.value.questions.splice(index, 1)
-    }
-
-    const submit = () => {
-        navigateTo('/')
-    }
 </script>
 
 <style lang="scss" scoped>

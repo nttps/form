@@ -37,6 +37,8 @@ import {
 
 
 const props = defineProps(['modelValue', 'height'])
+
+console.log(props.modelValue);
 const emit = defineEmits(['update:modelValue'])
 
 const onEditorUpdate = (val) => {
