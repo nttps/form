@@ -34,7 +34,7 @@
                             <div class="flex justify-center">
                                 <NuxtLink :to="`/lists/${row.survey_id}`" class="border-r-2 border-black pr-2"><Icon name="i-mdi-clipboard-text-search-outline" size="25" color="green"  /></NuxtLink>
                                 <NuxtLink :to="`/lists/${row.survey_id}/edit`" class="pl-2 border-r-2 border-black pr-2"><Icon name="i-mdi-pencil" size="25" color="orange" /></NuxtLink>
-                                <button type="button" @click="deleteItem(row.survey_id)" class="pl-2"><Icon name="i-mdi-trash" size="25" color="red" /></button>
+                                <button type="button" @click="deletePopup(row.survey_id)" class="pl-2"><Icon name="i-mdi-trash" size="25" color="red" /></button>
                             </div>
                         </template>
                     </UTable>
@@ -49,11 +49,29 @@
             </div>
         </div>
     </div>
+
+    <UModal v-model="isDeleteAlert">
+      <UCard :ui="{ divide: 'divide-y divide-gray-100 dark:divide-gray-800' }">
+        <template #header>
+            <div class="text-center">แจ้งเตือนการยืนยัน</div>
+        </template>
+
+        <div class="font-bold text-xl text-center">คุณต้องการยืนยันที่จะลบข้อมูลนี้ใช้หรือไม่</div>
+
+        <template #footer>
+            <div class="flex justify-between">
+                <button type="button" class="px-4 py-2 bg-red-600 text-base rounded-[5px] text-white" @click="deleteItem">ยืนยัน</button>
+                <button type="button" class="px-4 py-2 bg-gray-500 text-base rounded-[5px] text-white" @click="isDeleteAlert = false">ยกเลิก</button>
+            </div>
+        </template>
+      </UCard>
+    </UModal>
 </template>
 
 <script setup>
 
 import moment from "moment"
+  const toast = useToast()
 
 const types = [{
   name: 'ทั้งหมด',
@@ -97,9 +115,11 @@ const columns = [{
 
 const lists = ref([])
 const selectedType = ref("")
+const isDeleteAlert = ref(false)
+const deleteId = ref(null)
 
 onMounted(() => {
-    fetchData()
+  fetchData()
 })
 
 const fetchData = async () => {
@@ -126,9 +146,36 @@ const selected = ref([])
 const fomatDate = (date) => {
   return moment(date).format('DD/MM/yyyy')
 }
+const deletePopup = (id) => {
+  deleteId.value = id
+  isDeleteAlert.value = true
+}
+const deleteItem = async () => {
+  const response = await useApi('/api/servey/ServeyInfo/DeleteDoc', 'DELETE', { 
+    SurveyID : deleteId.value,
+    DeletedBy :"tammon.y"
+  });
 
-const deleteItem = (id) => {
+  if(response.result === 'ok') {
+    toast.add({
+        id: 'delete_form_success',
+        color: 'green',
+        title: 'ลบข้อมูลเรียบร้อยแล้ว',
+        icon: 'i-heroicons-check-badge',
+        timeout: 1000,
+    })
+  }else {
+    toast.add({
+        id: 'delete_form_fail',
+        color: 'red',
+        title: 'เกิดข้อผิดพลาด กรุณาติดต่อผู้ดูแลระบบ',
+        icon: 'i-heroicons-information-circle',
+        timeout: 1000,
+    })
+  }
 
+  isDeleteAlert.value = false
+  fetchData()
 }
 </script>
 
