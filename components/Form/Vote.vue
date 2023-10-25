@@ -141,7 +141,10 @@
         console.log(e);
     }
 
+    
     const addChoice = () => {
+
+        console.log(props.vote);
         props.vote.choices.push({
             quiz_desc: 'ตัวเลือกที่ ' + (props.vote.choices.length + 1),
             quiz_sort: 0,

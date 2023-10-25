@@ -89,7 +89,6 @@
         </UCard>
         
     </UModal>
-    <UNotifications/>
 </template>
 
 <script setup>

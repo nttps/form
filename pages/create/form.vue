@@ -7,7 +7,7 @@
             <Icon name="i-mdi-pencil" size="25" color="black" />
         </h3>
 
-        <FormQuition v-if="form" :form="form" @submit="submit"/>
+        <FormQuestion v-if="form" :form="form" @submit="submit"/>
         
     </div>
 </template>

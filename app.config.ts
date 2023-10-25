@@ -13,6 +13,17 @@ export default defineAppConfig({
         notification: {
             title: "text-xl font-bold text-gray-900 dark:text-white",
         },
+        toggle: {
+            base: "relative inline-flex h-7 w-14 flex-shrink-0 border-2 border-transparent disabled:cursor-not-allowed disabled:opacity-50 focus:outline-none",
+            container: {
+                base: "pointer-events-none relative inline-block h-6 w-6 rounded-full bg-white dark:bg-gray-900 shadow transform ring-0 transition ease-in-out duration-200",
+                active: "translate-x-7 rtl:-translate-x-7",
+            },
+            icon: {
+                on: "h-6 w-6 text-{color}-500 dark:text-{color}-400",
+                off: "h-6 w-6 text-gray-400 dark:text-gray-500",
+            },
+        },
         table: {
             wrapper: "relative overflow-x-auto rounded-2xl",
             divide: "divide-[#FFA800]",
