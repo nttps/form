@@ -1,16 +1,15 @@
 <template>
-    <div class="rounded-lg bg-white pb-4">
+    <div class="rounded-lg bg-white pb-4 transition-all delay-75 border-2 border-transparent hover:border-black overflow-hidden flex flex-col justify-between">
         <div class="h-[200px]">
-            <img :src="`${props.item.photo_cover ? props.item.photo_cover_url : ``}`" class="w-full h-full" :alt="props.item.survey_name">
+            <img :src="`${props.item.photo_cover ? props.item.photo_cover_url : `/images/no-cover.jpg`}`" class="w-full h-[200px] object-cover scale-95 hover:scale-100 transition-all" :alt="props.item.survey_name">
         </div>
         <div class="px-4 pt-2">
             <h2 class="text-xl font-bold">{{ props.item.survey_name  }}</h2>
-            <div>{{ props.item.description }}</div>
-            <div class="text-right">
-                <NuxtLink :to="`/forms/${props.item.survey_id}`" class="bg-[#FFA800] px-3 py-1 rounded-full">เข้าร่วม</NuxtLink>
-            </div>
+            <div>{{ props.item.description.replace(/<\/?[^>]+(>|$)/g, "") }}</div>
         </div>
-        
+        <div class="text-right px-4 pt-2">
+            <NuxtLink :to="`/forms/${props.item.survey_id}`" class="bg-[#FFA800] transition-all px-3 py-1 rounded-full hover:border border-[#FFA800] hover:bg-white hover:text-[#FFA800]">เข้าร่วม</NuxtLink>
+        </div>
     </div>
 </template>
 
@@ -19,5 +18,5 @@
 </script>
 
 <style lang="scss" scoped>
-
+   
 </style>

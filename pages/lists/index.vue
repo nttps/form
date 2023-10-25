@@ -1,71 +1,73 @@
 <template>
-    <PartialsTitle title="โหวตและแบบสอบถาม" icon="i-ri-chat-poll-fill" back create/>
-    <div class="px-8 mt-4">
-        <h3 class="text-xl md:text-2xl font-bold mb-4">รายการ<span class="color-primary">โหวตและแบบสอบถาม</span></h3>
-        <div class="bg-white rounded-t-md px-4 py-8 rounded-2xl">
-            <div class="items-center w-full md:flex">
-                <div class="md:w-3/12 mb-4">
-                  <UInput placeholder="ค้นหาหัวข้อ" size="lg" />
-                </div>
-                <div class="md:w-2/12 md:ml-4 mb-4">
-                  <USelect size="lg" :options="types" v-model="selectedType" placeholder="ประเภทคำถาม" option-attribute="name" @update:model-value="fetchData" />
-                </div>
-                <div class="md:w-2/12 md:ml-4 mb-4">
-                  <UInput placeholder="วันที่สร้าง" size="lg" />
-                </div>
-                <button class="font-bold rounded-lg px-4 py-2 bg-[#FFA133] mb-4 md:ml-4 text-center"> ค้นหา </button>
-            </div>
-            <div class="flex border relative not-prose rounded-2xl border-[#FFA800] mb-2 div">
-                <div class="w-full ">
-                    <UTable v-model="selected" :columns="columns" :rows="rows">
-                        <template #sv_type_name-data="{ row }">
-                            <div class="text-center">{{ row.sv_type_name }}</div>
-                        </template>
-                        <template #created_date-data="{ row }">
-                            <div class="text-center">{{ fomatDate(row.created_date) }}</div>
-                        </template>
-                        <template #dateRange-data="{ row }">
-                            <div class="text-center">{{ fomatDate(row.dateBegin) }} ถึง {{ fomatDate(row.dateEnd) }}</div>
-                        </template>
-                        <template #status-data="{ row }">
-                            <div class="text-center">{{ row.status }}</div>
-                        </template>
-                        <template #others-data="{ row }">
-                            <div class="flex justify-center">
-                                <NuxtLink :to="`/lists/${row.survey_id}`" class="border-r-2 border-black pr-2"><Icon name="i-mdi-clipboard-text-search-outline" size="25" color="green"  /></NuxtLink>
-                                <NuxtLink :to="`/lists/${row.survey_id}/edit`" class="pl-2 border-r-2 border-black pr-2"><Icon name="i-mdi-pencil" size="25" color="orange" /></NuxtLink>
-                                <button type="button" @click="deletePopup(row.survey_id)" class="pl-2"><Icon name="i-mdi-trash" size="25" color="red" /></button>
-                            </div>
-                        </template>
-                    </UTable>
-                </div>
-            </div>
-            <div class="flex justify-center px-3 pt-3.5">
-                <UPagination 
-                  v-model="page" 
-                  :page-count="pageCount" 
-                  :total="lists.length" 
-                />
-            </div>
-        </div>
-    </div>
+   <div>
+      <PartialsTitle title="โหวตและแบบสอบถาม" icon="i-ri-chat-poll-fill" back create/>
+      <div class="px-8 mt-4">
+          <h3 class="text-xl md:text-2xl font-bold mb-4">รายการ<span class="color-primary">โหวตและแบบสอบถาม</span></h3>
+          <div class="bg-white rounded-t-md px-4 py-8 rounded-2xl">
+              <div class="items-center w-full md:flex">
+                  <div class="md:w-3/12 mb-4">
+                    <UInput placeholder="ค้นหาหัวข้อ" size="lg" />
+                  </div>
+                  <div class="md:w-2/12 md:ml-4 mb-4">
+                    <USelect size="lg" :options="types" v-model="selectedType" placeholder="ประเภทคำถาม" option-attribute="name" @update:model-value="fetchData" />
+                  </div>
+                  <div class="md:w-2/12 md:ml-4 mb-4">
+                    <UInput placeholder="วันที่สร้าง" size="lg" />
+                  </div>
+                  <button class="font-bold rounded-lg px-4 py-2 bg-[#FFA133] mb-4 md:ml-4 text-center"> ค้นหา </button>
+              </div>
+              <div class="flex border relative not-prose rounded-2xl border-[#FFA800] mb-2 div">
+                  <div class="w-full ">
+                      <UTable v-model="selected" :columns="columns" :rows="rows">
+                          <template #sv_type_name-data="{ row }">
+                              <div class="text-center">{{ row.sv_type_name }}</div>
+                          </template>
+                          <template #created_date-data="{ row }">
+                              <div class="text-center">{{ fomatDate(row.created_date) }}</div>
+                          </template>
+                          <template #dateRange-data="{ row }">
+                              <div class="text-center">{{ fomatDate(row.dateBegin) }} ถึง {{ fomatDate(row.dateEnd) }}</div>
+                          </template>
+                          <template #status-data="{ row }">
+                              <div class="text-center">{{ row.status }}</div>
+                          </template>
+                          <template #others-data="{ row }">
+                              <div class="flex justify-center">
+                                  <NuxtLink :to="`/lists/${row.survey_id}`" class="border-r-2 border-black pr-2"><Icon name="i-mdi-clipboard-text-search-outline" size="25" color="green"  /></NuxtLink>
+                                  <NuxtLink :to="`/lists/${row.survey_id}/edit`" class="pl-2 border-r-2 border-black pr-2"><Icon name="i-mdi-pencil" size="25" color="orange" /></NuxtLink>
+                                  <button type="button" @click="deletePopup(row.survey_id)" class="pl-2"><Icon name="i-mdi-trash" size="25" color="red" /></button>
+                              </div>
+                          </template>
+                      </UTable>
+                  </div>
+              </div>
+              <div class="flex justify-center px-3 pt-3.5">
+                  <UPagination 
+                    v-model="page" 
+                    :page-count="pageCount" 
+                    :total="lists.length" 
+                  />
+              </div>
+          </div>
+      </div>
 
-    <UModal v-model="isDeleteAlert">
-      <UCard :ui="{ divide: 'divide-y divide-gray-100 dark:divide-gray-800' }">
-        <template #header>
-            <div class="text-center">แจ้งเตือนการยืนยัน</div>
-        </template>
+      <UModal v-model="isDeleteAlert">
+        <UCard :ui="{ divide: 'divide-y divide-gray-100 dark:divide-gray-800' }">
+          <template #header>
+              <div class="text-center">แจ้งเตือนการยืนยัน</div>
+          </template>
 
-        <div class="font-bold text-xl text-center">คุณต้องการยืนยันที่จะลบข้อมูลนี้ใช้หรือไม่</div>
+          <div class="font-bold text-xl text-center">คุณต้องการยืนยันที่จะลบข้อมูลนี้ใช้หรือไม่</div>
 
-        <template #footer>
-            <div class="flex justify-between">
-                <button type="button" class="px-4 py-2 bg-red-600 text-base rounded-[5px] text-white" @click="deleteItem">ยืนยัน</button>
-                <button type="button" class="px-4 py-2 bg-gray-500 text-base rounded-[5px] text-white" @click="isDeleteAlert = false">ยกเลิก</button>
-            </div>
-        </template>
-      </UCard>
-    </UModal>
+          <template #footer>
+              <div class="flex justify-between">
+                  <button type="button" class="px-4 py-2 bg-red-600 text-base rounded-[5px] text-white" @click="deleteItem">ยืนยัน</button>
+                  <button type="button" class="px-4 py-2 bg-gray-500 text-base rounded-[5px] text-white" @click="isDeleteAlert = false">ยกเลิก</button>
+              </div>
+          </template>
+        </UCard>
+      </UModal>
+   </div>
 </template>
 
 <script setup>
@@ -127,8 +129,8 @@ const fetchData = async () => {
     SearchText:"",
     Status:"",
     User:"tammon.y",
-    start_date:"2023-10-20",
-    end_date:"2023-10-25",
+    start_date: null,
+    end_date: null,
     Type: selectedType.value,
     IsShowActiveOnly:false
   });

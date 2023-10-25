@@ -1,14 +1,16 @@
 <template>
-    <PartialsTitle prefix="ระบบ" title="แบบสอบถาม" icon="i-mdi-file-document-plus" back/>
+    <div>
+        <PartialsTitle prefix="ระบบ" title="แบบสอบถาม" icon="i-mdi-file-document-plus" back/>
 
-    <div class="px-8 mt-4">
-        <h3 class="text-xl md:text-2xl font-bold mb-4 flex items-center space-x-2">
-            <div>สร้าง<span class="color-primary">แบบสอบถาม</span></div> 
-            <Icon name="i-mdi-pencil" size="25" color="black" />
-        </h3>
+        <div class="px-8 mt-4">
+            <h3 class="text-xl md:text-2xl font-bold mb-4 flex items-center space-x-2">
+                <div>สร้าง<span class="color-primary">แบบสอบถาม</span></div> 
+                <Icon name="i-mdi-pencil" size="25" color="black" />
+            </h3>
 
-        <FormQuestion v-if="form" :form="form" @submit="submit"/>
-        
+            <FormQuestion v-if="form" :form="form" @submit="submit"/>
+            
+        </div>
     </div>
 </template>
 

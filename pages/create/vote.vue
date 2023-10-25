@@ -1,19 +1,21 @@
 <template>
-    <PartialsTitle prefix="ระบบ" title="โหวต" icon="i-mdi-vote" back/>
+    <div>
+        <PartialsTitle prefix="ระบบ" title="โหวต" icon="i-mdi-vote" back/>
 
-    <div class="px-8 mt-4">
-        <h3 class="text-xl md:text-2xl font-bold mb-4 flex items-center space-x-2">
-            <div>สร้าง<span class="color-primary">โหวต</span></div> 
-            <Icon name="i-mdi-pencil" size="25" color="black" />
-        </h3>
+        <div class="px-8 mt-4">
+            <h3 class="text-xl md:text-2xl font-bold mb-4 flex items-center space-x-2">
+                <div>สร้าง<span class="color-primary">โหวต</span></div> 
+                <Icon name="i-mdi-pencil" size="25" color="black" />
+            </h3>
 
-        <FormVote v-if="vote" :vote="vote" @submit="submit"/>
-        
+            <FormVote v-if="vote" :vote="vote" @submit="submit"/>
+            
+        </div>
+
+        <ModalSuccess v-model="success" title="สร้างผลโหวตเรียบร้อยแล้ว">
+            <div class="text-center text-2xl text-green-500">สร้างผลโหวตเรียบร้อยแล้ว</div>
+        </ModalSuccess>
     </div>
-
-    <ModalSuccess v-model="success" title="สร้างผลโหวตเรียบร้อยแล้ว">
-        <div class="text-center text-2xl text-green-500">สร้างผลโหวตเรียบร้อยแล้ว</div>
-    </ModalSuccess>
 </template>
 
 <script setup>
