@@ -71,5 +71,8 @@ export default defineAppConfig({
         emptyState: {
             label: "ไม่มีข้อมูล",
         },
+        skeleton: {
+            background: "bg-slate-200 dark:bg-slate-600",
+        },
     },
 });
