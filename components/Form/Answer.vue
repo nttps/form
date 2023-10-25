@@ -19,11 +19,11 @@
                         <Icon name="i-uil-draggabledots" class="group-hover:!inline-block !hidden" size="25"/>
                     </div>
                     <div class="w-[30px]">
-                        <Icon :name="`${props.question.type == 'radio' ? `i-ic-round-radio-button-unchecked` : `i-mdi-checkbox-blank-outline`}`" size="30"/>
+                        <Icon :name="`${props.question.answer_type == 'ตัวเลือกได้ข้อเดียว' ? `i-ic-round-radio-button-unchecked` : `i-mdi-checkbox-blank-outline`}`" size="30"/>
                     </div>
                 </div>
                 <div class="flex-1">
-                    <UInput placeholder="กรอกคำตอบ" v-model="answer.title" />
+                    <UInput placeholder="กรอกคำตอบ" v-model="answer.answer" required/>
                 </div>
                 <div class="min-w-max flex space-x-2">
                     <UTooltip text="แทรกรูปภาพตัวเลือก">

@@ -11,7 +11,7 @@
             </UFormGroup>
             <UFormGroup label="รายละเอียด" name="description" size="xl" class="mb-2">
                 <ClientOnly>
-                    <Editor v-model="props.form.description" height="300px" />
+                    <Editor v-model="props.form.description" height="800px" />
                 </ClientOnly>
             </UFormGroup>
         </div>
@@ -31,7 +31,6 @@
 
     const props = defineProps(['form'])
 
-    console.log(props.form);
     const emit = defineEmits(['submit'])
     const dateNow = moment().format('YYYY-MM-DDT00:00:00')
 

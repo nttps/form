@@ -4,7 +4,6 @@
     :extensions="extensions"
     :enable-char-count="false"
     lang="en"
-    placeholder=""
     :height="props.height ?? `200px`"
     @onUpdate="onEditorUpdate"
   />
@@ -19,11 +18,13 @@ import {
   Text,
   Paragraph,
   //_______________________
+  Heading,
   Bold,
   Underline,
   Italic,
   TextAlign,
   FontSize,
+
   Strike,
   BulletList,
   OrderedList,
@@ -31,6 +32,7 @@ import {
   Indent,
   FormatClear,
   Color,
+  Image,
   Highlight,
   SelectAll,
 } from "element-tiptap-vue3-fixed";
@@ -38,7 +40,7 @@ import {
 
 const props = defineProps(['modelValue', 'height'])
 
-console.log(props.modelValue);
+console.log(props);
 const emit = defineEmits(['update:modelValue'])
 
 const onEditorUpdate = (val) => {
@@ -49,16 +51,20 @@ const extensions = [
     Doc,
     Text,
     Paragraph,
-    Bold.configure({ bubble: true }),
-    Underline.configure({ bubble: true }),
-    Italic.configure({ bubble: true }),
+    Bold,
+    Underline,
+    Italic,
     FontSize,
+    Heading,
     Color,
     Highlight,
     TextAlign,
     Strike,
     BulletList,
     OrderedList,
+    Image.configure({
+      draggable: true
+    }),
     Link.configure({ bubble: true }),
     Indent,
     FormatClear,
@@ -68,33 +74,30 @@ const extensions = [
 </script>
 
 <style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
 /* Basic editor styles */
-.ProseMirror {
-  > * + * {
-    margin-top: 0.75em;
-  }
 
-  pre {
-    background: #0d0d0d;
-    border-radius: 0.5rem;
-    color: #fff;
-    font-family: "JetBrainsMono", monospace;
-    padding: 0.75rem 1rem;
-
-    code {
-      background: none;
-      color: inherit;
-      font-size: 0.8rem;
-      padding: 0;
-    }
-  }
+.el-tiptap-editor__content {
+  padding: 1rem 2rem !important;
+  font-family: 'Kanit', sans-serif;
 }
+
+h1 {
+  @apply text-3xl leading-8
+}
+h2 {
+  @apply text-2xl
+}
+h3 {
+  @apply text-xl
+}
+h4 {
+  @apply text-lg
+}
+h5 {
+  @apply text-base
+}
+h6 {
+  @apply text-sm
+}
+
 </style>
