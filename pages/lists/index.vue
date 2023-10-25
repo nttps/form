@@ -32,8 +32,9 @@
                         </template>
                         <template #others-data="{ row }">
                             <div class="flex justify-center">
-                                <NuxtLink :to="`/lists/${row.survey_id}`" class="border-r-2 border-black pr-2"><Icon name="i-mdi-clipboard-text-search-outline" size="30" color="black"  /></NuxtLink>
-                                <NuxtLink :to="`/lists/${row.survey_id}/edit`" class="pl-2"><Icon name="i-mdi-pencil" size="30" color="black" /></NuxtLink>
+                                <NuxtLink :to="`/lists/${row.survey_id}`" class="border-r-2 border-black pr-2"><Icon name="i-mdi-clipboard-text-search-outline" size="25" color="green"  /></NuxtLink>
+                                <NuxtLink :to="`/lists/${row.survey_id}/edit`" class="pl-2 border-r-2 border-black pr-2"><Icon name="i-mdi-pencil" size="25" color="orange" /></NuxtLink>
+                                <button type="button" @click="deleteItem(row.survey_id)" class="pl-2"><Icon name="i-mdi-trash" size="25" color="red" /></button>
                             </div>
                         </template>
                     </UTable>
@@ -126,6 +127,9 @@ const fomatDate = (date) => {
   return moment(date).format('DD/MM/yyyy')
 }
 
+const deleteItem = (id) => {
+
+}
 </script>
 
 <style lang="scss" scoped>

@@ -45,7 +45,7 @@
         </div>
     </form>
 
-     <UModal v-model="share">
+    <UModal v-model="share">
         <UCard :ui="{ divide: 'divide-y divide-gray-100 dark:divide-gray-800' }">
             <template #header>
                 <div class="flex justify-between items-center">
