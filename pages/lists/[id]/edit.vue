@@ -31,6 +31,10 @@
         form.value = response.surveyInfo
         form.value.choices = []
         form.value.questions = []
+
+        if(response.surveyInfo.survey_type = "ระบบโหวต") {
+            form.value.choices = response.quizSetList[0].answers
+        }
     }
 
     const submit = async () => {
@@ -44,6 +48,20 @@
                 timeout: 1000,
             })
 
+            const quizId = response.quizSetList[0].quiz.quiz_id
+
+            if(response.surveyInfo.survey_type = "ระบบโหวต") {
+                for (let index = 0; index < form.value.choices.length; index++) {
+                    const answer = form.value.choices[index];
+                    answer.quiz_id = quizId
+                    answer.modified_by = ''
+                    answer.answer_sort = (index + 1)
+
+                    const res = await answerSubmit(answer);
+                    console.log(res);
+                }
+            }
+           
             fetchData()
         }
     }

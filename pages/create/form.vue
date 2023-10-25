@@ -62,16 +62,5 @@
 </script>
 
 <style lang="scss" scoped>
-    .question-list-move {
-        transition: transform 0.5s;
-    }
 
-    .no-move {
-        transition: transform 0s;
-    }
-    .ghost {
-        opacity: 0.5;
-        padding: .5rem 0;
-        background: #c8ebfb;
-    }
 </style>

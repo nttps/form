@@ -26,23 +26,31 @@
                                 <USelect size="md" :options="types"  v-model="props.vote.answer_type" option-attribute="name" />
                             </UFormGroup>
                             <UFormGroup label="ตัวเลือก" name="choices" size="xl" class="mb-3">
-                                <draggable class="dragArea list-group w-full" v-model="props.vote.choices" v-bind="dragOptions" 
+                                <draggable 
+                                    class="dragArea list-group w-full" 
+                                    :list="props.vote.choices" 
+                                    v-bind="dragOptions" 
+                                    group="choices"
+                                    item-key="answer_sort" 
+                                    :move="draggableMove"
                                     @start="drag = true"
                                     @end="drag = false"  
-                                    @move="draggableMove" 
                                     handle=".list-group-item-drag"
                                 >
-                                    <transition-group type="transition" :name="drag ? 'drag-list' : null">
+                                    <transition-group 
+                                        type="transition" 
+                                        :name="drag ? 'drag-list' : null"
+                                    >
                                         <div
                                             class="list-group-item rounded-md mb-2 relative"
-                                            v-for="(choice, index) in vote.choices" :key="index"
+                                            v-for="(choice, index) in vote.choices" :key="choice.answer_sort"
                                         >
                                             <div class="flex items-center space-x-2">
                                                 <div class="min-w-max px-1 list-group-item-drag">
                                                     <button type="button" class=" cursor-move"><Icon name="i-uil-draggabledots" /></button>
                                                 </div>
                                                 <div class="flex-1">
-                                                    <UInput v-model="choice.quiz_desc" size="md" />
+                                                    <UInput v-model="choice.answer" size="md" />
                                                 </div>
                                                 <div class="min-w-max px-1">
                                                     <button type="button"><Icon name="i-mdi-file-image-box" size="25" /></button>
@@ -88,25 +96,23 @@
         </UTabs>
 
         <div class="text-right mt-4">
-            <button class="rounded-lg px-6 py-1.5 bg-[#FFA133]" type="submit">สร้าง</button>
-            <NuxtLink to="/" class="ml-4 rounded-lg px-6 py-1.5 border border-gray-400">ยกเลิก</NuxtLink>
+            <button class="rounded-lg px-6 py-1.5 bg-[#FFA133]" type="submit">{{ props.vote.survey_id ? `แก้ไข` : `สร้าง` }}</button>
+            <NuxtLink :to="`${props.vote.survey_id ? `/lists` : `/`}`" class="ml-4 rounded-lg px-6 py-1.5 border border-gray-400">ยกเลิก</NuxtLink>
         </div>
     </UForm>
 </template>
 
 <script setup>
-    import moment from 'moment';
     import { object, string, date } from 'yup'
 
     const props = defineProps(['vote'])
 
     const emit = defineEmits(['submit'])
-    const dateNow = moment().format('YYYY-MM-DDT00:00:00')
 
     const schema = object({
         survey_name: string().required('กรอกหัวข้อการโหวต'),
-        survey_date_from: date().min(dateNow, 'เลือกวันที่ปัจจุบัน').required('กรุณาเลือกวันที่'),
-        survey_date_to: date().min(dateNow, 'เลือกวันที่ปัจจุบัน').required('กรุณาเลือกวันที่')
+        survey_date_from: date().required('กรุณาเลือกวันที่'),
+        survey_date_to: date().min(props.vote.survey_date_from, 'ห้ามต่ำกว่ามันที่เริ่มโหวต').required('กรุณาเลือกวันที่')
     })
 
     const types = [{
@@ -131,23 +137,20 @@
     const dragOptions = computed(() => {
       return {
         animation: 1,
-        group: 'description',
         disabled: false,
         ghostClass: 'ghost',
       }
     })
 
     const draggableMove = (e) => {
-        console.log(e);
+        console.log(props.vote.choices);
     }
 
     
     const addChoice = () => {
-
-        console.log(props.vote);
         props.vote.choices.push({
-            quiz_desc: 'ตัวเลือกที่ ' + (props.vote.choices.length + 1),
-            quiz_sort: 0,
+            answer: 'ตัวเลือกที่ ' + (props.vote.choices.length + 1),
+            answer_sort: (props.vote.choices.length + 1),
             answer_type: 'ตัวเลือกได้ข้อเดียว',
         })
     }
@@ -157,5 +160,4 @@
 </script>
 
 <style lang="scss" scoped>
-
 </style>

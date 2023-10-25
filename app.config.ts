@@ -74,5 +74,16 @@ export default defineAppConfig({
         skeleton: {
             background: "bg-slate-200 dark:bg-slate-600",
         },
+        tabs: {
+            list: {
+                marker: {
+                    background: "bg-[#FFA800] dark:bg-gray-900",
+                },
+                tab: {
+                    active: "text-white bg-[#FFA800]",
+                    size: "text-base"
+                },
+            },
+        },
     },
 });

@@ -13,7 +13,7 @@
         color="green"
         class="mb-4"
     />
-    <UFormGroup label="วันที่เริ่มการโหวต" name="title" size="xl" class="mb-2">
+    <UFormGroup label="วันที่เริ่มการโหวต" name="survey_date_from" size="xl" class="mb-2">
         <UPopover :popper="{ placement: 'bottom-start' }">
             <UButton icon="i-heroicons-calendar-days-20-solid" class="md:w-4/5" size="md" :label="surveyDateFrom" />
             <template #panel="{ close }">
@@ -21,7 +21,7 @@
             </template>
         </UPopover>
     </UFormGroup>
-    <UFormGroup label="วันที่สิ้นสุดการโหวต" name="title" size="xl" class="mb-2">
+    <UFormGroup label="วันที่สิ้นสุดการโหวต" name="survey_date_to" size="xl" class="mb-2">
         <UPopover :popper="{ placement: 'bottom-start' }">
             <UButton icon="i-heroicons-calendar-days-20-solid" class="md:w-4/5" size="md" :label="surveyDateTo" />
             <template #panel="{ close }">

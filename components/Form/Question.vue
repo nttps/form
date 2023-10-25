@@ -27,7 +27,7 @@
                     <draggable 
                         class="dragArea list-group w-full mb-4" 
                         group="questions"
-                        item-key="position" 
+                        item-key="quiz_sort" 
                         v-model="props.form.questions" 
                         v-bind="dragOptions" 
                         @start="dragQuestion = true"
@@ -36,7 +36,7 @@
                     >
                         <transition-group 
                             type="transition" 
-                            :name="dragQuestion ? 'question-list' : null"
+                            :name="dragQuestion ? 'drag-list' : null"
                         >
                             <div
                                 class="list-group-item rounded-md mb-2 relative"
@@ -119,8 +119,8 @@
         </UTabs>
 
         <div class="text-right mt-4">
-            <button class="rounded-lg px-6 py-1.5 bg-[#FFA133]" type="submit">สร้าง</button>
-            <NuxtLink to="/" class="ml-4 rounded-lg px-6 py-1.5 border border-gray-400">ยกเลิก</NuxtLink>
+            <button class="rounded-lg px-6 py-1.5 bg-[#FFA133]" type="submit">{{ props.form.survey_id ? `แก้ไข` : `สร้าง` }}</button>
+            <NuxtLink :to="`${props.form.survey_id ? `/lists` : `/`}`" class="ml-4 rounded-lg px-6 py-1.5 border border-gray-400">ยกเลิก</NuxtLink>
         </div>
     </UForm>
 

@@ -12,8 +12,11 @@
             
         </div>
 
-        <ModalSuccess v-model="success" title="สร้างผลโหวตเรียบร้อยแล้ว">
-            <div class="text-center text-2xl text-green-500">สร้างผลโหวตเรียบร้อยแล้ว</div>
+        <ModalSuccess v-model="success" title="สร้างแบบฟอร์มโหวตเรียบร้อยแล้ว" close>
+            <div class="flex justify-between">
+                <button type="button" class="px-4 py-2 bg-green-600 text-base rounded-[5px] text-white" @click="navigateTo(`/lists/${form.survey_id}/edit`)">เข้าแบบฟอร์มแบบสมัคร</button>
+                <button type="button" class="px-4 py-2 bg-gray-500 text-base rounded-[5px] text-white" @click="navigateTo(`/lists`)">กลับสู่หน้าหลัก</button>
+            </div>
         </ModalSuccess>
     </div>
 </template>
@@ -45,23 +48,34 @@
         modified_by: "",
         choices: [
             {
-                quiz_desc: 'ตัวเลือกที่ 1',
+                answer: 'ตัวเลือกที่ 1',
+                answer_id: '',
                 answer_type: 'ตัวเลือกได้ข้อเดียว',
-                quiz_sort: 0,
+                answer_sort: 1,
             },
         ]
     })
 
     const success = ref(false)
-
     
-
     const submit = async () => {
         const response = await surveySubmit(vote.value);
         if(response.outputAction.result === 'ok') {
+            const quizId = response.quizSetList[0].quiz.quiz_id
 
-            vote.value.choices.forEach()
-            quizSubmit()
+            for (let index = 0; index < vote.value.choices.length; index++) {
+                const answer = vote.value.choices[index];
+                answer.quiz_id = quizId
+                answer.modified_by = ''
+                answer.answer_sort = (index + 1)
+
+                const res = await answerSubmit(answer);
+                console.log(res);
+            }
+            
+            
+                    
+            
         }
     }
 </script>
