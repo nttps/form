@@ -7,7 +7,7 @@
             <Icon name="i-mdi-pencil" size="25" color="black" />
         </h3>
 
-        <FormRegister :form="form" @submit="submit"/>
+        <FormRegister v-if="form" :form="form" @submit="submit"/>
     </div>
 
     <ModalSuccess v-model="success" title="สร้างแบบฟอร์มสมัครเรียบร้อยแล้ว">
@@ -37,7 +37,7 @@
         survey_date_from:dateNow,
         survey_date_to:dateNow,
         is_require_login:true,
-        status: "เปิด",
+        status: "ปิด",
         remark:"",
         created_by: "tammon.y",
         modified_by: ""

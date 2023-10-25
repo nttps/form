@@ -7,113 +7,60 @@
             <Icon name="i-mdi-pencil" size="25" color="black" />
         </h3>
 
-        <UForm :state="vote">
-            <div class="px-6 py-4 bg-white rounded-lg mb-4">
-                <div class="font-bold text-xl mb-2">การโหวต</div>
-                <UFormGroup label="หัวข้อการโหวต" name="title" size="xl" class="mb-2">
-                    <UInput placeholder="กรอกหัวข้อ" size="md" />
-                </UFormGroup>
-                <UFormGroup label="รายละเอียด" name="description" size="xl" class="mb-2">
-                    <UTextarea :rows="5"/>
-                </UFormGroup>
-                <UFormGroup label="ประเภทตัวเลือก" name="description" size="xl" class="mb-3">
-                    <USelect size="md" :options="types"  option-attribute="name" />
-                </UFormGroup>
-                <draggable class="dragArea list-group w-full" v-model="vote.choices" v-bind="dragOptions" 
-                    @start="drag = true"
-                    @end="drag = false"  
-                    @move="draggableMove" 
-                    handle=".list-group-item-drag"
-                >
-                    <transition-group type="transition" :name="drag ? 'drag-list' : null">
-                        <div
-                            class="list-group-item rounded-md mb-2 relative"
-                            v-for="(choice, index) in vote.choices" :key="index"
-                        >
-                            <div class="flex items-center space-x-2">
-                                <div class="min-w-max px-1 list-group-item-drag">
-                                    <button class=" cursor-move"><Icon name="i-uil-draggabledots" /></button>
-                                </div>
-                                <div class="flex-1">
-                                    <UInput v-model="choice.value" />
-                                </div>
-                                <div class="min-w-max px-1">
-                                    <button><Icon name="i-mdi-file-image-box" size="25" /></button>
-                                </div>
-                                <div class="min-w-max px-1" v-if="vote.choices.length > 1">
-                                    <button @click="deleteChoice(index)"><Icon name="i-mdi-close" /></button>
-                                </div>
-                            </div>
-                        </div>
-                    </transition-group>
-                </draggable>
-                <div class="flex space-x-2">
-                    <button @click="addChoice" class="text-gray-600 flex items-center space-x-2 px-1">
-                        <Icon name="i-mdi-plus-circle-outline" size="20" />
-                        <span>เพิ่มตัวเลือก</span>
-                    </button>
-                </div>
-            </div>
-
-            <FormSetting />
-
-            <div class="text-right mt-4">
-                <button class="rounded-lg px-6 py-1.5 bg-[#FFA133]" @click="submit">สร้าง</button>
-                <NuxtLink to="/" class="ml-4 rounded-lg px-6 py-1.5 border border-gray-400">ยกเลิก</NuxtLink>
-            </div>
-        </UForm>
+        <FormVote v-if="vote" :vote="vote" @submit="submit"/>
+        
     </div>
+
+    <ModalSuccess v-model="success" title="สร้างผลโหวตเรียบร้อยแล้ว">
+        <div class="text-center text-2xl text-green-500">สร้างผลโหวตเรียบร้อยแล้ว</div>
+    </ModalSuccess>
 </template>
 
 <script setup>
+    import moment from 'moment';
     useHead({
         title: `DDPM Questionnaire - สร้างโหวต`,
     })
 
-    const drag = ref(false)
-    const types = [ {
-        name: 'ตัวเลือกเดียว',
-        value: 'type',
-    }, {
-        name: 'หลายตัวเลือก',
-        value: 'checkbox'
-    },]
+    const dateNow = moment().format('YYYY-MM-DDT00:00:00')
 
     const vote = ref({
-        title: '',
-        type: 'vote',
-        description: '',
+        survey_id: "",
+        ref_id:"",
+        survey_name: undefined,
+        description: "",
+        survey_type:"ระบบโหวต",
+        survey_cate: "",
+        department: "", 
+        vote_type: "",
+        survey_date_from:dateNow,
+        survey_date_to:dateNow,
+        is_require_login:true,
+        status: "ปิด",
+        answer_type: "",
+        remark:"",
+        created_by: "tammon.y",
+        modified_by: "",
         choices: [
             {
-                value: 'ตัวเลือกที่ 1'
+                quiz_desc: 'ตัวเลือกที่ 1',
+                answer_type: 'ตัวเลือกได้ข้อเดียว',
+                quiz_sort: 0,
             },
         ]
     })
 
-    const dragOptions = computed(() => {
-      return {
-        animation: 1,
-        group: 'description',
-        disabled: false,
-        ghostClass: 'ghost',
-      }
-    })
+    const success = ref(false)
 
-    const draggableMove = (e) => {
-        console.log(e);
-    }
+    
 
-    const addChoice = () => {
-        vote.value.choices.push({
-                value: 'ตัวเลือกที่ ' + (vote.value.choices.length + 1)
-        })
-    }
-    const deleteChoice = (index) => {
-        vote.value.choices.splice(index, 1)
-    }
+    const submit = async () => {
+        const response = await surveySubmit(vote.value);
+        if(response.outputAction.result === 'ok') {
 
-    const submit = () => {
-        navigateTo('/')
+            vote.value.choices.forEach()
+            quizSubmit()
+        }
     }
 </script>
 
