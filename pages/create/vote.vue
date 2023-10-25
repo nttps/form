@@ -37,7 +37,7 @@
         survey_date_to:dateNow,
         is_require_login:true,
         status: "ปิด",
-        answer_type: "",
+        answer_type: "ตัวเลือกได้ข้อเดียว",
         remark:"",
         created_by: "tammon.y",
         modified_by: "",

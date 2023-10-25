@@ -8,7 +8,7 @@ export default defineAppConfig({
         },
         notifications: {
             // Show toasts at the top right of the screen
-            position: "bottom-0 left-0",
+            position: "bottom-0 right-0",
         },
         notification: {
             title: "text-xl font-bold text-gray-900 dark:text-white",

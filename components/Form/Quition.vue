@@ -1,94 +1,122 @@
 <template>
+
     <UForm 
         :state="props.form" 
         :schema="schema"
         @submit="emit('submit')"
     >
-        <div class="px-6 py-4 bg-white rounded-lg mb-4">
-            <div class="font-bold text-xl mb-2">แบบสอบถาม</div>
-            <UFormGroup label="ชื่อแบบสอบถาม" name="survey_name" size="xl" class="mb-2">
-                <UInput v-model="props.form.survey_name" placeholder="กรอกชื่อแบบสอบถาม" size="md" />
-            </UFormGroup>
-            <UFormGroup label="รายละเอียด" name="description" size="xl" class="mb-2">
-                <ClientOnly>
-                    <Editor v-model="props.form.description" height="500px" />
-                </ClientOnly>
-            </UFormGroup>
-        </div>
-
-
-        <draggable 
-            class="dragArea list-group w-full mb-4" 
-            group="questions"
-            item-key="position" 
-            v-model="props.form.questions" 
-            v-bind="dragOptions" 
-            @start="dragQuestion = true"
-            @end="dragQuestionEnd" 
-            handle=".list-group-item-drag"
-        >
-            <transition-group 
-                type="transition" 
-                :name="dragQuestion ? 'question-list' : null"
-            >
-                <div
-                    class="list-group-item rounded-md mb-2 relative"
-                    v-for="(question, index) in props.form.questions" :key="question.quiz_sort"
-                >
-                    <div class="list-group-item-drag text-center bg-[#FFA133] rounded-t-lg cursor-move">
-                        <Icon name="i-uil-draggabledots" class="rotate-90" size="25"/>
-                    </div>
-                    <div class="p-4 bg-white">
-                        <div class="flex flex-wrap space-x-4 mb-2">
-                            <div :class="`${question.answer_type === 'ตัวเลือกได้ข้อเดียว' || question.answer_type === 'เลือกได้หลายข้อ' ? `basis-1/2-gap-4` : `w-full` }`">
-                                <UInput v-model="question.quiz_desc" :placeholder="question.placeholder" size="md" required />
-                            </div>
-                            <div class="basis-1/2-gap-4" v-if="question.answer_type === 'ตัวเลือกได้ข้อเดียว' || question.answer_type === 'เลือกได้หลายข้อ'">
-                                <USelect size="md" :options="types" v-model="question.answer_type" placeholder="ประเภทคำถาม" option-attribute="name" required/>
-                            </div>
+        <UTabs :items="tabs" class="w-full">
+            <template #form="{ item }">
+                <div class="px-6 py-4 bg-white rounded-lg mb-4">
+                    <div class="font-bold text-xl mb-2">{{ item.label }}</div>
+                    <div class="md:flex md:space-x-4">
+                        <div class="md:w-1/5">
+                            <FormSetting :form="props.form" />
                         </div>
-                        <div>
+                        <div class="md:w-4/5">
+                            <UFormGroup label="ชื่อแบบสอบถาม" name="survey_name" size="xl" class="mb-2">
+                                <UInput v-model="props.form.survey_name" placeholder="กรอกชื่อแบบสอบถาม" size="md" />
+                            </UFormGroup>
                             <UFormGroup label="รายละเอียด" name="description" size="xl" class="mb-2">
                                 <ClientOnly>
-                                    <Editor v-model="question.description" :height="question.answer_type == 'ข้อเขียน' ? `300px` : ``" />
+                                    <Editor v-model="props.form.description" height="500px" />
                                 </ClientOnly>
                             </UFormGroup>
                         </div>
-                        <div v-if="question.answer_type === 'ตัวเลือกได้ข้อเดียว' || question.answer_type === 'เลือกได้หลายข้อ'" class="mt-2">
-                            <label for="" class="px-6">ตัวเลือก</label>
-                            <FormAnswer :index="index" :question="question" @delete-answer="deleteAnswer" @add-answer="addAnswer"/>
-                        </div>
-                        <div v-if="question.answer_type === 'image'" class="mt-2 text-center">
-                            <img :src="question.previewImage" alt="" class="mx-auto" />
-                        </div>
                     </div>
-                    <div class="text-right">
-                        <button type="button" @click="deleteQuestion(index)" v-if="props.form.questions.length > 1"><Icon name="i-mdi-close" /></button>
+                    <draggable 
+                        class="dragArea list-group w-full mb-4" 
+                        group="questions"
+                        item-key="position" 
+                        v-model="props.form.questions" 
+                        v-bind="dragOptions" 
+                        @start="dragQuestion = true"
+                        @end="dragQuestionEnd" 
+                        handle=".list-group-item-drag"
+                    >
+                        <transition-group 
+                            type="transition" 
+                            :name="dragQuestion ? 'question-list' : null"
+                        >
+                            <div
+                                class="list-group-item rounded-md mb-2 relative"
+                                v-for="(question, index) in props.form.questions" :key="question.quiz_sort"
+                            >
+                                <div class="list-group-item-drag text-center bg-[#FFA133] rounded-t-lg cursor-move">
+                                    <Icon name="i-uil-draggabledots" class="rotate-90" size="25"/>
+                                </div>
+                                <div class="p-4 bg-white">
+                                    <div class="flex flex-wrap space-x-4 mb-2">
+                                        <div :class="`${question.answer_type === 'ตัวเลือกได้ข้อเดียว' || question.answer_type === 'เลือกได้หลายข้อ' ? `basis-1/2-gap-4` : `w-full` }`">
+                                            <UInput v-model="question.quiz_desc" :placeholder="question.placeholder" size="md" required />
+                                        </div>
+                                        <div class="basis-1/2-gap-4" v-if="question.answer_type === 'ตัวเลือกได้ข้อเดียว' || question.answer_type === 'เลือกได้หลายข้อ'">
+                                            <USelect size="md" :options="types" v-model="question.answer_type" placeholder="ประเภทคำถาม" option-attribute="name" required/>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <UFormGroup label="รายละเอียด" name="description" size="xl" class="mb-2">
+                                            <ClientOnly>
+                                                <Editor v-model="question.description" :height="question.answer_type == 'ข้อความ' ? `350px` : `300px`" />
+                                            </ClientOnly>
+                                        </UFormGroup>
+                                    </div>
+                                    <div v-if="question.answer_type === 'ตัวเลือกได้ข้อเดียว' || question.answer_type === 'เลือกได้หลายข้อ'" class="mt-2">
+                                        <label for="" class="px-6">ตัวเลือก</label>
+                                        <FormAnswer :index="index" :question="question" @delete-answer="deleteAnswer" @add-answer="addAnswer"/>
+                                    </div>
+                                    <div v-if="question.answer_type === 'image'" class="mt-2 text-center">
+                                        <img :src="question.previewImage" alt="" class="mx-auto" />
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <button type="button" @click="deleteQuestion(index)" v-if="props.form.questions.length > 1"><Icon name="i-mdi-close" /></button>
+                                </div>
+                            </div>
+                        </transition-group>
+                    </draggable>
+                    <div class="flex justify-end mb-4">
+                        <div class="border border-gray-400 rounded-lg bg-white flex px-2">
+                            <UTooltip text="เพิ่มคำถามทั่วไป">
+                                <button @click="addQuestion" type="button" class="text-gray-600 flex items-center space-x-2 px-1">
+                                    <Icon name="i-mdi-plus-circle-outline" size="35" />
+                                </button>
+                            </UTooltip>
+                            <UTooltip text="เพิ่มข้อความ">
+                                <button @click="addText" type="button" class="text-gray-600 flex items-center space-x-2 px-1">
+                                    <Icon name="i-ic-twotone-text-fields" size="35" />
+                                </button>
+                            </UTooltip>
+                            <UTooltip text="เพิ่มรูปภาพ">
+                                <button @click="addImage" type="button" class="text-gray-600 flex items-center space-x-2 px-1">
+                                    <Icon name="i-ic-round-image" size="35" />
+                                </button>
+                            </UTooltip>
+                        </div>
                     </div>
                 </div>
-            </transition-group>
-        </draggable>
-        <div class="flex justify-end mb-4">
-            <div class="border border-gray-400 rounded-lg bg-white flex px-2">
-                <UTooltip text="เพิ่มคำถามทั่วไป">
-                    <button @click="addQuestion" type="button" class="text-gray-600 flex items-center space-x-2 px-1">
-                        <Icon name="i-mdi-plus-circle-outline" size="35" />
-                    </button>
-                </UTooltip>
-                <UTooltip text="เพิ่มข้อความ">
-                    <button @click="addText" type="button" class="text-gray-600 flex items-center space-x-2 px-1">
-                        <Icon name="i-ic-twotone-text-fields" size="35" />
-                    </button>
-                </UTooltip>
-                <UTooltip text="เพิ่มรูปภาพ">
-                    <button @click="addImage" type="button" class="text-gray-600 flex items-center space-x-2 px-1">
-                        <Icon name="i-ic-round-image" size="35" />
-                    </button>
-                </UTooltip>
-            </div>
-        </div>
+            </template>
 
-        <FormSetting :form="form" />
+            <template #settings="{ item }">
+                <div class="px-6 py-4 bg-white rounded-lg mb-4">
+                    <div class="font-bold text-xl mb-2">{{ item.label }}</div>
+                    <div class="flex md:space-x-2 flex-wrap">
+                        <div class="min-w-max md:w-56">
+                            <UFormGroup label="หน่วยงาน" name="title" size="xl" class="mb-2">
+                                <USelect size="md" :options="departments" placeholder="เลือกหน่วยงาน" option-attribute="name" />
+                            </UFormGroup>
+                        </div>
+                        <div class="min-w-max md:w-56">
+                            <UFormGroup label="ตำแหน่ง" name="title" size="xl" class="mb-2">
+                                <USelect size="md" :options="types" placeholder="เลือกตำแหน่ง"  option-attribute="name" />
+                            </UFormGroup>
+                        </div>
+                        
+                    </div>
+                </div>
+
+            </template>
+        </UTabs>
 
         <div class="text-right mt-4">
             <button class="rounded-lg px-6 py-1.5 bg-[#FFA133]" type="submit">สร้าง</button>
@@ -118,6 +146,14 @@
     }, {
         name: 'หลายตัวเลือก',
         value: 'เลือกได้หลายข้อ'
+    }]
+
+    const tabs = [{
+        slot: 'form',
+        label: 'แบบฟอร์มสอบถาม',
+    }, {
+        slot: 'settings',
+        label: 'การเข้าถึง',
     }]
 
     const dateNow = moment().format('YYYY-MM-DDT00:00:00')
@@ -153,15 +189,15 @@
 
     const addQuestion = () => {
         props.form.questions.push({
-            question: '',
-            type: 'radio',
+            quiz_desc: '',
+            answer_type: 'ตัวเลือกได้ข้อเดียว',
             placeholder: 'คำถาม',
             description: '',
             image: '',
             previewImage: previewImage.value,
             position: (props.form.questions.length + 1),
             answers: [{
-                title: 'ตัวเลือกที่ 1',
+                answer: 'ตัวเลือกที่ 1',
                 image: '',
                 position: 1,
             }]
@@ -189,8 +225,8 @@
     }
     const confirmImage = () => {
         props.form.questions.push({
-            question: '',
-            type: 'image',
+            quiz_desc: '',
+            answer_type: 'image',
             description: '',
             image: fileImage.value,
             previewImage: previewImage.value,
@@ -206,8 +242,8 @@
    
     const addText = () => {
         props.form.questions.push({
-            question: '',
-            type: 'text',
+            quiz_desc: '',
+            answer_type: 'ข้อความ',
             placeholder: 'หัวข้อ',
             description: '',
             previewImage: previewImage.value,
@@ -225,7 +261,7 @@
     const addAnswer = (indexQuestion) => {
         const question = props.form.questions[indexQuestion];
         question.answers.push({
-            title: `ตัวเลือกที่ ${question.answers.length + 1}`,
+            answer: `ตัวเลือกที่ ${question.answers.length + 1}`,
             position: (question.answers.length + 1),
         })
     }
