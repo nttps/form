@@ -124,13 +124,13 @@ onMounted(() => {
 
 const fetchData = async () => {
   lists.value = await useApi('/api/servey/ServeyInfo/ListData', 'POST', {
-    "SearchText":"",
-    "Status":"",
-    "User":"tammon.y",
-    "start_date":"2023-10-20",
-    "end_date":"2023-10-25",
-    "Type": selectedType.value,
-    "IsShowActiveOnly":false
+    SearchText:"",
+    Status:"",
+    User:"tammon.y",
+    start_date:"2023-10-20",
+    end_date:"2023-10-25",
+    Type: selectedType.value,
+    IsShowActiveOnly:false
   });
 }
 

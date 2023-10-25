@@ -28,10 +28,12 @@ onMounted(() => {
 
 const fetchData = async () => {
     forms.value = await useApi('/api/servey/ServeyInfo/ListData', 'POST', {
-        "SearchText":"",
-        "Status":"",
-        "Type":"",
-        "IsShowActiveOnly":true//แสดงรายการที่วันที่ยัง active
+        SearchText:"",
+        Status:"",
+        Type:"",
+        start_date:"2023-10-20",
+        end_date:"2023-10-25",
+        IsShowActiveOnly:true//แสดงรายการที่วันที่ยัง active
     });
 }
 const rows = computed(() => {
