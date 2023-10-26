@@ -6,10 +6,10 @@
           <div class="bg-white rounded-t-md px-4 py-8 rounded-2xl">
               <div class="items-center w-full md:flex">
                   <div class="md:w-3/12 mb-4">
-                    <UInput placeholder="ค้นหาหัวข้อ" size="lg" />
+                    <UInput v-model="search" placeholder="ค้นหาหัวข้อ" size="lg" />
                   </div>
                   <div class="md:w-2/12 md:ml-4 mb-4">
-                    <USelect size="lg" :options="types" v-model="selectedType" placeholder="ประเภทคำถาม" option-attribute="name" @update:model-value="fetchData" />
+                    <USelect size="lg" :options="types" v-model="selectedType" placeholder="ประเภทคำถาม" option-attribute="name" />
                   </div>
                   <div class="md:w-2/12 md:ml-4 mb-4">
                     <UInput placeholder="วันที่สร้าง" size="lg" />
@@ -18,7 +18,14 @@
               </div>
               <div class="flex border relative not-prose rounded-2xl border-[#FFA800] mb-2 div">
                   <div class="w-full ">
-                      <UTable v-model="selected" :columns="columns" :rows="rows">
+                      <UTable 
+                        v-model="selected" 
+                        :columns="columns" 
+                        :rows="rows" 
+                        :loading="pending" 
+                        :loading-state="{ label: 'กำลังโหลด ...' }" 
+                        :empty-state="{ label: 'ไม่พบรายการ' }"
+                      >
                           <template #sv_type_name-data="{ row }">
                               <div class="text-center">{{ row.sv_type_name }}</div>
                           </template>
@@ -41,12 +48,25 @@
                       </UTable>
                   </div>
               </div>
-              <div class="flex justify-center px-3 pt-3.5">
-                  <UPagination 
-                    v-model="page" 
-                    :page-count="pageCount" 
-                    :total="lists.length" 
-                  />
+              <div class="flex flex-wrap justify-between items-center px-3 pt-3.5">
+                <div>
+                  <span class="text-sm leading-5">
+                    กำลังแสดง
+                    <span class="font-medium">{{ pageFrom }}</span>
+                    ถึง
+                    <span class="font-medium">{{ pageTo }}</span>
+                    จาก
+                    <span class="font-medium">{{ pageTotal }}</span>
+                    รายการ
+                  </span>
+                </div>
+
+
+                <UPagination 
+                  v-model="page" 
+                  :page-count="pageCount" 
+                  :total="lists.length" 
+                />
               </div>
           </div>
       </div>
@@ -115,32 +135,41 @@ const columns = [{
   class: 'text-center'
 },]
 
-const lists = ref([])
+const search = ref('')
 const selectedType = ref("")
 const isDeleteAlert = ref(false)
 const deleteId = ref(null)
 
+// Pagination
+const page = ref(1)
+const pageCount = ref(20)
+const pageTotal = computed(() => lists.value.length)
+const pageFrom = computed(() => (page.value - 1) * pageCount.value + 1)
+const pageTo = computed(() => Math.min(page.value * pageCount.value, pageTotal.value))
+
+
 onMounted(() => {
-  fetchData()
 })
 
-const fetchData = async () => {
-  lists.value = await useApi('/api/servey/ServeyInfo/ListData', 'POST', {
-    SearchText:"",
+// Data
+const { data: lists, pending, refresh } = await useAsyncData(
+  'lists',
+  async () => await useApi('/api/servey/ServeyInfo/ListData', 'POST', {
+    SearchText: search.value,
     Status:"",
-    User:"tammon.y",
+    User:"",
     start_date: null,
     end_date: null,
     Type: selectedType.value,
     IsShowActiveOnly:false
-  });
-}
+  }), {
+    watch: [page, search, selectedType]
+  }
+)
 
-const page = ref(1)
-const pageCount = 20
 
 const rows = computed(() => {
-  return lists.value.slice((page.value - 1) * pageCount, (page.value) * pageCount)
+  return lists.value.slice((page.value - 1) * pageCount.value, (page.value) * pageCount.value)
 })
 
 const selected = ref([])
@@ -177,7 +206,7 @@ const deleteItem = async () => {
   }
 
   isDeleteAlert.value = false
-  fetchData()
+  refresh()
 }
 </script>
 

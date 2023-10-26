@@ -8,7 +8,7 @@
             </h3>
 
             <FormRegister v-if="form?.survey_type && form.survey_type == 'ฟอร์มสมัคร'" :form="form" @submit="submit"/>
-            <FormVote v-if="form?.survey_type && form.survey_type == 'ระบบโหวต'" :vote="form" @submit="submit"/>
+            <FormVote v-if="form?.survey_type && form.survey_type == 'ระบบโหวต'" :vote="form" @submit="submit" :loadingSubmit="loadingSubmit"/>
             <FormQuestion v-if="form?.survey_type && form.survey_type == 'แบบสอบถาม'" :form="form" @submit="submit"/>
         </div>
     </div>
@@ -34,33 +34,27 @@
         }
     }
 
+    const loadingSubmit = ref(false)
+
+
     const submit = async () => {
-        const response = await surveySubmit(form.value);
-        if(response.outputAction.result === 'ok') {
-            toast.add({
-                id: 'edit_form',
-                color: 'green',
-                title: 'แก้ไขข้อมูลเรียบร้อยแล้ว',
-                icon: 'i-heroicons-check-badge',
-                timeout: 1000,
-            })
+        loadingSubmit.value = true
 
-            const quizId = response.quizSetList[0].quiz.quiz_id
-
-            if(response.surveyInfo.survey_type = "ระบบโหวต") {
-                for (let index = 0; index < form.value.choices.length; index++) {
-                    const answer = form.value.choices[index];
-                    answer.quiz_id = quizId
-                    answer.modified_by = ''
-                    answer.answer_sort = (index + 1)
-
-                    const res = await answerSubmit(answer);
-                    console.log(res);
-                }
+        if(form.value.survey_type = "ระบบโหวต") {
+            const { status } = await submitVote(form)
+            if(status) {
+                toast.add({
+                    id: 'edit_form',
+                    color: 'green',
+                    title: 'แก้ไขข้อมูลเรียบร้อยแล้ว',
+                    icon: 'i-heroicons-check-badge',
+                    timeout: 1000,
+                })
             }
-           
-            fetchData()
         }
+        fetchData()
+
+        loadingSubmit.value = false
     }
 
 </script>
