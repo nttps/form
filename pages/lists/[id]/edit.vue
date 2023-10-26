@@ -39,9 +39,10 @@
 
     const submit = async () => {
         loadingSubmit.value = true
+        const survey = await surveySubmit(form.value);
 
         if(form.value.survey_type = "ระบบโหวต") {
-            const { status } = await submitVote(form)
+            const { status } = await submitVote(form, survey)
             if(status) {
                 toast.add({
                     id: 'edit_form',
