@@ -96,10 +96,14 @@
     }
 
     const title = computed(() => response.surveyInfo.survey_name )
+    const description = computed(() => response.surveyInfo.description.replace(/<\/?[^>]+(>|$)/g, "") )
+    const image = computed(() => response.surveyInfo.photo_cover ? response.surveyInfo.photo_cover_url : `/images/no-cover.jpg` )
+
     useHead({
         title: title,
         meta: [
-            { name: 'description', content: form?.value?.description.replace(/<\/?[^>]+(>|$)/g, "") },
+            { name: 'description', content: description },
+            { property: 'og:image', content: image },
         ]
     })
 
@@ -107,16 +111,6 @@
         key: route => route.fullPath,
     })
 
-    useSeoMeta({
-        description: () => form?.value?.description.replace(/<\/?[^>]+(>|$)/g, ""),
-        ogDescription: () => form?.value?.description.replace(/<\/?[^>]+(>|$)/g, ""),
-        ogImage: () => form?.value?.photo_cover ? form?.value?.photo_cover_url : `/images/no-cover.jpg`,
-        ogImageUrl: () => form?.value?.photo_cover ? form?.value?.photo_cover_url : `/images/no-cover.jpg`,
-        twitterCard: () => 'summary_large_image',
-        twitterTitle: () => title.value,
-        twitterDescription: () => form?.value?.description.replace(/<\/?[^>]+(>|$)/g, ""),
-        twitterImage: () => form?.value?.photo_cover ? form?.value?.photo_cover_url : `/images/no-cover.jpg`
-    })
 
     const submit = () => {
         navigateTo('/forms/1/preview')
