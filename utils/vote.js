@@ -20,8 +20,6 @@ export const submitVote = async (vote) => {
             }
         }
         status = true;
-
-        
     }
 
     return {
