@@ -50,16 +50,7 @@ const status = computed({
     props.form.status = value ? 'เปิด' : 'ปิด' ;
   }
 })
-const departments = [{
-    name: 'ทั้งหมด',
-    value: '',
-}, {
-    name: 'กก',
-    value: 'กก',
-}, {
-    name: 'กจ',
-    value: 'กจ'
-}]
+
 
 const types = []
 

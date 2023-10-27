@@ -1,7 +1,7 @@
 <template>
     <draggable 
         class="list-group w-full mb-4" 
-        :group="props.question.position"
+        :group="`quiz-${props.question.quiz.quiz_sort}`"
         item-key="answer_sort" 
         v-model="props.question.answers" 
         v-bind="dragOptions" 
