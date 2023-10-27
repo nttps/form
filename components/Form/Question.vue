@@ -193,13 +193,15 @@
             answer_type: 'ตัวเลือกได้ข้อเดียว',
             placeholder: 'คำถาม',
             description: '',
-            image: '',
-            previewImage: previewImage.value,
-            position: (props.form.questions.length + 1),
+            image_path: null,
+            quiz_img_url: '',
+            quiz_sort: (props.form.questions.length + 1),
             answers: [{
+                answer_id: "",
                 answer: 'ตัวเลือกที่ 1',
-                image: '',
-                position: 1,
+                image_path: '',
+                answer_img_url: null,
+                answer_sort: 1,
             }]
         })
     }
