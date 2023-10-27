@@ -50,6 +50,8 @@ const fetchData = async () => {
         Status:"เปิด",
         Type:"",
         User: "",
+        start_date: null,
+        end_date: null,
         IsAdmin: false,
         IsShowActiveOnly:true//แสดงรายการที่วันที่ยัง active
     });

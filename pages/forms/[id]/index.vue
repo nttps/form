@@ -117,12 +117,12 @@
     useSeoMeta({
         description: () => form?.value?.description.replace(/<\/?[^>]+(>|$)/g, ""),
         ogDescription: () => form?.value?.description.replace(/<\/?[^>]+(>|$)/g, ""),
-        ogImage: () => 'https://example.com/image.png',
-        ogImageUrl: () => 'https://example.com/image.png',
+        ogImage: () => form?.value?.photo_cover ? form?.value?.photo_cover_url : `/images/no-cover.jpg`,
+        ogImageUrl: () => form?.value?.photo_cover ? form?.value?.photo_cover_url : `/images/no-cover.jpg`,
         twitterCard: () => 'summary_large_image',
         twitterTitle: () => title.value,
         twitterDescription: () => form?.value?.description.replace(/<\/?[^>]+(>|$)/g, ""),
-        twitterImage: () => 'https://example.com/image.png'
+        twitterImage: () => form?.value?.photo_cover ? form?.value?.photo_cover_url : `/images/no-cover.jpg`
     })
 
     const submit = () => {
