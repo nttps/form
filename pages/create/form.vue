@@ -20,13 +20,17 @@
         title: `DDPM Questionnaire - สร้างแบบสอบถาม`,
     })
 
+    const toast = useToast()
+
+
     const dateNow = moment().format('YYYY-MM-DDT00:00:00')
     const form = ref({
         survey_id: "",
         ref_id:"",
         survey_name: "",
+        answer_type: "",
         description: "",
-        survey_type:"ระบบโหวต",
+        survey_type:"แบบสอบถาม",
         survey_cate: "",
         department: "", 
         survey_date_from:dateNow,
@@ -35,6 +39,7 @@
         status: "ปิด",
         remark:"",
         created_by: "tammon.y",
+        modified_by: "",
         questions: [
             {
                 quiz_desc: '',
@@ -52,12 +57,21 @@
     })
 
     const submit = async () => {
-        const response = await surveySubmit(form.value);
-        if(response.outputAction.result === 'ok') {
+        const survey = await surveySubmit(form.value);
 
-            form.value.questions.forEach()
-            quizSubmit()
+        const { status } = await submitQuestion(form, survey)
+        if(status) {
+            toast.add({
+                id: 'edit_form',
+                color: 'green',
+                title: 'แก้ไขข้อมูลเรียบร้อยแล้ว',
+                icon: 'i-heroicons-check-badge',
+                timeout: 1000,
+            })
+
+            await navigateTo(`/lists/${survey.surveyInfo.survey_id}/edit`)
         }
+       
     }
 </script>
 
