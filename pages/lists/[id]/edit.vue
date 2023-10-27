@@ -41,16 +41,23 @@
     const submit = async () => {
         const survey = await surveySubmit(form.value);
 
-        let res;
+        let status;
+
+        if(survey.surveyInfo.survey_type == "ฟอร์มสมัคร") {
+            status = (survey.outputAction.result === 'ok')
+        }
 
         if(survey.surveyInfo.survey_type == "ระบบโหวต") {
-            res = await submitVote(vote, survey)
+            const res = await submitVote(vote, survey)
+
+            status = res.status
         }
         if(survey.surveyInfo.survey_type == "แบบสอบถาม") {
-            res = await submitQuestion(form, survey)
+            const res = await submitQuestion(form, survey)
+            status = res.status
         }
 
-        if (res.status) {
+        if (status) {
             toast.add({
                 id: 'edit_form',
                 color: 'green',
