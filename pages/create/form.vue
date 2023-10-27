@@ -8,7 +8,7 @@
                 <Icon name="i-mdi-pencil" size="25" color="black" />
             </h3>
 
-            <FormQuestion v-if="form" :form="form" @submit="submit"/>
+            <FormQuestion v-if="form" :form="form" @submit="confirm = true"/>
             
         </div>
 
@@ -70,12 +70,10 @@
 
     const submit = async () => {
 
-        //confirm.value = false
+        confirm.value = false
         const survey = await surveySubmit(form.value);
         const { status } = await submitQuestion(form, survey)
         if(status) {
-            
-
             toast.add({
                 id: 'create_form',
                 color: 'green',

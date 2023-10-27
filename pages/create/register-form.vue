@@ -10,13 +10,14 @@
 
         
 
-            <FormRegister v-if="form" :form="form" @submit="submit"/>
+            <FormRegister v-if="form" :form="form" @submit="confirm = true"/>
         </div>
 
-        <ModalSuccess v-model="success" title="สร้างแบบฟอร์มสมัครเรียบร้อยแล้ว" close>
-            <div class="flex justify-between">
-                <button type="button" class="px-4 py-2 bg-green-600 text-base rounded-[5px] text-white" @click="navigateTo(`/lists/${form.survey_id}/edit`)">เข้าแบบฟอร์มแบบสมัคร</button>
-                <button type="button" class="px-4 py-2 bg-gray-500 text-base rounded-[5px] text-white" @click="navigateTo(`/lists`)">กลับสู่หน้าหลัก</button>
+        <ModalSuccess v-model="confirm" title="แจ้งเตือน" close>
+            <div class="text-2xl text-center font-bold pb-4">ยืนยันการสร้างแบบฟอร์ม</div>
+            <div class="flex justify-end space-x-3">
+                <button type="button" class="px-4 py-2 bg-green-600 text-base rounded-[5px] text-white" @click="submit">ยืนยัน</button>
+                <button type="button" class="px-4 py-2 bg-gray-500 text-base rounded-[5px] text-white" @click="confirm = false">ทำรายการต่อ</button>
             </div>
         </ModalSuccess>
     </div>
@@ -30,6 +31,9 @@
     useHead({
         title: `DDPM Questionnaire - สร้างฟอร์มสมัคร`,
     })
+
+    const toast = useToast()
+
     const dateNow = moment().format('YYYY-MM-DDT00:00:00')
 
     
@@ -49,14 +53,20 @@
         created_by: "tammon.y",
         modified_by: ""
     })
+    const confirm = ref(false)
 
-    const success = ref(false)
     const submit = async () => {
-        const response = await surveySubmit(form.value);
-        if(response.outputAction.result === 'ok') {
-            success.value = true
+        const survey = await surveySubmit(form.value);
+        if(survey.outputAction.result === 'ok') {
+            toast.add({
+                id: 'create_form',
+                color: 'green',
+                title: 'สร้างแบบฟอร์มข้อมูลเรียบร้อยแล้ว',
+                icon: 'i-heroicons-check-badge',
+                timeout: 2000,
+            })
 
-            form.value = response.surveyInfo
+            navigateTo(`/lists/${survey.surveyInfo.survey_id}/edit`)
         }
     }
 
