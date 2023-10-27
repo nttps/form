@@ -42,10 +42,12 @@
         modified_by: "",
         questions: [
             {
-                quiz_desc: '',
-                answer_type: 'ตัวเลือกได้ข้อเดียว',
-                quiz_sort: 0,
-                placeholder: 'คำถาม',
+                quiz: {
+                    quiz_desc: '',
+                    answer_type: 'ตัวเลือกได้ข้อเดียว',
+                    quiz_sort: 0,
+                    placeholder: 'คำถาม',
+                },
                 answers: [{
                     answer: 'ตัวเลือกที่ 1',
                     quiz_img: '',

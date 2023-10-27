@@ -20,7 +20,7 @@
                             <Icon name="i-uil-draggabledots" class="group-hover:!inline-block !hidden" size="25"/>
                         </div>
                         <div class="w-[30px]">
-                            <Icon :name="`${props.question.answer_type == 'ตัวเลือกได้ข้อเดียว' ? `i-ic-round-radio-button-unchecked` : `i-mdi-checkbox-blank-outline`}`" size="30"/>
+                            <Icon :name="`${props.question.quiz.answer_type == 'ตัวเลือกได้ข้อเดียว' ? `i-ic-round-radio-button-unchecked` : `i-mdi-checkbox-blank-outline`}`" size="30"/>
                         </div>
                     </div>
                     <div class="flex-1">

@@ -40,32 +40,32 @@
                         >
                             <div
                                 class="list-group-item rounded-md mb-2 relative"
-                                v-for="(question, index) in props.form.questions" :key="question.quiz_sort"
+                                v-for="(question, index) in props.form.questions" :key="question.quiz.quiz_sort"
                             >
                                 <div class="list-group-item-drag text-center bg-[#FFA133] rounded-t-lg cursor-move">
                                     <Icon name="i-uil-draggabledots" class="rotate-90" size="25"/>
                                 </div>
                                 <div class="p-4 bg-white">
                                     <div class="flex flex-wrap space-x-4 mb-2">
-                                        <div :class="`${question.answer_type === 'ตัวเลือกได้ข้อเดียว' || question.answer_type === 'เลือกได้หลายข้อ' ? `basis-1/2-gap-4` : `w-full` }`">
-                                            <UInput v-model="question.quiz_desc" :placeholder="question.placeholder" size="md" required />
+                                        <div :class="`${question.quiz.answer_type === 'ตัวเลือกได้ข้อเดียว' || question.quiz.answer_type === 'เลือกได้หลายข้อ' ? `basis-1/2-gap-4` : `w-full` }`">
+                                            <UInput v-model="question.quiz.quiz_desc" :placeholder="question.quiz.placeholder" size="md" required />
                                         </div>
-                                        <div class="basis-1/2-gap-4" v-if="question.answer_type === 'ตัวเลือกได้ข้อเดียว' || question.answer_type === 'เลือกได้หลายข้อ'">
-                                            <USelect size="md" :options="types" v-model="question.answer_type" placeholder="ประเภทคำถาม" option-attribute="name" required/>
+                                        <div class="basis-1/2-gap-4" v-if="question.quiz.answer_type === 'ตัวเลือกได้ข้อเดียว' || question.quiz.answer_type === 'เลือกได้หลายข้อ'">
+                                            <USelect size="md" :options="types" v-model="question.quiz.answer_type" placeholder="ประเภทคำถาม" option-attribute="name" required/>
                                         </div>
                                     </div>
                                     <div>
                                         <UFormGroup label="รายละเอียด" name="description" size="xl" class="mb-2">
                                             <ClientOnly>
-                                                <Editor v-model="question.description" :height="question.answer_type == 'ข้อความ' ? `350px` : `300px`" />
+                                                <Editor v-model="question.quiz.description" :height="question.quiz.answer_type == 'ข้อความ' ? `350px` : `300px`" />
                                             </ClientOnly>
                                         </UFormGroup>
                                     </div>
-                                    <div v-if="question.answer_type === 'ตัวเลือกได้ข้อเดียว' || question.answer_type === 'เลือกได้หลายข้อ'" class="mt-2">
+                                    <div v-if="question.quiz.answer_type === 'ตัวเลือกได้ข้อเดียว' || question.quiz.answer_type === 'เลือกได้หลายข้อ'" class="mt-2">
                                         <label for="" class="px-6">ตัวเลือก</label>
                                         <FormAnswer :index="index" :question="question" @delete-answer="deleteAnswer" @add-answer="addAnswer"/>
                                     </div>
-                                    <div v-if="question.answer_type === 'image'" class="mt-2 text-center">
+                                    <div v-if="question.quiz.answer_type === 'image'" class="mt-2 text-center">
                                         <img :src="question.previewImage" alt="" class="mx-auto" />
                                     </div>
                                 </div>
