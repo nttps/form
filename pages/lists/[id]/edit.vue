@@ -39,8 +39,25 @@
     }
 
     const submit = async () => {
-        const response = await surveySubmit(form.value);
-        if(response.outputAction.result === 'ok') {
+        const survey = await surveySubmit(form.value);
+
+        let status;
+
+        if(survey.surveyInfo.survey_type == "ฟอร์มสมัคร") {
+            status = (survey.outputAction.result === 'ok')
+        }
+
+        if(survey.surveyInfo.survey_type == "ระบบโหวต") {
+            const res = await submitVote(vote, survey)
+
+            status = res.status
+        }
+        if(survey.surveyInfo.survey_type == "แบบสอบถาม") {
+            const res = await submitQuestion(form, survey)
+            status = res.status
+        }
+
+        if (status) {
             toast.add({
                 id: 'edit_form',
                 color: 'green',
@@ -48,22 +65,8 @@
                 icon: 'i-heroicons-check-badge',
                 timeout: 1000,
             })
-
-            const quizId = response.quizSetList[0].quiz.quiz_id
-
-            if(response.surveyInfo.survey_type = "ระบบโหวต") {
-                for (let index = 0; index < form.value.choices.length; index++) {
-                    const answer = form.value.choices[index];
-                    answer.quiz_id = quizId
-                    answer.modified_by = ''
-                    answer.answer_sort = (index + 1)
-
-                    const res = await answerSubmit(answer);
-                    console.log(res);
-                }
-            }
-            fetchData()
         }
+        fetchData()
     }
 
 </script>
