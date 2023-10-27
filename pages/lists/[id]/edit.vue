@@ -39,14 +39,14 @@
     }
 
     const submit = async () => {
-        const response = await surveySubmit(form.value);
+        const survey = await surveySubmit(form.value);
 
         let res;
 
-        if(response.surveyInfo.survey_type == "ระบบโหวต") {
+        if(survey.surveyInfo.survey_type == "ระบบโหวต") {
             res = await submitVote(vote, survey)
         }
-        if(response.surveyInfo.survey_type == "แบบสอบถาม") {
+        if(survey.surveyInfo.survey_type == "แบบสอบถาม") {
             res = await submitQuestion(form, survey)
         }
 
