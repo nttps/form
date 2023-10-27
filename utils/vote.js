@@ -1,4 +1,4 @@
-export const submitVote = async (vote) => {
+export const submitVote = async (vote, survey) => {
     let status = false
     if (survey.outputAction.result === "ok") {
         const quizId = survey.quizSetList[0].quiz.quiz_id;
