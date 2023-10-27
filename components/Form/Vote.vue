@@ -50,14 +50,25 @@
                                                     <button type="button" class=" cursor-move"><Icon name="i-uil-draggabledots" /></button>
                                                 </div>
                                                 <div class="flex-1">
-                                                    <UInput v-model="choice.answer" size="md" />
+                                                    <UInput :id="`answer${index}`" name="answer" v-model="choice.answer" size="md" />
                                                 </div>
                                                 <div class="min-w-max px-1">
-                                                    <button type="button"><Icon name="i-mdi-file-image-box" size="25" /></button>
+                                                    <label :for="`image_${index}`" class="cursor-pointer">
+                                                        <Icon name="i-mdi-file-image-box" size="25" />
+                                                        <UInput type="file" :name="`image_${index}`" accept="image/x-png,image/gif,image/jpeg" @change="pickImage($event, index)" :id="`image_${index}`" class="hidden" />
+                                                    </label>
+                                                   
+                                                    <!-- <button type="button" @click="addImageChoice(index)"><Icon name="i-mdi-file-image-box" size="25" /></button> -->
                                                 </div>
                                                 <div class="min-w-max px-1" v-if="vote.choices.length > 1">
                                                     <button type="button" @click="deleteChoice(index)"><Icon name="i-mdi-close" /></button>
                                                 </div>
+                                            </div>
+                                            <div v-if="choice.answer_img || choice.image_path" class="ml-7 mt-4 relative max-w-max">
+                                                <div class="absolute top-1 right-1">
+                                                    <UButton type="button" icon="i-heroicons-x-mark" variant="soft" color="red" class="ml-2" @click="choice.answer_img = null; choice.image_path = null" />
+                                                </div>
+                                                <img :src="choice.answer_img_url" class="h-[200px]">
                                             </div>
                                         </div>
                                     </transition-group>
@@ -96,16 +107,17 @@
         </UTabs>
 
         <div class="text-right mt-4">
-            <button class="rounded-lg px-6 py-1.5 bg-[#FFA133]" type="submit">{{ props.vote.survey_id ? `แก้ไข` : `สร้าง` }}</button>
-            <NuxtLink :to="`${props.vote.survey_id ? `/lists` : `/`}`" class="ml-4 rounded-lg px-6 py-1.5 border border-gray-400">ยกเลิก</NuxtLink>
+            <UButton type="submit" :disabled="props.loadingSubmit" :label="props.vote.survey_id ? `แก้ไข` : `สร้าง`" size="xl" />
+            <UButton type="button" color="gray" variant="outline" class="ml-4" label="ยกเลิก" size="xl" @click="navigateTo(`${props.vote.survey_id ? `/lists` : `/`}`)" />
         </div>
     </UForm>
+
 </template>
 
 <script setup>
     import { object, string, date } from 'yup'
 
-    const props = defineProps(['vote'])
+    const props = defineProps(['vote', 'loadingSubmit'])
 
     const emit = defineEmits(['submit'])
 
@@ -156,6 +168,21 @@
     }
     const deleteChoice = (index) => {
         props.vote.choices.splice(index, 1)
+    }
+
+    const pickImage = (e, index) => {
+        let file = e.target.files
+
+        const choice = props.vote.choices[index]
+
+        choice.image_path = file[0]
+        if (file && file[0]) {
+          let reader = new FileReader
+          reader.onload = e => {
+            choice.answer_img_url = e.target.result
+          }
+          reader.readAsDataURL(file[0])
+        }
     }
 </script>
 

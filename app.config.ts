@@ -65,12 +65,7 @@ export default defineAppConfig({
             wrapper: "relative flex items-center",
             label: "text-gray-700 dark:text-gray-200 text-base",
         },
-        loadingState: {
-            label: "กำลังโหลด...",
-        },
-        emptyState: {
-            label: "ไม่มีข้อมูล",
-        },
+
         skeleton: {
             background: "bg-slate-200 dark:bg-slate-600",
         },
@@ -81,8 +76,13 @@ export default defineAppConfig({
                 },
                 tab: {
                     active: "text-white bg-[#FFA800]",
-                    size: "text-base"
+                    size: "text-base",
                 },
+            },
+        },
+        button: {
+            padding: {
+                xl: "px-6 py-1.5",
             },
         },
     },
