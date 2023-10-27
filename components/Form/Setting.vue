@@ -1,8 +1,12 @@
 <template>
     
     <div class="block font-medium text-gray-700 dark:text-gray-200">รูปภาพ <span class="text-red-500 text-sm">*ขนาดรูปภาพ 320*200 pixel</span></div>
-    <div>
-        <img :src="props.form.photo_cover ? props.form.photo_cover_url : `/images/no-cover.jpg`" class="w-full h-[200px] object-cover" alt="">
+    <div class="text-center">
+        <img :src="(props.form.photo_cover || props.form.cover_path) ? props.form.photo_cover_url : `/images/no-cover.jpg`" class="w-full h-[200px] object-contain" alt="">
+        <label class="inline-block mt-2 rounded-full mr-4 py-2 px-4 bg-amber-50 text-amber-500 cursor-pointer text-sm" for="coverImage">
+            {{ (props.form.photo_cover || props.form.cover_path) ? `เปลี่ยน` : `เลือก` }}รูปภาพหน้าปก
+            <input type="file" id="coverImage" class="hidden" @change="pickImage"/>
+        </label>
     </div>
     
     <div class="block font-medium text-gray-700 dark:text-gray-200">สถานะ</div>
@@ -58,6 +62,18 @@ const departments = [{
 }]
 
 const types = []
+
+const pickImage = (e) => {
+    let file = e.target.files
+    props.form.cover_path = file[0]
+    if (file && file[0]) {
+        let reader = new FileReader
+        reader.onload = e => {
+            props.form.photo_cover_url = e.target.result
+        }
+        reader.readAsDataURL(file[0])
+    }
+}
 
 </script>
 
