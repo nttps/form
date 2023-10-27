@@ -7,9 +7,9 @@
                 <Icon name="i-mdi-pencil" size="25" color="black" />
             </h3>
 
-            <FormRegister v-if="form?.survey_type && form.survey_type == 'ฟอร์มสมัคร'" :form="form" @submit="submit"/>
-            <FormVote v-if="form?.survey_type && form.survey_type == 'ระบบโหวต'" :vote="form" @submit="submit" :loadingSubmit="loadingSubmit"/>
-            <FormQuestion v-if="form?.survey_type && form.survey_type == 'แบบสอบถาม'" :form="form" @submit="submit"/>
+            <FormRegister v-if="form?.survey_type && form.survey_type === 'ฟอร์มสมัคร'" :form="form" @submit="submit"/>
+            <FormVote v-if="form?.survey_type && form.survey_type === 'ระบบโหวต'" :vote="form" @submit="submit" :loadingSubmit="loadingSubmit"/>
+            <FormQuestion v-if="form?.survey_type && form.survey_type === 'แบบสอบถาม'" :form="form" @submit="submit" :loadingSubmit="loadingSubmit"/>
         </div>
     </div>
 </template>
@@ -29,8 +29,12 @@
         form.value.choices = []
         form.value.questions = []
 
-        if(response.surveyInfo.survey_type = "ระบบโหวต") {
+        if(response.surveyInfo.survey_type == "ระบบโหวต") {
             form.value.choices = response.quizSetList[0].answers
+        }
+
+        if(response.surveyInfo.survey_type == "แบบสอบถาม") {
+            form.value.questions = response.quizSetList
         }
     }
 
