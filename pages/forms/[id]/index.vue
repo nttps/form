@@ -82,27 +82,20 @@
     const urlShare = url.href
     const form = ref(null)
     
+    const response = await useApi(`/api/servey/ServeyInfo/GetDocSet?survey_id=${route.params.id}`, 'GET');
+    form.value = response.surveyInfo
+    form.value.choices = []
+    form.value.questions = []
 
-    onMounted(() => {
-        fetchData()
-    })
-
-    const fetchData = async () => {
-        const response = await useApi(`/api/servey/ServeyInfo/GetDocSet?survey_id=${route.params.id}`, 'GET');
-        form.value = response.surveyInfo
-        form.value.choices = []
-        form.value.questions = []
-
-        if(response.surveyInfo.survey_type == "ระบบโหวต") {
-            form.value.choices = response.quizSetList[0].answers
-        }
-
-        if(response.surveyInfo.survey_type == "แบบสอบถาม") {
-            form.value.questions = response.quizSetList
-        }
+    if(response.surveyInfo.survey_type == "ระบบโหวต") {
+        form.value.choices = response.quizSetList[0].answers
     }
 
-    const title = computed(() => form?.value?.survey_name )
+    if(response.surveyInfo.survey_type == "แบบสอบถาม") {
+        form.value.questions = response.quizSetList
+    }
+
+    const title = computed(() => response.surveyInfo.survey_name )
     useHead({
         title: title,
         meta: [
