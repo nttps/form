@@ -11,7 +11,16 @@
             <FormQuestion v-if="form" :form="form" @submit="submit"/>
             
         </div>
+
+         <ModalSuccess v-model="confirm" title="แจ้งเตือน" close>
+            <div class="text-2xl text-center font-bold pb-4">ยืนยันการสร้างแบบฟอร์ม</div>
+            <div class="flex justify-end space-x-3">
+                <button type="button" class="px-4 py-2 bg-green-600 text-base rounded-[5px] text-white" @click="submit">ยืนยัน</button>
+                <button type="button" class="px-4 py-2 bg-gray-500 text-base rounded-[5px] text-white" @click="confirm = false">ทำรายการต่อ</button>
+            </div>
+        </ModalSuccess>
     </div>
+   
 </template>
 
 <script setup>
@@ -21,6 +30,7 @@
     })
 
     const toast = useToast()
+    const confirm = ref(false)
 
 
     const dateNow = moment().format('YYYY-MM-DDT00:00:00')
@@ -59,19 +69,22 @@
     })
 
     const submit = async () => {
-        const survey = await surveySubmit(form.value);
 
+        //confirm.value = false
+        const survey = await surveySubmit(form.value);
         const { status } = await submitQuestion(form, survey)
         if(status) {
+            
+
             toast.add({
-                id: 'edit_form',
+                id: 'create_form',
                 color: 'green',
-                title: 'แก้ไขข้อมูลเรียบร้อยแล้ว',
+                title: 'สร้างแบบฟอร์มข้อมูลเรียบร้อยแล้ว',
                 icon: 'i-heroicons-check-badge',
-                timeout: 1000,
+                timeout: 2000,
             })
 
-            await navigateTo(`/lists/${survey.surveyInfo.survey_id}/edit`)
+             navigateTo(`/lists/${survey.surveyInfo.survey_id}/edit`)
         }
        
     }

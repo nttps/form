@@ -18,6 +18,13 @@ export const surveySubmit = async (data) => {
             requestOptions
         );
         const result = await response.json();
+
+        if (data.cover_path) {
+            const coverUpload = await uploadSurveyCover(
+                result.surveyInfo.survey_id,
+                data.cover_path
+            );
+        }
         return result;
     } catch (error) {
         return error;
