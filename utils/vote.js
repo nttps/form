@@ -1,6 +1,5 @@
 export const submitVote = async (vote) => {
     let status = false
-
     if (survey.outputAction.result === "ok") {
         const quizId = survey.quizSetList[0].quiz.quiz_id;
 

@@ -11,7 +11,6 @@
             <FormVote v-if="vote" :vote="vote" @submit="submit" :loadingSubmit="loadingSubmit"/>
             
         </div>
-
         <ModalSuccess v-model="success" title="สร้างแบบฟอร์มโหวตเรียบร้อยแล้ว" close>
             <div class="flex justify-between">
                 <button type="button" class="px-4 py-2 bg-green-600 text-base rounded-[5px] text-white" @click="navigateTo(`/lists/${vote.survey_id}/edit`)">เข้าแบบฟอร์มแบบสมัคร</button>
