@@ -104,6 +104,7 @@
         meta: [
             { name: 'description', content: description },
             { property: 'og:image', content: image },
+            { property: 'og:description', content: description },
         ]
     })
 
