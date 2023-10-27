@@ -64,7 +64,9 @@
     const submit = async () => {
         loadingSubmit.value = true
 
-        const { survey, status } = await submitVote(vote)
+        const survey = await surveySubmit(form.value);
+
+        const { status } = await submitVote(vote, survey)
 
         if(status) {
             vote.value = survey.surveyInfo
