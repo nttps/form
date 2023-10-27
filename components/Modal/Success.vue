@@ -3,7 +3,7 @@
         <UCard :ui="{ divide: 'divide-y divide-gray-100 dark:divide-gray-800' }" >
             <template #header v-if="props.close">
                 <div class="flex justify-between items-center">
-                    <div class="text-xl font-bold text-green-600">{{ props.title }}</div>
+                    <div class="text-2xl font-bold text-red-600">{{ props.title }}</div>
                     <div v-if="props.close">
                         <UButton icon="i-heroicons-x-mark" size="sm" color="gray" square variant="link" @click="emit('update:model-value', false)" />
                     </div>

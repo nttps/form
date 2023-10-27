@@ -40,22 +40,27 @@
 
     const loadingSubmit = ref(false)
 
-
     const submit = async () => {
         loadingSubmit.value = true
         const survey = await surveySubmit(form.value);
 
-        if(form.value.survey_type = "ระบบโหวต") {
-            const { status } = await submitVote(form, survey)
-            if(status) {
-                toast.add({
-                    id: 'edit_form',
-                    color: 'green',
-                    title: 'แก้ไขข้อมูลเรียบร้อยแล้ว',
-                    icon: 'i-heroicons-check-badge',
-                    timeout: 1000,
-                })
-            }
+        let res;
+        if(form.value.survey_type == "ระบบโหวต") {
+            res = await submitVote(form, survey)
+        }
+
+        if(form.value.survey_type == "แบบสอบถาม") {
+            res = await submitQuestion(form, survey)
+        }
+
+        if(res.status) {
+            toast.add({
+                id: 'edit_form',
+                color: 'green',
+                title: 'แก้ไขข้อมูลเรียบร้อยแล้ว',
+                icon: 'i-heroicons-check-badge',
+                timeout: 1000,
+            })
         }
         fetchData()
 
