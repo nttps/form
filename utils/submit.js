@@ -65,3 +65,65 @@ export const answerSubmit = async (data) => {
         return error;
     }
 };
+export const uploadSurveyCover = async (id, file) => {
+    var formdata = new FormData();
+    formdata.append("file", file);
+
+    var requestOptions = {
+        method: "POST",
+        body: formdata,
+    };
+
+    try {
+        const response = await fetch(
+            `${config.public.apiUrl}/api/survey/Upload/UploadSurveyCover?survey_id=${id}`,
+            requestOptions
+        );
+        const result = await response.json();
+        return result;
+    } catch (error) {
+        return error;
+    }
+};
+
+export const uploadAnswerImage = async (id, file) => {
+    var formdata = new FormData();
+    formdata.append("file", file);
+
+    var requestOptions = {
+        method: "POST",
+        body: formdata,
+    };
+
+    try {
+        const response = await fetch(
+            `${config.public.apiUrl}/api/survey/Upload/UploadAnswerImage?answer_id=${id}`,
+            requestOptions
+        );
+        const result = await response.json();
+        return result;
+    } catch (error) {
+        return error;
+    }
+};
+
+export const uploadQuizImage = async (id, file) => {
+    var formdata = new FormData();
+    formdata.append("file", file);
+
+    var requestOptions = {
+        method: "POST",
+        body: formdata,
+    };
+
+    try {
+        const response = await fetch(
+            `${config.public.apiUrl}/api/survey/Upload/UploadQuizImage?quiz_id=${id}`,
+            requestOptions
+        );
+        const result = await response.json();
+        return result;
+    } catch (error) {
+        return error;
+    }
+};

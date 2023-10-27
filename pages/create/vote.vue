@@ -8,13 +8,12 @@
                 <Icon name="i-mdi-pencil" size="25" color="black" />
             </h3>
 
-            <FormVote v-if="vote" :vote="vote" @submit="submit"/>
+            <FormVote v-if="vote" :vote="vote" @submit="submit" :loadingSubmit="loadingSubmit"/>
             
         </div>
-
         <ModalSuccess v-model="success" title="สร้างแบบฟอร์มโหวตเรียบร้อยแล้ว" close>
             <div class="flex justify-between">
-                <button type="button" class="px-4 py-2 bg-green-600 text-base rounded-[5px] text-white" @click="navigateTo(`/lists/${form.survey_id}/edit`)">เข้าแบบฟอร์มแบบสมัคร</button>
+                <button type="button" class="px-4 py-2 bg-green-600 text-base rounded-[5px] text-white" @click="navigateTo(`/lists/${vote.survey_id}/edit`)">เข้าแบบฟอร์มแบบสมัคร</button>
                 <button type="button" class="px-4 py-2 bg-gray-500 text-base rounded-[5px] text-white" @click="navigateTo(`/lists`)">กลับสู่หน้าหลัก</button>
             </div>
         </ModalSuccess>
@@ -28,6 +27,7 @@
     })
 
     const dateNow = moment().format('YYYY-MM-DDT00:00:00')
+
 
     const vote = ref({
         survey_id: "",
@@ -50,6 +50,7 @@
             {
                 answer: 'ตัวเลือกที่ 1',
                 answer_id: '',
+                image: null,
                 answer_type: 'ตัวเลือกได้ข้อเดียว',
                 answer_sort: 1,
             },
@@ -57,26 +58,20 @@
     })
 
     const success = ref(false)
+    const loadingSubmit = ref(false)
     
     const submit = async () => {
-        const response = await surveySubmit(vote.value);
-        if(response.outputAction.result === 'ok') {
-            const quizId = response.quizSetList[0].quiz.quiz_id
+        loadingSubmit.value = true
 
-            for (let index = 0; index < vote.value.choices.length; index++) {
-                const answer = vote.value.choices[index];
-                answer.quiz_id = quizId
-                answer.modified_by = ''
-                answer.answer_sort = (index + 1)
+        const survey = await surveySubmit(form.value);
 
-                const res = await answerSubmit(answer);
-                console.log(res);
-            }
-            
-            
-                    
-            
+        const { status } = await submitVote(vote, survey)
+
+        if(status) {
+            vote.value = survey.surveyInfo
+            success.value = status
         }
+        loadingSubmit.value = false
     }
 </script>
 
