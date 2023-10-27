@@ -1,13 +1,5 @@
-export const submitVote = async (vote) => {
+export const submitVote = async (vote, survey) => {
     let status = false
-    const survey = await surveySubmit(vote.value);
-
-    if (vote.value.cover_path) {
-        const coverUpload = await uploadSurveyCover(
-            survey.surveyInfo.survey_id,
-            vote.value.cover_path
-        );
-    }
     if (survey.outputAction.result === "ok") {
         const quizId = survey.quizSetList[0].quiz.quiz_id;
 

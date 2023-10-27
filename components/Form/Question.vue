@@ -27,7 +27,7 @@
                     <draggable 
                         class="dragArea list-group w-full mb-4" 
                         group="questions"
-                        item-key="quiz_sort" 
+                        item-key="quiz.quiz_sort" 
                         v-model="props.form.questions" 
                         v-bind="dragOptions" 
                         @start="dragQuestion = true"
@@ -119,7 +119,7 @@
         </UTabs>
 
         <div class="text-right mt-4">
-            <button class="rounded-lg px-6 py-1.5 bg-[#FFA133]" type="submit">{{ props.form.survey_id ? `แก้ไข` : `สร้าง` }}</button>
+            <UButton type="submit" :disabled="props.loadingSubmit" :label="props.form.survey_id ? `แก้ไข` : `สร้าง`" size="xl" />
             <NuxtLink :to="`${props.form.survey_id ? `/lists` : `/`}`" class="ml-4 rounded-lg px-6 py-1.5 border border-gray-400">ยกเลิก</NuxtLink>
         </div>
     </UForm>
@@ -136,7 +136,7 @@
     import moment from 'moment';
     import { object, string, date } from 'yup'
 
-    const props = defineProps(['form'])
+    const props = defineProps(['form', 'loadingSubmit'])
 
     const emit = defineEmits(['submit'])
 
@@ -189,13 +189,15 @@
 
     const addQuestion = () => {
         props.form.questions.push({
-            quiz_desc: '',
-            answer_type: 'ตัวเลือกได้ข้อเดียว',
-            placeholder: 'คำถาม',
-            description: '',
-            image_path: null,
-            quiz_img_url: '',
-            quiz_sort: (props.form.questions.length + 1),
+            quiz: {
+                 quiz_desc: '',
+                answer_type: 'ตัวเลือกได้ข้อเดียว',
+                placeholder: 'คำถาม',
+                description: '',
+                image_path: null,
+                quiz_img_url: '',
+                quiz_sort: (props.form.questions.length + 1),
+            },
             answers: [{
                 answer_id: "",
                 answer: 'ตัวเลือกที่ 1',
@@ -264,7 +266,10 @@
         const question = props.form.questions[indexQuestion];
         question.answers.push({
             answer: `ตัวเลือกที่ ${question.answers.length + 1}`,
-            position: (question.answers.length + 1),
+            answer_id: "",
+            image_path: '',
+            answer_img_url: null,
+            answer_sort: (question.answers.length + 1),
         })
     }
     const deleteAnswer = (value) => {
@@ -272,6 +277,16 @@
         question.answers.splice(value.indexA, 1)
     }
 
+    const departments = [{
+        name: 'ทั้งหมด',
+        value: '',
+    }, {
+        name: 'กก',
+        value: 'กก',
+    }, {
+        name: 'กจ',
+        value: 'กจ'
+    }]
 </script>
 
 <style lang="scss" scoped>

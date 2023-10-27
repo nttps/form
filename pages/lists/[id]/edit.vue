@@ -8,7 +8,7 @@
             </h3>
 
             <FormRegister v-if="form?.survey_type && form.survey_type == 'ฟอร์มสมัคร'" :form="form" @submit="submit"/>
-            <FormVote v-if="form?.survey_type && form.survey_type == 'ระบบโหวต'" :vote="form" @submit="submit" :loadingSubmit="loadingSubmit"/>
+            <FormVote v-if="form?.survey_type && form.survey_type == 'ระบบโหวต'" :vote="form" @submit="submit"/>
             <FormQuestion v-if="form?.survey_type && form.survey_type == 'แบบสอบถาม'" :form="form" @submit="submit"/>
         </div>
     </div>
@@ -29,32 +29,37 @@
         form.value.choices = []
         form.value.questions = []
 
-        if(response.surveyInfo.survey_type = "ระบบโหวต") {
+        if(response.surveyInfo.survey_type == "ระบบโหวต") {
             form.value.choices = response.quizSetList[0].answers
+        }
+
+        if(response.surveyInfo.survey_type == "แบบสอบถาม") {
+            form.value.questions = response.quizSetList
         }
     }
 
-    const loadingSubmit = ref(false)
-
-
     const submit = async () => {
-        loadingSubmit.value = true
+        const response = await surveySubmit(form.value);
 
-        if(form.value.survey_type = "ระบบโหวต") {
-            const { status } = await submitVote(form)
-            if(status) {
-                toast.add({
-                    id: 'edit_form',
-                    color: 'green',
-                    title: 'แก้ไขข้อมูลเรียบร้อยแล้ว',
-                    icon: 'i-heroicons-check-badge',
-                    timeout: 1000,
-                })
-            }
+        let res;
+
+        if(response.surveyInfo.survey_type == "ระบบโหวต") {
+            res = await submitVote(vote, survey)
+        }
+        if(response.surveyInfo.survey_type == "แบบสอบถาม") {
+            res = await submitQuestion(form, survey)
+        }
+
+        if (res.status) {
+            toast.add({
+                id: 'edit_form',
+                color: 'green',
+                title: 'แก้ไขข้อมูลเรียบร้อยแล้ว',
+                icon: 'i-heroicons-check-badge',
+                timeout: 1000,
+            })
         }
         fetchData()
-
-        loadingSubmit.value = false
     }
 
 </script>
