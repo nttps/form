@@ -43,7 +43,6 @@ const forms = ref([])
 onMounted(() => {
     fetchData()
 })
-
 const fetchData = async () => {
     forms.value = await useApi('/api/servey/ServeyInfo/ListData', 'POST', {
         SearchText:"",
