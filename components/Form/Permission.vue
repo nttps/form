@@ -56,7 +56,7 @@
                 <div class="text-center">แจ้งเตือนการยืนยัน</div>
             </template>
 
-            <div class="font-bold text-xl">ต้องการลบสิทธิ์ {{ dataDeletePermissions.permission_type }} {{ dataDeletePermissions.permission_value }} ใช่หรือไม่</div>
+            <div class="font-bold text-xl">ต้องการยกเลิกสิทธิ์ {{ dataDeletePermissions.permission_type }} {{ dataDeletePermissions.permission_value }} ใช่หรือไม่</div>
 
             <template #footer>
                 <div class="flex justify-between">
@@ -112,9 +112,11 @@
 
     const deletePermssionAlert = ref(false)
     const dataDeletePermissions = ref({
-        "survey_id": route.params.id,//รหัสรายวิชา
-        "permission_type": null,//มีได้ 3 ค่าคือ หน่วยงาน , ระดับ , ตำแหน่ง 
-        "permission_value": null//ให้เลือกจาก dropdown โดยใช้ API จาก JobType,JobLevel,Department 
+        survey_id: route.params.id,
+        permission_type: null,
+        permission_value: null,
+        modified_by: "tammon.y",
+
     })
 
     const searchUsername = ref('')
@@ -232,9 +234,10 @@
         }
 
         dataDeletePermissions.value = {
-            "survey_id": route.params.id,
-            "permission_type": null,
-            "permission_value": null
+            survey_id: route.params.id,
+            permission_type: null,
+            permission_value: null,
+            modified_by: "tammon.y",
         }
     }
 
@@ -252,7 +255,7 @@
 
     const deleteUserPermission = async () => {
 
-        const res = await useApi(`/api/servey/ServeyInfo/DeletePermission`, 'POST', dataDeletePermissions.value);
+        const res = await useApi(`/api/servey/ServeyInfo/DeletePermission`, 'DELETE', dataDeletePermissions.value);
         deletePermssionAlert.value = false
         users.value = []
         searchUsername.value = null

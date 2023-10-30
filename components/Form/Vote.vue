@@ -90,7 +90,7 @@
                 <div class="px-6 py-4 bg-white rounded-lg mb-4">
                     <div class="font-bold text-xl mb-2">{{ item.label }}</div>
 
-                    <FormPermission :permissions="props.permissions.all" :user-permissions="props.permissions.user" />
+                    <FormPermission :permissions="props.permissions.all" :user-permissions="props.permissions.user"  @fetchData="emit('fetchData')" />
 
                 </div>
             </template>
@@ -109,7 +109,7 @@
 
     const props = defineProps(['vote', 'loadingSubmit', 'permissions'])
 
-    const emit = defineEmits(['submit'])
+    const emit = defineEmits(['submit', 'fetchData'])
 
     const schema = object({
         survey_name: string().required('กรอกหัวข้อการโหวต'),

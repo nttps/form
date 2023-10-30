@@ -7,9 +7,9 @@
                 <Icon name="i-mdi-pencil" size="25" color="black" />
             </h3>
 
-            <FormRegister v-if="form?.survey_type && form.survey_type == 'ฟอร์มสมัคร'" :form="form" :permissions="permissions" @submit="submit"/>
-            <FormVote v-if="form?.survey_type && form.survey_type == 'ระบบโหวต'" :vote="form" :permissions="permissions" @submit="submit"/>
-            <FormQuestion v-if="form?.survey_type && form.survey_type == 'แบบสอบถาม'" :form="form" :permissions="permissions" @submit="submit"/>
+            <FormRegister v-if="form?.survey_type && form.survey_type == 'ฟอร์มสมัคร'" :form="form" :permissions="permissions" @submit="submit" @fetchData="fetchData"/>
+            <FormVote v-if="form?.survey_type && form.survey_type == 'ระบบโหวต'" :vote="form" :permissions="permissions" @submit="submit" @fetchData="fetchData"/>
+            <FormQuestion v-if="form?.survey_type && form.survey_type == 'แบบสอบถาม'" :form="form" :permissions="permissions" @submit="submit" @fetchData="fetchData"/>
         </div>
     </div>
 </template>

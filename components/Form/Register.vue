@@ -33,7 +33,7 @@
                 <div class="px-6 py-4 bg-white rounded-lg mb-4">
                     <div class="font-bold text-xl mb-2">{{ item.label }}</div>
 
-                    <FormPermission :permissions="props.permissions.all" :user-permissions="props.permissions.user" />
+                    <FormPermission :permissions="props.permissions.all" :user-permissions="props.permissions.user" @fetchData="emit('fetchData')"/>
 
                 </div>
             </template>
@@ -52,7 +52,7 @@
 
     const props = defineProps(['form', 'permissions'])
 
-    const emit = defineEmits(['submit'])
+    const emit = defineEmits(['submit', 'fetchData'])
     const dateNow = moment().format('YYYY-MM-DDT00:00:00')
 
     const schema = object({
