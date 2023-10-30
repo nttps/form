@@ -7,9 +7,9 @@
                 <Icon name="i-mdi-pencil" size="25" color="black" />
             </h3>
 
-            <FormRegister v-if="form?.survey_type && form.survey_type == 'ฟอร์มสมัคร'" :form="form" @submit="submit"/>
-            <FormVote v-if="form?.survey_type && form.survey_type == 'ระบบโหวต'" :vote="form" @submit="submit"/>
-            <FormQuestion v-if="form?.survey_type && form.survey_type == 'แบบสอบถาม'" :form="form" @submit="submit"/>
+            <FormRegister v-if="form?.survey_type && form.survey_type == 'ฟอร์มสมัคร'" :form="form" :permissions="permissions" @submit="submit"/>
+            <FormVote v-if="form?.survey_type && form.survey_type == 'ระบบโหวต'" :vote="form" :permissions="permissions" @submit="submit"/>
+            <FormQuestion v-if="form?.survey_type && form.survey_type == 'แบบสอบถาม'" :form="form" :permissions="permissions" @submit="submit"/>
         </div>
     </div>
 </template>
@@ -19,6 +19,11 @@
     const route = useRoute()
     const toast = useToast()
     const form = ref(null)
+
+    const permissions = ref({
+        all: [],
+        user: []
+    })
     onMounted(() => {
         fetchData()
     })
@@ -28,6 +33,9 @@
         form.value = response.surveyInfo
         form.value.choices = []
         form.value.questions = []
+        permissions.value.all = response.permission
+        permissions.value.user = response.permissionUser
+
 
         if(response.surveyInfo.survey_type == "ระบบโหวต") {
             form.value.choices = response.quizSetList[0].answers

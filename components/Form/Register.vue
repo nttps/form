@@ -30,7 +30,12 @@
             </template>
 
             <template #settings="{ item }">
-                <FormPermission />
+                <div class="px-6 py-4 bg-white rounded-lg mb-4">
+                    <div class="font-bold text-xl mb-2">{{ item.label }}</div>
+
+                    <FormPermission :permissions="props.permissions.all" :user-permissions="props.permissions.user" />
+
+                </div>
             </template>
         </UTabs>
 
@@ -45,7 +50,7 @@
     import moment from 'moment';
     import { object, string, date } from 'yup'
 
-    const props = defineProps(['form'])
+    const props = defineProps(['form', 'permissions'])
 
     const emit = defineEmits(['submit'])
     const dateNow = moment().format('YYYY-MM-DDT00:00:00')
