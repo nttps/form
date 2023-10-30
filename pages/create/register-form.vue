@@ -15,7 +15,11 @@
 
         <ModalSuccess v-model="success" title="สร้างแบบฟอร์มสมัครเรียบร้อยแล้ว" close>
             <div class="flex justify-between">
-                <button type="button" class="px-4 py-2 bg-green-600 text-base rounded-[5px] text-white" @click="navigateTo(`/lists/${form.survey_id}/edit`)">เข้าแบบฟอร์มแบบสมัคร</button>
+                <button 
+                    type="button" 
+                    class="px-4 py-2 bg-green-600 text-base rounded-[5px] text-white" 
+                    @click="navigateTo(`/lists/${form.survey_id}/edit`)">เข้าแบบฟอร์มแบบสมัคร
+                </button>
                 <button type="button" class="px-4 py-2 bg-gray-500 text-base rounded-[5px] text-white" @click="navigateTo(`/lists`)">กลับสู่หน้าหลัก</button>
             </div>
         </ModalSuccess>
