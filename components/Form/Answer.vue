@@ -43,7 +43,7 @@
 
                 <div v-if="answer.answer_img || answer.image_path" class="ml-7 mt-4 relative max-w-max">
                     <div class="absolute top-1 right-1">
-                        <UButton type="button" icon="i-heroicons-x-mark" variant="soft" color="red" class="ml-2" @click="answer.answer_img = null; answer.image_path = null" />
+                        <UButton type="button" icon="i-heroicons-x-mark" variant="soft" color="red" class="ml-2" @click="alertDeleteImage(indexA)" />
                     </div>
                     <img :src="answer.answer_img_url" class="h-[200px]">
                 </div>
@@ -51,6 +51,15 @@
         </transition-group>
     </draggable>
     <button type="button" @click="emits('addAnswer', props.index )" class="ml-6 block"><Icon name="material-symbols:add-circle-outline" size="30" /> เพิ่มตัวเลือก</button>
+
+
+    <ModalSuccess v-model="alertImageDelete" title="แจ้งเตือน" close>
+        <div class="text-2xl text-center font-bold pb-4">ยืนยันการลบรูปภาพนี้</div>
+        <div class="flex justify-end space-x-3">
+            <button type="button" class="px-4 py-2 bg-green-600 text-base rounded-[5px] text-white" @click="submitDeleteImage">ยืนยัน</button>
+            <button type="button" class="px-4 py-2 bg-gray-500 text-base rounded-[5px] text-white" @click="alertImageDelete = false">ทำรายการต่อ</button>
+        </div>
+    </ModalSuccess>
 </template>
 
 
@@ -58,6 +67,7 @@
     const props = defineProps(['question', 'index'])
     const emits = defineEmits(['addAnswer', 'deleteAnswer'])
 
+    const alertImageDelete = ref(false)
     const dragOptions = computed(() => {
       return {
         animation: 1,
@@ -87,6 +97,30 @@
         }
     }
 
+    const imageIndexDel = ref(null)
+
+    const alertDeleteImage = (index) => {
+        alertImageDelete.value = true
+        imageIndexDel.value = index
+    }
+
+    const submitDeleteImage = async () => {
+        const answer = props.question.answers[imageIndexDel.value]
+        answer.answer_img = null; 
+        answer.image_path = null
+
+        const res = await useApi('/api/servey/Quiz/DeleteAnswerPhoto', 'DELETE', { 
+            AnswerID: answer.answer_id,
+            ActionBy:"tammon.y"
+        })
+
+        if(res.result == 'ok') {
+            alertImageDelete.value = false
+        }
+    }
+
+
+        
 </script>
 
 <style>

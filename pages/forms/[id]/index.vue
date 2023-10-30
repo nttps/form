@@ -2,38 +2,15 @@
     <div>
         <PartialsTitle prefix="ระบบ" title="แบบสอบถาม" icon="i-mdi-vote" back share @share="shareModal"/>
 
-        <form class="px-8 mt-4" @submit.prevent="submit">
+        <UForm :state="form" class="px-8 mt-4" @submit="submit" v-if="form">
             <div class="mb-4">
                 <div class="text-center bg-[#FFA133] rounded-t-lg cursor-move py-4"></div>
                 <div class="p-4 bg-white">
-                    <h2 class="text-xl font-bold">{{ form.title }}</h2>
-                    <p>{{ form.description }}</p>
+                    <h2 class="text-xl font-bold">{{ form.survey_name }}</h2>
+                    <p v-dompurify-html="form.description"></p>
                 </div>
             </div>
-            <div
-                class="rounded-md mb-4 bg- relative"
-                v-for="(question, index) in form.questions" :key="question.position"
-            >
-                <div class="text-center bg-[#FFA133] rounded-t-lg cursor-move py-4"></div>
-                <div class="p-4 bg-white">
-                    <div class="mb-2">
-                        <div class="text-xl font-bold">{{ question.question }}</div>
-                        <p class="text-lg">{{ question.description }}</p>
-                    </div>
-                    <URadio required v-if="question.type == 'radio'" :ui="{ wrapper: 'relative flex items-center mb-2' }" v-for="answer of question.answers" :label="answer.title" :name="question.question" :value="answer.title" :key="answer.position" v-model="question.answer"/>
-                    <div v-if="question.type == 'checkbox'">
-                        <UCheckbox v-model="question.checkBoxAnswers" :ui="{ wrapper: 'relative flex items-center mb-2', color: 'text-primary-500' }" v-for="answer of question.answers" :name="question.question" :label="answer.title" :value="answer.title" :required="question.checkBoxAnswers.length == 0" />
-                    </div>
-                    
-                    
-                    <div v-if="question.type === 'image'" class="mt-2 text-center">
-                        <img :src="question.previewImage" alt="" class="mx-auto" />
-                    </div>
-                    <div v-if="question.type === 'text'" class="mt-2">
-                        {{ question.description }}
-                    </div>
-                </div>
-            </div>
+            <ViewForm :form="form" v-if="form?.survey_type && form.survey_type == 'แบบสอบถาม'" />
             <div class="mb-4">
                 <div class="text-center bg-[#FFA133] rounded-t-lg cursor-move py-4"></div>
                 <div class="p-4 bg-white">
@@ -44,7 +21,7 @@
             <div class="text-center">
                 <button class="rounded-lg px-6 py-1.5 bg-[#FFA133]" type="submit">ส่ง</button>
             </div>
-        </form>
+        </UForm>
 
         <UModal v-model="share">
             <UCard :ui="{ divide: 'divide-y divide-gray-100 dark:divide-gray-800' }">
@@ -97,101 +74,58 @@
     import { SFacebook, SLine } from 'vue-socials';
     const { copy } = useCopyToClipboard()
     const url = useRequestURL()
+    const route = useRoute()
+
+
     const share = ref(false)
     const shareUrl= ref()
 
     const urlShare = url.href
-    const form = ref({
-        title: 'หัวข้อแบบสอบถาม',
-        description: 'รายละเอียด',
-        type: 'form',
-        remark: '',
-        questions: [
-            {
-                question: 'คำถามของแบบสอบถาม 1',
-                description: 'รายละเอียดแบบสอบถาม',
-                type: 'radio',
-                position: 1,
-                placeholder: 'คำถาม',
-                answer: '',
-                checkBoxAnswers: [],
-                answers: [{
-                    title: 'ตัวเลือกที่ 1',
-                    image: '',
-                    position: 1,
-                },{
-                    title: 'ตัวเลือกที่ 2',
-                    image: '',
-                    position: 2,
-                },{
-                    title: 'ตัวเลือกที่ 3',
-                    image: '',
-                    position: 3,
-                },{
-                    title: 'ตัวเลือกที่ 4',
-                    image: '',
-                    position: 4,
-                }]
-            },
-            {
-                question: 'คำถามของแบบสอบถาม 2',
-                description: 'รายละเอียดแบบสอบถาม',
-                type: 'checkbox',
-                position: 2,
-                placeholder: 'คำถาม',
-                answer: '',
-                checkBoxAnswers: [],
-                answers: [{
-                    title: 'ตัวเลือกที่ 1',
-                    image: '',
-                    position: 1,
-                    isSelect: false
-                },{
-                    title: 'ตัวเลือกที่ 2',
-                    image: '',
-                    position: 2,
-                    isSelect: false
-                },{
-                    title: 'ตัวเลือกที่ 3',
-                    image: '',
-                    position: 3,
-                    isSelect: false
-                },{
-                    title: 'ตัวเลือกที่ 4',
-                    image: '',
-                    position: 4,
-                    isSelect: false
-                },{
-                    title: 'ตัวเลือกที่ 5',
-                    image: '',
-                    position: 5,
-                    isSelect: false
-                },{
-                    title: 'ตัวเลือกที่ 6',
-                    image: '',
-                    position: 6,
-                    isSelect: false
-                }]
-            },
+    const form = ref(null)
+    const cacheData = ref(null)
+    
+    const response = await useApi(`/api/servey/ServeyInfo/GetDocSet?survey_id=${route.params.id}`, 'GET');
+    form.value = response.surveyInfo
+
+    cacheData.value = form.value
+    form.value.choices = []
+    form.value.questions = []
+
+    if(response.surveyInfo.survey_type == "ระบบโหวต") {
+        form.value.choices = response.quizSetList[0].answers
+    }
+
+    if(response.surveyInfo.survey_type == "แบบสอบถาม") {
+        form.value.questions = response.quizSetList
+    }
+
+    const title = computed(() => response.surveyInfo.survey_name )
+    const description = computed(() => response.surveyInfo.description.replace(/<\/?[^>]+(>|$)/g, "") )
+    const image = computed(() => response.surveyInfo.photo_cover ? response.surveyInfo.photo_cover_url : `/images/no-cover.jpg` )
+
+    useHead({
+        title: title,
+        meta: [
+            { name: 'description', content: description },
+            { property: 'og:image', content: image },
+            { property: 'og:description', content: description },
         ]
     })
 
-    const title = `DDPM Questionnaire - ${form.value.title}`
-    useSeoMeta({
-        ogTitle: () => title,
-        title: () => title,
-        description: () => form.value.description,
-        ogDescription: () => form.value.description,
-        ogImage: () => 'https://example.com/image.png',
-        ogImageUrl: () => 'https://example.com/image.png',
-        twitterCard: () => 'summary_large_image',
-        twitterTitle: () => title,
-        twitterDescription: () => form.value.description,
-        twitterImage: () => 'https://example.com/image.png'
+    definePageMeta({
+        key: route => route.fullPath,
     })
 
-    const submit = () => {
-        navigateTo('/forms/1/preview')
+
+    const submit = async () => {
+        const res = await useApi(`/api/servey/Submit/Save`, 'POST', {
+            "submit_id":"",//ปล่อยว่างคือเพิ่ม ระบุค่าคือแก้ไข
+            "survey_id": form.value.survey_id,//แบบแบบสอบถาม
+            "username":"",
+            "status":"ดำเนินการ",
+            "created_by":"",
+            "modified_by":""
+       });
     }
 
     const shareModal = () => {
@@ -207,13 +141,13 @@
     const shareFBOptions = ref({
         url: urlShare,
         quote: 'Quote',
-        hashtag: '#Facebook',
+        hashtag: '#DDPM',
     })
 
     const shareLineOptions = computed(() => {
         return {
             url: urlShare,
-            text: form.value.title,
+            text: form.value.survey_name,
         }
     })
     const onClose = () => {}

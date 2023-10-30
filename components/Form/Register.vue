@@ -68,8 +68,8 @@
     const schema = object({
         survey_name: string().required('กรอกหัวข้อแบบฟอร์มสมัคร'),
         description: string().required('กรอกรายละเอียดแบบฟอร์ม'),
-        survey_date_from: date().min(dateNow, 'เลือกวันที่ปัจจุบัน').required('กรุณาเลือกวันที่'),
-        survey_date_to: date().min(dateNow, 'เลือกวันที่ปัจจุบัน').required('กรุณาเลือกวันที่')
+        survey_date_from: date().required('กรุณาเลือกวันที่'),
+        survey_date_to: date().required('กรุณาเลือกวันที่')
     })
 
     const tabs = [{

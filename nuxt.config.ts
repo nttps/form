@@ -1,3 +1,10 @@
+const isDev = process.env.NODE_ENV === "development";
+
+// const apiBaseUrl = 'http://localhost:3001'
+const apiBaseUrl = process.env.NUXT_PUBLIC_API_URL;
+const version = process.env.NUXT_PUBLIC_VERSION;
+
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
     app: {
@@ -22,8 +29,8 @@ export default defineNuxtConfig({
     },
     runtimeConfig: {
         public: {
-            version: "",
-            apiUrl: "",
+            version: version,
+            apiUrl: apiBaseUrl,
         },
     },
     routeRules: {
@@ -32,5 +39,10 @@ export default defineNuxtConfig({
         "/lists/**": { ssr: false },
         "/create/**": { ssr: false },
         "/settings/**": { ssr: false },
+    },
+    vite: {
+        build: {
+            chunkSizeWarningLimit: 2000,
+        },
     },
 });

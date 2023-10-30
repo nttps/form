@@ -43,13 +43,15 @@ const forms = ref([])
 onMounted(() => {
     fetchData()
 })
-
 const fetchData = async () => {
     forms.value = await useApi('/api/servey/ServeyInfo/ListData', 'POST', {
         SearchText:"",
-        Status:"",
+        Status:"เปิด",
         Type:"",
         User: "",
+        start_date: null,
+        end_date: null,
+        IsAdmin: false,
         IsShowActiveOnly:true//แสดงรายการที่วันที่ยัง active
     });
 }
