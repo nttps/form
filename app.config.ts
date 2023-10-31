@@ -85,5 +85,8 @@ export default defineAppConfig({
                 xl: "px-6 py-1.5",
             },
         },
+        formGroup: {
+            error: "mt-1 text-red-500 dark:text-red-400 text-sm"
+        }
     },
 });
