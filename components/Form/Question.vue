@@ -31,7 +31,7 @@
                         v-model="props.form.questions" 
                         v-bind="dragOptions" 
                         @start="dragQuestion = true"
-                        @end="dragQuestionEnd" 
+                        @end="dragQuestion = false" 
                         handle=".list-group-item-drag"
                     >
                         <transition-group 
@@ -100,21 +100,8 @@
             <template #settings="{ item }">
                 <div class="px-6 py-4 bg-white rounded-lg mb-4">
                     <div class="font-bold text-xl mb-2">{{ item.label }}</div>
-                    <div class="flex md:space-x-2 flex-wrap">
-                        <div class="min-w-max md:w-56">
-                            <UFormGroup label="หน่วยงาน" name="title" size="xl" class="mb-2">
-                                <USelect size="md" :options="departments" placeholder="เลือกหน่วยงาน" option-attribute="name" />
-                            </UFormGroup>
-                        </div>
-                        <div class="min-w-max md:w-56">
-                            <UFormGroup label="ตำแหน่ง" name="title" size="xl" class="mb-2">
-                                <USelect size="md" :options="types" placeholder="เลือกตำแหน่ง"  option-attribute="name" />
-                            </UFormGroup>
-                        </div>
-                        
-                    </div>
+                    <FormPermission :permissions="props.permissions.all" :user-permissions="props.permissions.user" @fetchData="emit('fetchData')" />
                 </div>
-
             </template>
         </UTabs>
 
@@ -136,9 +123,9 @@
     import moment from 'moment';
     import { object, string, date } from 'yup'
 
-    const props = defineProps(['form', 'loadingSubmit'])
+    const props = defineProps(['form', 'loadingSubmit', 'permissions'])
 
-    const emit = defineEmits(['submit'])
+    const emit = defineEmits(['submit', 'fetchData'])
 
     const types = [ {
         name: 'ตัวเลือกเดียว',
@@ -160,18 +147,12 @@
 
     const schema = object({
         survey_name: string().required('กรอกหัวข้อแบบสอบถาม'),
-        survey_date_from: date().min(dateNow, 'เลือกวันที่ปัจจุบัน').required('กรุณาเลือกวันที่'),
-        survey_date_to: date().min(dateNow, 'เลือกวันที่ปัจจุบัน').required('กรุณาเลือกวันที่')
+        survey_date_from: date().required('กรุณาเลือกวันที่'),
+        survey_date_to: date().required('กรุณาเลือกวันที่')
     })
 
     const uploadImageModal = ref(false)
 
-    const newPosition = computed(() => {
-        return props.form.questions.map((question, index) => {
-            return { title: question.title , type: question.type, position: index + 1, answers: question.answers };
-        })
-
-    })
     const dragOptions = computed(() => {
       return {
         animation: 1,
@@ -182,15 +163,10 @@
 
     const dragQuestion = ref(false)
 
-    const dragQuestionEnd = (e) => {
-        dragQuestion.value = false
-        console.log(newPosition.value);
-    }
-
     const addQuestion = () => {
         props.form.questions.push({
             quiz: {
-                 quiz_desc: '',
+                quiz_desc: '',
                 answer_type: 'ตัวเลือกได้ข้อเดียว',
                 placeholder: 'คำถาม',
                 description: '',
@@ -229,13 +205,15 @@
     }
     const confirmImage = () => {
         props.form.questions.push({
-            quiz_desc: '',
-            answer_type: 'image',
-            description: '',
-            image: fileImage.value,
-            previewImage: previewImage.value,
-            placeholder: 'หัวข้อของภาพ ( ไม่จำเป็นต้องกรอก )',
-            position: (props.form.questions.length + 1),
+            quiz: {
+                quiz_desc: '',
+                answer_type: 'image',
+                placeholder: 'หัวข้อของภาพ ( ไม่จำเป็นต้องกรอก )',
+                description: '',
+                image_path: fileImage.value,
+                quiz_img_url: previewImage.value,
+                quiz_sort: (props.form.questions.length + 1),
+            },
             answers: []
         })
 
@@ -246,13 +224,15 @@
    
     const addText = () => {
         props.form.questions.push({
-            quiz_desc: '',
-            answer_type: 'ข้อความ',
-            placeholder: 'หัวข้อ',
-            description: '',
-            previewImage: previewImage.value,
-            image: '',
-            position: (props.form.questions.length + 1),
+            quiz: {
+                quiz_desc: '',
+                answer_type: 'ข้อความ',
+                placeholder: 'หัวข้อ',
+                description: '',
+                image_path: null,
+                quiz_img_url: '',
+                quiz_sort: (props.form.questions.length + 1),
+            },
             answers: []
         })
     }

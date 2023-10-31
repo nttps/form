@@ -1,7 +1,8 @@
 <template>
-    <div class="rounded-lg bg-white pb-4 transition-all delay-75 border-2 border-transparent hover:border-black overflow-hidden flex flex-col justify-between">
+    <div class="rounded-lg bg-white pb-4 transition-all delay-75 border-2 border-transparent hover:border-black overflow-hidden flex flex-col justify-between relative group">
+        <div class="absolute right-4 py-1 rounded-full select-none px-3 text-sm bg-blue-500 text-white top-4 z-10">{{ props.item.survey_type }}</div>
         <div class="h-[200px]">
-            <img :src="`${props.item.photo_cover ? props.item.photo_cover_url : `/images/no-cover.jpg`}`" class="w-full h-[200px] object-cover scale-95 hover:scale-100 transition-all" :alt="props.item.survey_name">
+            <img :src="`${props.item.photo_cover ? props.item.photo_cover_url : `/images/no-cover.jpg`}`" class="w-full h-[200px] object-cover group-hover:scale-90 transition-all" :alt="props.item.survey_name">
         </div>
         <div class="px-4 pt-2">
             <h2 class="text-xl font-bold">{{ props.item.survey_name  }}</h2>

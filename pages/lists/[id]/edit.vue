@@ -7,9 +7,9 @@
                 <Icon name="i-mdi-pencil" size="25" color="black" />
             </h3>
 
-            <FormRegister v-if="form?.survey_type && form.survey_type == 'ฟอร์มสมัคร'" :form="form" @submit="submit"/>
-            <FormVote v-if="form?.survey_type && form.survey_type == 'ระบบโหวต'" :vote="form" @submit="submit"/>
-            <FormQuestion v-if="form?.survey_type && form.survey_type == 'แบบสอบถาม'" :form="form" @submit="submit"/>
+            <FormRegister v-if="form?.survey_type && form.survey_type == 'ฟอร์มสมัคร'" :form="form" :permissions="permissions" @submit="submit" @fetchData="fetchData"/>
+            <FormVote v-if="form?.survey_type && form.survey_type == 'ระบบโหวต'" :vote="form" :permissions="permissions" @submit="submit" @fetchData="fetchData"/>
+            <FormQuestion v-if="form?.survey_type && form.survey_type == 'แบบสอบถาม'" :form="form" :permissions="permissions" @submit="submit" @fetchData="fetchData"/>
         </div>
     </div>
 </template>
@@ -19,6 +19,11 @@
     const route = useRoute()
     const toast = useToast()
     const form = ref(null)
+
+    const permissions = ref({
+        all: [],
+        user: []
+    })
     onMounted(() => {
         fetchData()
     })
@@ -28,6 +33,9 @@
         form.value = response.surveyInfo
         form.value.choices = []
         form.value.questions = []
+        permissions.value.all = response.permission
+        permissions.value.user = response.permissionUser
+
 
         if(response.surveyInfo.survey_type == "ระบบโหวต") {
             form.value.choices = response.quizSetList[0].answers
@@ -39,8 +47,25 @@
     }
 
     const submit = async () => {
-        const response = await surveySubmit(form.value);
-        if(response.outputAction.result === 'ok') {
+        const survey = await surveySubmit(form.value);
+
+        let status;
+
+        if(survey.surveyInfo.survey_type == "ฟอร์มสมัคร") {
+            status = (survey.outputAction.result === 'ok')
+        }
+
+        if(survey.surveyInfo.survey_type == "ระบบโหวต") {
+            const res = await submitVote(vote, survey)
+
+            status = res.status
+        }
+        if(survey.surveyInfo.survey_type == "แบบสอบถาม") {
+            const res = await submitQuestion(form, survey)
+            status = res.status
+        }
+
+        if (status) {
             toast.add({
                 id: 'edit_form',
                 color: 'green',
@@ -48,22 +73,8 @@
                 icon: 'i-heroicons-check-badge',
                 timeout: 1000,
             })
-
-            const quizId = response.quizSetList[0].quiz.quiz_id
-
-            if(response.surveyInfo.survey_type = "ระบบโหวต") {
-                for (let index = 0; index < form.value.choices.length; index++) {
-                    const answer = form.value.choices[index];
-                    answer.quiz_id = quizId
-                    answer.modified_by = ''
-                    answer.answer_sort = (index + 1)
-
-                    const res = await answerSubmit(answer);
-                    console.log(res);
-                }
-            }
-            fetchData()
         }
+        fetchData()
     }
 
 </script>
