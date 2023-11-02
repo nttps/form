@@ -56,7 +56,7 @@
         }
 
         if(survey.surveyInfo.survey_type == "ระบบโหวต") {
-            const res = await submitVote(vote, survey)
+            const res = await submitVote(form, survey)
 
             status = res.status
         }

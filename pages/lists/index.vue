@@ -12,7 +12,12 @@
                     <USelect size="lg" :options="types" v-model="selectedType" placeholder="ประเภทคำถาม" option-attribute="name" />
                   </div>
                   <div class="md:w-2/12 md:ml-4 mb-4">
-                    <UInput placeholder="วันที่สร้าง" size="lg" />
+                    <UPopover :popper="{ placement: 'bottom-start' }">
+                        <UButton icon="i-heroicons-calendar-days-20-solid" class="md:w-4/5" size="md" :label="labelRangeDate" />
+                        <template #panel="{ close }">
+                            <FormRangeDatePicker v-model="range" @close="close" />
+                        </template>
+                    </UPopover>
                   </div>
                   <button class="font-bold rounded-lg px-4 py-2 bg-[#FFA133] mb-4 md:ml-4 text-center"> ค้นหา </button>
               </div>
@@ -137,6 +142,12 @@ const columns = [{
 
 const search = ref('')
 const selectedType = ref("")
+const range = ref({
+  start: null,
+  end: null,
+});
+
+const labelRangeDate = computed(() => !range.value.start && !range.value.end ? 'เลือกเวลา' : moment(range.value.start).format('DD/MM/yyyy') + ' ' + moment(range.value.end).format('DD/MM/yyyy'))
 const isDeleteAlert = ref(false)
 const deleteId = ref(null)
 
@@ -146,6 +157,7 @@ const pageCount = ref(20)
 const pageTotal = computed(() => lists.value.length)
 const pageFrom = computed(() => (page.value - 1) * pageCount.value + 1)
 const pageTo = computed(() => Math.min(page.value * pageCount.value, pageTotal.value))
+
 
 
 onMounted(() => {
@@ -158,12 +170,12 @@ const { data: lists, pending, refresh } = await useAsyncData(
     SearchText: search.value,
     Status:"",
     User:"",
-    start_date: null,
-    end_date: null,
+    start_date: range.value.start ? moment(range.value.start).format('YYYY-MM-DD') : null,
+    end_date: range.value.start ? moment(range.value.end).format('YYYY-MM-DD') : null,
     Type: selectedType.value,
     IsShowActiveOnly:false
   }), {
-    watch: [page, search, selectedType]
+    watch: [page, search, selectedType, range]
   }
 )
 

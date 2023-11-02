@@ -2,23 +2,23 @@
     <div>
         <PartialsTitle prefix="ระบบ" title="แบบสอบถาม" icon="i-mdi-vote" back share @share="shareModal"/>
 
-        <UForm :state="form" class="px-8 mt-4" @submit="submit" v-if="form">
+        <UForm :state="submitData.submit" class="px-8 mt-4" @submit="confirm = true" v-if="submitData.submit">
             <div class="mb-4">
                 <div class="text-center bg-[#FFA133] rounded-t-lg cursor-move py-4"></div>
                 <div class="p-4 bg-white">
-                    <h2 class="text-xl font-bold">{{ form.survey_name }}</h2>
-                    <p v-dompurify-html="form.description"></p>
+                    <h2 class="text-xl font-bold">{{ submitData.submit.survey_name }}</h2>
+                    <p class="code-description el-tiptap-editor__content" v-dompurify-html="submitData.submit.description"></p>
                 </div>
             </div>
-            <ViewForm :form="form" v-if="form?.survey_type && form.survey_type == 'แบบสอบถาม'" />
+            <ViewForm :form="submitData" v-if="submitData?.submit?.survey_type" :submitId="submitData?.submit?.submit_id" @setAnswer="submitAnswer" :preview="submitStatus"/>
             <div class="mb-4">
                 <div class="text-center bg-[#FFA133] rounded-t-lg cursor-move py-4"></div>
                 <div class="p-4 bg-white">
                     <div class="text-lg font-bold mb-2">ข้อเสนอแนะ</div>
-                    <UTextarea v-model="form.remark" placeholder="กรอกข้อเสนอแนะ" color="gray" :rows="5" size="xl"/>
+                    <UTextarea v-model="submitData.submit.comment" placeholder="กรอกข้อเสนอแนะ" color="gray" :rows="5" size="xl" :disabled="submitStatus"/>
                 </div>
             </div>
-            <div class="text-center">
+            <div class="text-center" v-if="!submitStatus">
                 <button class="rounded-lg px-6 py-1.5 bg-[#FFA133]" type="submit">ส่ง</button>
             </div>
         </UForm>
@@ -67,6 +67,22 @@
             </UCard>
             
         </UModal>
+
+        <ModalSuccess v-model="confirm" title="แจ้งเตือน" close>
+            <div class="text-2xl text-center font-bold pb-4">ยืนยันการตอบแบบฟอร์มใช่หรือไม่</div>
+            <div class="flex justify-end space-x-3">
+                <button type="button" class="px-4 py-2 bg-green-600 text-base rounded-[5px] text-white" @click="submit">ยืนยัน</button>
+                <button type="button" class="px-4 py-2 bg-gray-500 text-base rounded-[5px] text-white" @click="confirm = false">ทำรายการต่อ</button>
+            </div>
+        </ModalSuccess>
+
+        <ModalSuccess v-model="success" title="แจ้งเตือน">
+            <div class="text-2xl text-center font-bold pb-2">ตอบแบบฟอร์มสำเร็จ</div>
+            <div class="flex justify-center space-x-3">
+                <button type="button" class="px-4 py-2 bg-green-600 text-base rounded-[5px] text-white" @click="success = false">ตกลง</button>
+            </div>
+        </ModalSuccess>
+        
     </div>
 </template>
 
@@ -81,27 +97,21 @@
     const shareUrl= ref()
 
     const urlShare = url.href
-    const form = ref(null)
-    const cacheData = ref(null)
-    
-    const response = await useApi(`/api/servey/ServeyInfo/GetDocSet?survey_id=${route.params.id}`, 'GET');
-    form.value = response.surveyInfo
+    const confirm = ref(false)
+    const success = ref(false)
 
-    cacheData.value = form.value
-    form.value.choices = []
-    form.value.questions = []
+    const { pending, data: submitData, refresh } = await useAsyncData('submitData', async () => await useApi(`/api/servey/Submit/Save`, 'POST', {
+        survey_id:  route.params.id,//แบบแบบสอบถาม
+        username:   "xxxxxxxyyyy", 
+        created_by: "tammon.y",
+        modified_by:    "tammon.y"
+    }))
 
-    if(response.surveyInfo.survey_type == "ระบบโหวต") {
-        form.value.choices = response.quizSetList[0].answers
-    }
+    const submitStatus = computed(() => submitData.value.submit.status === 'เสร็จสมบูรณ์')
 
-    if(response.surveyInfo.survey_type == "แบบสอบถาม") {
-        form.value.questions = response.quizSetList
-    }
-
-    const title = computed(() => response.surveyInfo.survey_name )
-    const description = computed(() => response.surveyInfo.description.replace(/<\/?[^>]+(>|$)/g, "") )
-    const image = computed(() => response.surveyInfo.photo_cover ? response.surveyInfo.photo_cover_url : `/images/no-cover.jpg` )
+    const title = computed(() => submitData.value.submit.survey_name )
+    const description = computed(() => submitData.value.submit.description.replace(/<\/?[^>]+(>|$)/g, "") )
+    const image = computed(() => submitData.value.submit.photo_cover ? response.surveyInfo.photo_cover_url : `/images/no-cover.jpg` )
 
     useHead({
         title: title,
@@ -117,16 +127,6 @@
     })
 
 
-    const submit = async () => {
-        const res = await useApi(`/api/servey/Submit/Save`, 'POST', {
-            "submit_id":"",//ปล่อยว่างคือเพิ่ม ระบุค่าคือแก้ไข
-            "survey_id": form.value.survey_id,//แบบแบบสอบถาม
-            "username":"",
-            "status":"ดำเนินการ",
-            "created_by":"",
-            "modified_by":""
-       });
-    }
 
     const shareModal = () => {
         share.value = true
@@ -147,9 +147,32 @@
     const shareLineOptions = computed(() => {
         return {
             url: urlShare,
-            text: form.value.survey_name,
+            text: submitData.value.submit.survey_name,
         }
     })
+
+    const submitAnswer = async (data) => {
+        const res = await useApi(`/api/servey/Submit/SetAnswer`, 'POST', data);
+        
+        if(res.result === 'ok') {
+            console.log('set answer');
+        }
+    }
+
+    const submit = async () => {
+        const res = await useApi(`/api/servey/Submit/SubmitTest`, 'POST', {
+            SubmitID: submitData.value.submit.submit_id,//ปล่อยว่างคือเพิ่ม ระบุค่าคือแก้ไข
+            Comment: submitData.value.submit.comment
+       });
+
+        if(res.result === 'ok') {
+            console.log('test');
+            refresh()
+
+            confirm.value = false
+            success.value = true
+        }
+    }
     const onClose = () => {}
     const onOpen = () => {}
     const onBlock = () => {}
@@ -157,4 +180,28 @@
 </script>
 
 <style lang="scss" scoped>
+.el-tiptap-editor__content {
+    font-family: 'Kanit', sans-serif;
+
+    h1 {
+        @apply text-3xl leading-8
+    }
+    h2 {
+        @apply text-2xl
+    }
+    h3 {
+        @apply text-xl
+    }
+    h4 {
+        @apply text-lg
+    }
+    h5 {
+        @apply text-base
+    }
+    h6 {
+        @apply text-sm
+    }
+
+}
+
 </style>
