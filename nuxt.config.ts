@@ -22,7 +22,7 @@ export default defineNuxtConfig({
     },
     css: [
         // CSS file in the project
-        "@/assets/css/main.css",
+        "@/assets/css/main.scss",
     ],
     colorMode: {
         preference: "light",

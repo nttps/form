@@ -48,13 +48,13 @@
                                 <div class="p-4 bg-white">
                                     <div class="flex flex-wrap space-x-4 mb-2">
                                         <div :class="`${question.quiz.answer_type === 'ตัวเลือกได้ข้อเดียว' || question.quiz.answer_type === 'เลือกได้หลายข้อ' ? `basis-1/2-gap-4` : `w-full` }`">
-                                            <UInput v-model="question.quiz.quiz_desc" :placeholder="question.quiz.placeholder" size="md" required />
+                                            <UInput v-model="question.quiz.quiz_desc" :placeholder="question.quiz.answer_type === 'image' ? `หัวข้อของภาพ ( ไม่จำเป็นต้องกรอก )` : question.quiz.placeholder" size="md" :required="question.quiz.answer_type !== 'image'" />
                                         </div>
                                         <div class="basis-1/2-gap-4" v-if="question.quiz.answer_type === 'ตัวเลือกได้ข้อเดียว' || question.quiz.answer_type === 'เลือกได้หลายข้อ'">
                                             <USelect size="md" :options="types" v-model="question.quiz.answer_type" placeholder="ประเภทคำถาม" option-attribute="name" required/>
                                         </div>
                                     </div>
-                                    <div>
+                                    <div v-if="question.quiz.answer_type !== 'image'">
                                         <UFormGroup label="รายละเอียด" name="description" size="xl" class="mb-2">
                                             <ClientOnly>
                                                 <Editor v-model="question.quiz.description" :height="question.quiz.answer_type == 'ข้อความ' ? `350px` : `300px`" />
@@ -65,8 +65,13 @@
                                         <label for="" class="px-6">ตัวเลือก</label>
                                         <FormAnswer :index="index" :question="question" @delete-answer="deleteAnswer" @add-answer="addAnswer"/>
                                     </div>
-                                    <div v-if="question.quiz.answer_type === 'image'" class="mt-2 text-center">
-                                        <img :src="question.previewImage" alt="" class="mx-auto" />
+                                    <div v-if="question.quiz.answer_type === 'image'" class="mt-2">
+                                        <UTooltip text="แก้ไขรูปภาพ">
+                                            <button @click="editImage(index)" type="button" class="text-gray-600 flex items-center space-x-2 px-1">
+                                                <Icon name="i-ic-round-image" size="35" />
+                                            </button>
+                                        </UTooltip>
+                                        <img :src="question.quiz.quiz_img_url" alt="" class="mx-auto" />
                                     </div>
                                 </div>
                                 <div class="text-right">
@@ -112,15 +117,24 @@
     </UForm>
 
     <UModal v-model="uploadImageModal">
-        <UInput type="file" @change="pickImage"/>
-        <img :src="previewImage" v-if="previewImage" alt="">
-        <button @click="confirmImage">แทรก</button>
+        <UCard :ui="{ divide: 'divide-y divide-gray-100 dark:divide-gray-800' }">
+            <template #header>
+                <div class="text-center">ตัวอย่างรูปภาพ</div>
+            </template>
+            <UInput type="file" @change="pickImage"/>
+            <div class="text-center mt-2">
+                <img :src="previewImage" v-if="previewImage" class="mx-auto mb-4" alt="">
+                <UButton @click="confirmImage" label="แทรก"/>
+            </div>
+            
+
+        </UCard>
+        
     </UModal>
 </template>
 
 <script setup>
 
-    import moment from 'moment';
     import { object, string, date } from 'yup'
 
     const props = defineProps(['form', 'loadingSubmit', 'permissions'])
@@ -142,8 +156,6 @@
         slot: 'settings',
         label: 'การเข้าถึง',
     }]
-
-    const dateNow = moment().format('YYYY-MM-DDT00:00:00')
 
     const schema = object({
         survey_name: string().required('กรอกหัวข้อแบบสอบถาม'),
@@ -186,8 +198,14 @@
 
     const previewImage = ref(null)
     const fileImage = ref(null)
+    const quizImage = ref(null)
 
     const addImage = () => {
+        uploadImageModal.value = true
+    }
+
+    const editImage = (index) => {
+        quizImage.value = index
         uploadImageModal.value = true
     }
 
@@ -204,22 +222,30 @@
         }
     }
     const confirmImage = () => {
-        props.form.questions.push({
-            quiz: {
-                quiz_desc: '',
-                answer_type: 'image',
-                placeholder: 'หัวข้อของภาพ ( ไม่จำเป็นต้องกรอก )',
-                description: '',
-                image_path: fileImage.value,
-                quiz_img_url: previewImage.value,
-                quiz_sort: (props.form.questions.length + 1),
-            },
-            answers: []
-        })
 
+        if(quizImage.value) {
+            const q = props.form.questions[quizImage.value]
+            q.quiz.image_path = fileImage.value
+            q.quiz.quiz_img_url = previewImage.value
+        }else {
+            props.form.questions.push({
+                quiz: {
+                    quiz_desc: '',
+                    answer_type: 'image',
+                    placeholder: 'หัวข้อของภาพ ( ไม่จำเป็นต้องกรอก )',
+                    description: '',
+                    image_path: fileImage.value,
+                    quiz_img_url: previewImage.value,
+                    quiz_sort: (props.form.questions.length + 1),
+                },
+                answers: []
+            })
+        }
+       
         uploadImageModal.value = false
         fileImage.value = null
         previewImage.value = null
+        quizImage.value = null
     }
    
     const addText = () => {
@@ -236,7 +262,6 @@
             answers: []
         })
     }
-
 
     const deleteQuestion = (index) => {
         props.form.questions.splice(index, 1)
@@ -256,17 +281,6 @@
         const question = props.form.questions[value.index];
         question.answers.splice(value.indexA, 1)
     }
-
-    const departments = [{
-        name: 'ทั้งหมด',
-        value: '',
-    }, {
-        name: 'กก',
-        value: 'กก',
-    }, {
-        name: 'กจ',
-        value: 'กจ'
-    }]
 </script>
 
 <style lang="scss" scoped>

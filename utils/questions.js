@@ -10,6 +10,8 @@ export const submitQuestion = async (form, survey) => {
             const resQuiz = await quizSubmit(quiz.quiz);
 
             const quizId = resQuiz.quiz.quiz_id;
+
+            console.log(quiz);
             if (quiz.image_path) {
                 const resImage = await uploadQuizImage(quizId, quiz.image_path);
                 console.log(resImage);
