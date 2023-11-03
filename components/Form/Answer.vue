@@ -41,7 +41,7 @@
                     </div>
                 </div>
 
-                <div v-if="answer.answer_img || answer.image_path" class="ml-7 mt-4 relative max-w-max">
+                <div v-if="answer.answer_img_url || answer.image_path" class="ml-7 mt-4 relative max-w-max">
                     <div class="absolute top-1 right-1">
                         <UButton type="button" icon="i-heroicons-x-mark" variant="soft" color="red" class="ml-2" @click="alertDeleteImage(indexA)" />
                     </div>

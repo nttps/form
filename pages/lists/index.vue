@@ -20,11 +20,22 @@
                     </UPopover>
                   </div>
                   <button class="font-bold rounded-lg px-4 py-2 bg-[#FFA133] mb-4 md:ml-4 text-center"> ค้นหา </button>
+
+                  <UButton
+                    v-if="selectedRows.length > 1"
+                    class="ml-auto mb-4"
+                    trailing
+                    color="red"
+                    size="lg"
+                    @click="isDeleteAlertAll = true"
+                  >
+                    ลบทั้งหมด
+                  </UButton>
               </div>
               <div class="flex border relative not-prose rounded-2xl border-[#FFA800] mb-2 div">
                   <div class="w-full ">
                       <UTable 
-                        v-model="selected" 
+                        v-model="selectedRows" 
                         :columns="columns" 
                         :rows="rows" 
                         :loading="pending" 
@@ -82,12 +93,29 @@
               <div class="text-center">แจ้งเตือนการยืนยัน</div>
           </template>
 
-          <div class="font-bold text-xl text-center">คุณต้องการยืนยันที่จะลบข้อมูลนี้ใช้หรือไม่</div>
+          <div class="font-bold text-xl text-center">คุณต้องการยืนยันที่จะลบข้อมูลนี้ใช่หรือไม่</div>
 
           <template #footer>
               <div class="flex justify-between">
                   <button type="button" class="px-4 py-2 bg-red-600 text-base rounded-[5px] text-white" @click="deleteItem">ยืนยัน</button>
                   <button type="button" class="px-4 py-2 bg-gray-500 text-base rounded-[5px] text-white" @click="isDeleteAlert = false">ยกเลิก</button>
+              </div>
+          </template>
+        </UCard>
+      </UModal>
+
+      <UModal v-model="isDeleteAlertAll">
+        <UCard :ui="{ divide: 'divide-y divide-gray-100 dark:divide-gray-800' }">
+          <template #header>
+              <div class="text-center">แจ้งเตือนการยืนยัน</div>
+          </template>
+
+          <div class="font-bold text-xl text-center">คุณต้องการยืนยันที่จะลบข้อมูลทั้งหมดใช่หรือไม่</div>
+
+          <template #footer>
+              <div class="flex justify-between">
+                  <button type="button" class="px-4 py-2 bg-red-600 text-base rounded-[5px] text-white" @click="deleteAll">ยืนยัน</button>
+                  <button type="button" class="px-4 py-2 bg-gray-500 text-base rounded-[5px] text-white" @click="isDeleteAlertAll = false">ยกเลิก</button>
               </div>
           </template>
         </UCard>
@@ -140,6 +168,8 @@ const columns = [{
   class: 'text-center'
 },]
 
+// Selected Rows
+const selectedRows = ref([])
 const search = ref('')
 const selectedType = ref("")
 const range = ref({
@@ -150,6 +180,8 @@ const range = ref({
 const labelRangeDate = computed(() => !range.value.start && !range.value.end ? 'เลือกเวลา' : moment(range.value.start).format('DD/MM/yyyy') + ' ' + moment(range.value.end).format('DD/MM/yyyy'))
 const isDeleteAlert = ref(false)
 const deleteId = ref(null)
+const isDeleteAlertAll = ref(false)
+
 
 // Pagination
 const page = ref(1)
@@ -184,7 +216,6 @@ const rows = computed(() => {
   return lists.value.slice((page.value - 1) * pageCount.value, (page.value) * pageCount.value)
 })
 
-const selected = ref([])
 
 const fomatDate = (date) => {
   return moment(date).format('DD/MM/yyyy')
@@ -219,6 +250,40 @@ const deleteItem = async () => {
 
   isDeleteAlert.value = false
   refresh()
+}
+
+const deleteAll = async () => {
+
+  const itemsDelete = selectedRows.value.map(i => i.survey_id);
+
+  const response = await useApi('/api/servey/ServeyInfo/DeleteDocs', 'DELETE', { 
+    SurveyID : itemsDelete,
+    DeletedBy :"tammon.y"
+  });
+
+  if(response.result === 'ok') {
+    toast.add({
+        id: 'delete_form_success',
+        color: 'green',
+        title: 'ลบข้อมูลเรียบร้อยแล้ว',
+        icon: 'i-heroicons-check-badge',
+        timeout: 1000,
+    })
+  }else {
+    toast.add({
+        id: 'delete_form_fail',
+        color: 'red',
+        title: 'เกิดข้อผิดพลาด กรุณาติดต่อผู้ดูแลระบบ',
+        icon: 'i-heroicons-information-circle',
+        timeout: 1000,
+    })
+  }
+
+  isDeleteAlertAll.value = false
+  refresh()
+
+  selectedRows.value = []
+
 }
 </script>
 

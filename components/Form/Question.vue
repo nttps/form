@@ -48,7 +48,7 @@
                                 <div class="p-4 bg-white">
                                     <div class="flex flex-wrap space-x-4 mb-2">
                                         <div :class="`${question.quiz.answer_type === 'ตัวเลือกได้ข้อเดียว' || question.quiz.answer_type === 'เลือกได้หลายข้อ' ? `basis-1/2-gap-4` : `w-full` }`">
-                                            <UInput v-model="question.quiz.quiz_desc" :placeholder="question.quiz.answer_type === 'image' ? `หัวข้อของภาพ ( ไม่จำเป็นต้องกรอก )` : question.quiz.placeholder" size="md" :required="question.quiz.answer_type !== 'image'" />
+                                            <UInput v-model="question.quiz.quiz_title" :placeholder="question.quiz.answer_type === 'image' ? `หัวข้อของภาพ ( ไม่จำเป็นต้องกรอก )` : question.quiz.placeholder" size="md" :required="question.quiz.answer_type !== 'image'" />
                                         </div>
                                         <div class="basis-1/2-gap-4" v-if="question.quiz.answer_type === 'ตัวเลือกได้ข้อเดียว' || question.quiz.answer_type === 'เลือกได้หลายข้อ'">
                                             <USelect size="md" :options="types" v-model="question.quiz.answer_type" placeholder="ประเภทคำถาม" option-attribute="name" required/>
@@ -57,7 +57,7 @@
                                     <div v-if="question.quiz.answer_type !== 'image'">
                                         <UFormGroup label="รายละเอียด" name="description" size="xl" class="mb-2">
                                             <ClientOnly>
-                                                <Editor v-model="question.quiz.description" :height="question.quiz.answer_type == 'ข้อความ' ? `350px` : `300px`" />
+                                                <Editor v-model="question.quiz.quiz_desc" :height="question.quiz.answer_type == 'ข้อความ' ? `350px` : `300px`" />
                                             </ClientOnly>
                                         </UFormGroup>
                                     </div>
@@ -178,6 +178,7 @@
     const addQuestion = () => {
         props.form.questions.push({
             quiz: {
+                quiz_title: '',
                 quiz_desc: '',
                 answer_type: 'ตัวเลือกได้ข้อเดียว',
                 placeholder: 'คำถาม',
@@ -230,6 +231,7 @@
         }else {
             props.form.questions.push({
                 quiz: {
+                    quiz_title: '',
                     quiz_desc: '',
                     answer_type: 'image',
                     placeholder: 'หัวข้อของภาพ ( ไม่จำเป็นต้องกรอก )',
@@ -251,6 +253,7 @@
     const addText = () => {
         props.form.questions.push({
             quiz: {
+                quiz_title: '',
                 quiz_desc: '',
                 answer_type: 'ข้อความ',
                 placeholder: 'หัวข้อ',

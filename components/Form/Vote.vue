@@ -22,9 +22,6 @@
                                     <Editor v-model="props.vote.description" height="300px" />
                                 </ClientOnly>
                             </UFormGroup>
-                            <UFormGroup label="ประเภทตัวเลือก" name="description" size="xl" class="mb-3">
-                                <USelect size="md" :options="types"  v-model="props.vote.answer_type" option-attribute="name" />
-                            </UFormGroup>
                             <UFormGroup label="ตัวเลือก" name="choices" size="xl" class="mb-3">
                                 <draggable 
                                     class="dragArea list-group w-full" 
@@ -116,14 +113,6 @@
         survey_date_from: date().required('กรุณาเลือกวันที่'),
         survey_date_to: date().min(props.vote.survey_date_from, 'ห้ามต่ำกว่ามันที่เริ่มโหวต').required('กรุณาเลือกวันที่')
     })
-
-    const types = [{
-        name: 'โหวตได้ข้อเดียว',
-        value: 'ตัวเลือกได้ข้อเดียว',
-    }, {
-        name: 'โหวตได้หลายข้อ',
-        value: 'เลือกได้หลายข้อ'
-    }]
 
     
     const tabs = [{

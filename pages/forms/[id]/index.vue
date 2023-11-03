@@ -19,7 +19,7 @@
                 </div>
             </div>
             <div class="text-center" v-if="!submitStatus">
-                <button class="rounded-lg px-6 py-1.5 bg-[#FFA133]" type="submit">ส่ง</button>
+                <button class="rounded-lg px-6 py-1.5 bg-[#FFA133]" type="submit">{{ submitData.submit.survey_type === 'ฟอร์มสมัคร' ? 'สมัคร' : 'ส่ง' }}</button>
             </div>
         </UForm>
 
@@ -69,7 +69,7 @@
         </UModal>
 
         <ModalSuccess v-model="confirm" title="แจ้งเตือน" close>
-            <div class="text-2xl text-center font-bold pb-4">ยืนยันการตอบแบบฟอร์มใช่หรือไม่</div>
+            <div class="text-2xl text-center font-bold pb-4">{{  submitData.submit.survey_type === 'ฟอร์มสมัคร' ? 'ยืนยันการสมัคร' : 'ยืนยันการตอบแบบฟอร์มใช่หรือไม่' }}</div>
             <div class="flex justify-end space-x-3">
                 <button type="button" class="px-4 py-2 bg-green-600 text-base rounded-[5px] text-white" @click="submit">ยืนยัน</button>
                 <button type="button" class="px-4 py-2 bg-gray-500 text-base rounded-[5px] text-white" @click="confirm = false">ทำรายการต่อ</button>
@@ -77,7 +77,7 @@
         </ModalSuccess>
 
         <ModalSuccess v-model="success" title="แจ้งเตือน">
-            <div class="text-2xl text-center font-bold pb-2">ตอบแบบฟอร์มสำเร็จ</div>
+            <div class="text-2xl text-center font-bold pb-2">{{  submitData.submit.survey_type === 'ฟอร์มสมัคร' ? 'สมัครแบบฟอร์มสำเร็จ' : 'ตอบแบบฟอร์มสำเร็จ' }}</div>
             <div class="flex justify-center space-x-3">
                 <button type="button" class="px-4 py-2 bg-green-600 text-base rounded-[5px] text-white" @click="success = false">ตกลง</button>
             </div>

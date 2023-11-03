@@ -12,7 +12,7 @@
             
         </div>
 
-         <ModalSuccess v-model="confirm" title="แจ้งเตือน" close>
+        <ModalSuccess v-model="confirm" title="แจ้งเตือน" close>
             <div class="text-2xl text-center font-bold pb-4">ยืนยันการสร้างแบบฟอร์ม</div>
             <div class="flex justify-end space-x-3">
                 <button type="button" class="px-4 py-2 bg-green-600 text-base rounded-[5px] text-white" @click="submit">ยืนยัน</button>

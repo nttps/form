@@ -6,7 +6,7 @@
         </div>
         <div class="px-4 pt-2">
             <h2 class="text-xl font-bold">{{ props.item.survey_name  }}</h2>
-            <div>{{ props.item.description ? props.item.description.replace(/<\/?[^>]+(>|$)/g, "") : `&nbsp;` }}</div>
+            <div class="line-clamp-2">{{ props.item.description ? props.item.description.replace(/<\/?[^>]+(>|$)/g, "") : `&nbsp;` }}</div>
         </div>
         <div class="text-right px-4 pt-2">
             <NuxtLink :to="`/forms/${props.item.survey_id}`" class="bg-[#FFA800] transition-all px-3 py-1 rounded-full hover:border border-[#FFA800] hover:bg-white hover:text-[#FFA800]">เข้าร่วม</NuxtLink>

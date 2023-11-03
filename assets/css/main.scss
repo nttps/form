@@ -28,8 +28,10 @@ body {
 }
 
 
-.el-tiptap-editor__content {
-    font-family: 'Kanit', sans-serif;
+.el-tiptap-editor__content.code-description {
+    font-family: 'Kanit', sans-serif !important;
+
+    overflow: initial !important;
 
     h1 {
         @apply text-3xl leading-8
