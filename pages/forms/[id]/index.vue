@@ -4,7 +4,7 @@
 
         <UForm :state="submitData.submit" class="px-8 mt-4" @submit="confirm = true" v-if="submitData.submit">
             <div class="mb-4">
-                <div class="text-center bg-[#FFA133] rounded-t-lg cursor-move py-4"></div>
+                <div class="text-center bg-[#FFA133] rounded-t-lg py-4"></div>
                 <div class="p-4 bg-white">
                     <h2 class="text-xl font-bold">{{ submitData.submit.survey_name }}</h2>
                     <p class="code-description el-tiptap-editor__content" v-dompurify-html="submitData.submit.description"></p>
@@ -12,7 +12,7 @@
             </div>
             <ViewForm :form="submitData" v-if="submitData?.submit?.survey_type" :submitId="submitData?.submit?.submit_id" @setAnswer="submitAnswer" :preview="submitStatus"/>
             <div class="mb-4">
-                <div class="text-center bg-[#FFA133] rounded-t-lg cursor-move py-4"></div>
+                <div class="text-center bg-[#FFA133] rounded-t-lg py-4"></div>
                 <div class="p-4 bg-white">
                     <div class="text-lg font-bold mb-2">ข้อเสนอแนะ</div>
                     <UTextarea v-model="submitData.submit.comment" placeholder="กรอกข้อเสนอแนะ" color="gray" :rows="5" size="xl" :disabled="submitStatus"/>
@@ -100,7 +100,7 @@
     const confirm = ref(false)
     const success = ref(false)
 
-    const { pending, data: submitData, refresh } = await useAsyncData('submitData', async () => await useApi(`/api/servey/Submit/Save`, 'POST', {
+    const { data: submitData, refresh } = await useAsyncData('submitData', async () => await useApi(`/api/servey/Submit/Save`, 'POST', {
         survey_id:  route.params.id,//แบบแบบสอบถาม
         username:   "xxxxxxxyyyy", 
         created_by: "tammon.y",
@@ -180,28 +180,5 @@
 </script>
 
 <style lang="scss" scoped>
-.el-tiptap-editor__content {
-    font-family: 'Kanit', sans-serif;
-
-    h1 {
-        @apply text-3xl leading-8
-    }
-    h2 {
-        @apply text-2xl
-    }
-    h3 {
-        @apply text-xl
-    }
-    h4 {
-        @apply text-lg
-    }
-    h5 {
-        @apply text-base
-    }
-    h6 {
-        @apply text-sm
-    }
-
-}
 
 </style>
