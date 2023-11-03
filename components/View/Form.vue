@@ -1,34 +1,79 @@
 <template>
     <div
         class="rounded-md mb-4 bg- relative"
-        v-for="(question, index) in form.questions" :key="question.quiz.quiz_sort"
+        v-for="(question, index) in form.quizSet" :key="question.quiz.quiz_sort"
     >
         <div class="text-center bg-[#FFA133] rounded-t-lg cursor-move py-4"></div>
         <div class="p-4 bg-white">
             <div class="mb-2">
-                <div class="text-xl font-bold">{{ question.quiz.quiz_desc }}</div>
-                <p class="text-lg" v-dompurify-html="question.quiz.description"></p>
+                <div class="text-xl font-bold">{{ question.quiz.quiz_title }}</div>
+                <p class="text-lg code-description el-tiptap-editor__content" v-dompurify-html="question.quiz.quiz_desc"></p>
             </div>
-            <URadio required v-if="question.quiz.answer_type == 'ตัวเลือกได้ข้อเดียว'" :ui="{ wrapper: 'relative flex items-center mb-2' }" v-for="(answer, index) of question.answers" :label="answer.answer" :name="question.quiz.quiz_desc" :value="answer.answer_id" :key="answer.quiz_sort" v-model="question.AnswerIDs"/>
-            <div v-if="question.quiz.answer_type == 'เลือกได้หลายข้อ'">
-                <UCheckbox v-model="question.checkBoxAnswers" :ui="{ wrapper: 'relative flex items-center mb-2', color: 'text-primary-500' }" v-for="answer of question.answers" :name="question.quiz.quiz_desc" :label="answer.answer" :value="answer.answer_id" :required="question.checkBoxAnswers.length == 0" />
+
+            <div v-for="(answer, index) of question.answers" v-if="question.quiz.answer_type == 'ตัวเลือกได้ข้อเดียว' || question.quiz.answer_type == 'เลือกได้หลายข้อ'">
+                <label :for="answer.answer_id" class="flex space-x-2 items-center">
+                    <input 
+                        :id="answer.answer_id" 
+                        :type="question.quiz.answer_type == 'ตัวเลือกได้ข้อเดียว' ? `radio` : `checkbox`" 
+                        :name="question.quiz.quiz_id" 
+                        :value="answer.answer_id" 
+                        @input="question.quiz.answer_type == 'ตัวเลือกได้ข้อเดียว' ? setAnswer($event, question, index) : setMultipleAnswer($event, question, index)"   
+                        :checked="answer.is_select === true"
+                        :disabled="preview"
+                        required
+                        class="hover:bg-amber-700 checked:bg-rose-500"
+                    />
+                    <div>{{ answer.answer }}</div>
+                    </label>
+                <div v-if="answer.answer_img_url">
+                    <img :src="answer.answer_img_url" class="h-[200px] my-4" :alt="answer.answer">
+                </div>
             </div>
-            
-            
-            <div v-if="question.quiz.answer_type === 'image'" class="mt-2 text-center">
-                <img :src="question.previewImage" alt="" class="mx-auto" />
+          
+           
+            <div v-if="question.quiz.answer_type === 'image'" class="text-center">
+                <img :src="question.quiz.quiz_img_url" alt="" class="mx-auto h-[200px] my-4" />
             </div>
-            <div v-if="question.quiz.answer_type === 'text'" class="mt-2">
-                {{ question.description }}
-            </div>
+            <div v-if="question.quiz.answer_type === 'text'" class="mt-2 code-description" v-dompurify-html="question.quiz.description"></div>
         </div>
     </div>
 </template>
 
 <script setup>
-    const props = defineProps(['form'])
+    const props = defineProps(['form', 'submitId', 'preview'])
+    const emits = defineEmits(['setAnswer'])
+
+
+    const answer = ref({
+        SubmitID: props.submitId,
+        QuizID: '',
+        AnswerDesc: '',
+        AnswerIDs: []
+    })
+
+    const setAnswer = (event, quiz, index) => {
+
+        answer.value.QuizID = quiz.quiz.quiz_id
+        answer.value.AnswerIDs = [event.target.value]
+       
+        quiz.answers.filter((v, i) => i != index).forEach(v => v.is_select = false)
+        quiz.answers.filter((v, i) => i == index).forEach(v => v.is_select = true)
+
+
+        emits('setAnswer', answer.value)
+    }
+
+    const setMultipleAnswer = (event, quiz, index) => {
+        answer.value.QuizID = quiz.quiz.quiz_id
+        quiz.answers[index].is_select = true
+        answer.value.AnswerIDs.push(event.target.value)
+        emits('setAnswer', answer.value)
+    }
+
 </script>
 
 <style lang="scss" scoped>
+
+
 
 </style>

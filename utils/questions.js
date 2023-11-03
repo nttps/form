@@ -7,11 +7,16 @@ export const submitQuestion = async (form, survey) => {
             quiz.quiz.survey_id = survey.surveyInfo.survey_id;
             quiz.quiz.modified_by = "";
             quiz.quiz.quiz_sort = index + 1;
+
+            console.log(quiz.quiz);
             const resQuiz = await quizSubmit(quiz.quiz);
 
             const quizId = resQuiz.quiz.quiz_id;
-            if (quiz.image_path) {
-                const resImage = await uploadQuizImage(quizId, quiz.image_path);
+            if (quiz.quiz.image_path) {
+                const resImage = await uploadQuizImage(
+                    quizId,
+                    quiz.quiz.image_path
+                );
                 console.log(resImage);
             }
 
