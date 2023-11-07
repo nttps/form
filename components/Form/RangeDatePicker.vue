@@ -5,7 +5,7 @@ import 'v-calendar/dist/style.css'
 
 const props = defineProps({
   modelValue: {
-    type: String,
+    type: Object,
     default: null
   }
 })
@@ -14,7 +14,7 @@ const emit = defineEmits(['update:model-value', 'close'])
 const date = computed({
   get: () => props.modelValue,
   set: (value) => {
-    emit('update:model-value', moment(value).format('YYYY-MM-DDT00:00:00'))
+    emit('update:model-value', value)
     emit('close')
   }
 })
@@ -33,7 +33,7 @@ const attrs = [{
 </script>
 <template>
   <VCalendarDatePicker
-    v-model="date"
+    v-model.range="date"
     transparent
     borderless
     :attributes="attrs"
@@ -41,7 +41,6 @@ const attrs = [{
     color="orange"
     trim-weeks
     :first-day-of-week="2"
-    :min-date="new Date()"
     hide-time-header
     locale="th"
   />

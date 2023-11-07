@@ -1,0 +1,55 @@
+
+body {
+    font-family: 'Kanit', sans-serif;
+}
+
+.color-primary {
+    @apply text-[#FFA133];
+}
+
+.shadow-primary {
+    @apply shadow-[rgba(0,_0,_0,_0.25)_0px_4px_4px];
+}
+
+.dragArea {
+    @apply transition-all
+}
+.drag-list-move {
+    transition: transform 0.5s;
+}
+
+.no-move {
+    transition: transform 0s;
+}
+.ghost {
+    opacity: 0.5;
+    padding: .5rem 0;
+    background: #c8ebfb;
+}
+
+
+.el-tiptap-editor__content.code-description {
+    font-family: 'Kanit', sans-serif !important;
+
+    overflow: initial !important;
+
+    h1 {
+        @apply text-3xl leading-8
+    }
+    h2 {
+        @apply text-2xl
+    }
+    h3 {
+        @apply text-xl
+    }
+    h4 {
+        @apply text-lg
+    }
+    h5 {
+        @apply text-base
+    }
+    h6 {
+        @apply text-sm
+    }
+
+}

@@ -27,13 +27,13 @@
                 <NuxtLink to="/" class="relative">
                     <Icon name="i-mdi:home" color="#FFA133" size="40"/>
                 </NuxtLink>
-                <button type="button" class="relative" @click="notificationBar = true" ref="buttonNotificationRef">
+                <!-- <button type="button" class="relative" @click="notificationBar = true" ref="buttonNotificationRef">
                     <Icon name="i-mdi:bell" color="#FFA133" size="35"/>
                 </button>
 
                 <USlideover v-model="notificationBar">
                     Noti
-                </USlideover>
+                </USlideover> -->
                 
                 <button type="button" class="flex justify-center items-center space-x-4 relative" @click="toggleMenuBar"  ref="buttonProfileRef">
 

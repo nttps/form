@@ -13,39 +13,26 @@
             </button>
         </div>
         <div class="mt-4 md:mr-8 mx-auto">
-            <NuxtLink :to="`${props.back ? props.back : `/`}`" class="ml-8 md:ml-0" v-if="props.back !== undefined"><Icon name="i-mdi-arrow-left-circle" class="text-[#FFA133]" size="40" /></NuxtLink>
-            <ul class="font-bold text-xl flex space-x-4 place-content-center" v-else>
-                <li class="bg-white py-1 px-4 rounded-full shadow-primary">
+            <ul class="font-bold text-xl flex space-x-4 place-content-center">
+                <li>
+                    <NuxtLink :to="`${props.back ? props.back : `/`}`" class="ml-8 md:ml-0" v-if="props.back !== undefined"><Icon name="i-mdi-arrow-left-circle" class="text-[#FFA133]" size="40" /></NuxtLink>
+                </li>
+                <li class="bg-white py-1 px-4 rounded-full shadow-primary" v-if="props.back === undefined && props.create !== undefined">
                     <NuxtLink to="/lists">รายการของฉัน</NuxtLink>
                 </li>
-                 <li class="bg-white py-1 px-4 rounded-full shadow-primary">
-                    <button @click="isCreate = true" class="flex items-center space-x-2"> <Icon name="i-mdi-plus-circle-outline" size="30" /> <span>สร้างรายการ</span></button>
+                <li class="bg-white py-1 px-4 rounded-full shadow-primary" v-if="props.create !== undefined" >
+                    <FormCreate />
                 </li>
             </ul>
         </div>
     </div>
-    <UModal v-model="isCreate">
-        <div class="bg-[#F3F3F3]">
-            <div class="px-4 py-1 bg-[#FFA133] text-white text-xl">สร้างรายการ <Icon name="i-mdi-checkbox-marked-circle" /></div>
-            <div class="flex flex-wrap items-center justify-center p-4 gap-4">
-                <NuxtLink to="/create/vote" class="rounded-3xl basis-1/2-gap-4 h-[200px] bg-white text-center shadow-primary flex justify-center items-center text-3xl font-bold">
-                    ระบบโหวต
-                </NuxtLink>
-                <NuxtLink to="/create/form" class="rounded-3xl basis-1/2-gap-4 h-[200px] bg-white text-center shadow-primary flex justify-center items-center text-3xl font-bold">
-                    ระบบแบบสอบถาม
-                </NuxtLink>
-                <NuxtLink to="/create/register-form" class="rounded-3xl basis-1/2-gap-4 h-[200px] bg-white text-center shadow-primary flex justify-center items-center text-3xl font-bold">
-                    ฟอร์มสมัคร
-                </NuxtLink>
-            </div>
-        </div>
-    </UModal>
+    
 </template>
 
 <script setup>
-    const props = defineProps(['title', 'icon', 'back', 'prefix', 'export', 'share'])
+    const props = defineProps(['title', 'icon', 'back', 'prefix', 'export', 'share', 'create'])
     const emit = defineEmits(['share'])
-    const isCreate = ref(false)
+    
 
 </script>
 
