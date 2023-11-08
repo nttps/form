@@ -40,7 +40,6 @@ const isOpen = computed({
         emit("update:modelValue", value);
     }
 });
-console.log(props.close);
 const emit = defineEmits(['update:model-value'])
 
 </script>
