@@ -1,12 +1,12 @@
 import { useAuthStore } from "~/stores/auth";
 
 
-export default defineNuxtRouteMiddleware(async (_to, from) => {
+export default defineNuxtRouteMiddleware((_to, from) => {
+    const { isLoggedIn } = useAuthStore();
 
-    const app = useNuxtApp();
-    const user = useAuthStore(app.$pinia);
 
-    if (!user.isLogin) {
+    console.log(isLoggedIn);
+    if (!isLoggedIn) {
         return navigateTo({ name: "login" });
     }
 });

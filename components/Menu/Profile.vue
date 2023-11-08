@@ -6,20 +6,21 @@
                 <MenuLink @click="goToSetting" class="flex items-center">การตั้งค่า</MenuLink>
             </li> -->
             <li class="px-4 py-2">
-                <MenuLink @click="logout" class="flex items-center"> ออกจากระบบ</MenuLink>
+                <MenuLink @click="logoutButton" class="flex items-center"> ออกจากระบบ</MenuLink>
             </li>
         </ul>
     </div>
 </template>
 
 <script setup>
+    const { logout } = useAuthStore();
 
-const logout = () => {
-}
+    const logoutButton = async () => {
+        logout()
+        navigateTo('/')
+        
+    }
 
-const goToSetting = () => {
-
-}
 </script>
 
 <style lang="scss" scoped>

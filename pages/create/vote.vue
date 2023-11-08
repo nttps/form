@@ -26,6 +26,10 @@
     useHead({
         title: `DDPM Questionnaire - สร้างโหวต`,
     })
+
+    definePageMeta({
+        middleware: ["auth"]
+    })
     const toast = useToast()
 
     const dateNow = moment().format('YYYY-MM-DDT00:00:00')

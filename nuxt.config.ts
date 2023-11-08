@@ -11,7 +11,19 @@ export default defineNuxtConfig({
         pageTransition: { name: "page", mode: "out-in" },
     },
     devtools: { enabled: true },
-    modules: ["@nuxtjs/google-fonts", "@vueuse/nuxt", "nuxt-icon", "@nuxt/ui"],
+    modules: [
+        "@nuxtjs/google-fonts",
+        "@vueuse/nuxt",
+        "nuxt-icon",
+        [
+            "@pinia/nuxt",
+            {
+                autoImports: ["defineStore", "acceptHMRUpdate"],
+            },
+        ],
+        "@pinia-plugin-persistedstate/nuxt",
+        "@nuxt/ui",
+    ],
     googleFonts: {
         display: "swap",
         prefetch: true,
@@ -26,6 +38,9 @@ export default defineNuxtConfig({
     ],
     colorMode: {
         preference: "light",
+    },
+    imports: {
+        dirs: ["stores"],
     },
     runtimeConfig: {
         public: {
