@@ -15,13 +15,13 @@
             "
         >
             <div>
-                <a href="/" class="flex justify-center items-center">
+                <NuxtLink to="/" class="flex justify-center items-center">
                     <img src="~/assets/images/logo.png" class="w-[50px]" alt="E-Learning Logo">
                     <div class="text-lg 2xl:text-2xl ml-4">
                         <div class="font-semibold">ระบบงานดิจิทัล</div> 
                         <div class="text-[#FFA133]">กรมป้องกันและบรรเทาสาธารณภัย</div> 
                     </div>
-                </a>
+                </NuxtLink>
             </div>
             <div class="flex space-x-2 relative">
                 <NuxtLink to="/" class="relative">
@@ -38,7 +38,7 @@
                 <button type="button" class="flex justify-center items-center space-x-4 relative" @click="toggleMenuBar"  ref="buttonProfileRef">
 
                     <Icon name="i-mdi:account-circle" color="#FFA133" size="35"/>
-                    <div class="hidden xl:block">ชื่อ</div>
+                    <div class="hidden xl:block">{{ username }}</div>
                     <div class="hidden xl:block">
                         <Icon name="i-material-symbols:arrow-drop-down" size="40" color="#3E3E3E"/>
                     </div>
@@ -63,8 +63,7 @@
     const menuBar = ref(false)
     const notificationBar = ref(false)
     const buttonProfileRef = ref(null);
-    const buttonNotificationRef = ref(null);
-    const config = useRuntimeConfig();
+    const { username } = useAuthStore();
     onClickOutside(
         buttonProfileRef,
         (event) => {

@@ -28,6 +28,9 @@
     useHead({
         title: `DDPM Questionnaire - สร้างแบบสอบถาม`,
     })
+    definePageMeta({
+        middleware: ["auth"]
+    })
 
     const toast = useToast()
     const confirm = ref(false)

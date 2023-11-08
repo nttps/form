@@ -126,7 +126,12 @@
 <script setup>
 
 import moment from "moment"
-  const toast = useToast()
+
+definePageMeta({
+  middleware: ["auth"]
+})
+
+const toast = useToast()
 
 const types = [{
   name: 'ทั้งหมด',

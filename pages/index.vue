@@ -40,6 +40,9 @@
 
 <script setup>
 
+definePageMeta({
+  middleware: ["auth"]
+})
 
 const page = ref(1)
 const pageCount = 8

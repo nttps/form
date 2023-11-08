@@ -88,6 +88,8 @@
 
 <script setup>
     import { SFacebook, SLine } from 'vue-socials';
+    const { isLoggedIn } = useAuthStore();
+
     const { copy } = useCopyToClipboard()
     const url = useRequestURL()
     const route = useRoute()
@@ -108,6 +110,8 @@
     }))
 
     const submitStatus = computed(() => submitData.value.submit.status === 'เสร็จสมบูรณ์')
+    const needLogin = computed(() => submitData.value.submit.is_require_login)
+
 
     const title = computed(() => submitData.value.submit.survey_name )
     const description = computed(() => submitData.value.submit.description.replace(/<\/?[^>]+(>|$)/g, "") )
@@ -124,6 +128,7 @@
 
     definePageMeta({
         key: route => route.fullPath,
+        //middleware: needLogin ? 'auth' : ''
     })
 
 
