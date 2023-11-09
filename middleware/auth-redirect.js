@@ -4,9 +4,6 @@ export default defineNuxtRouteMiddleware(async (_to, from) => {
         "GET"
     );
 
-    console.log(_to);
-    console.log(from);
-
     if (
         !response.surveyInfo.is_require_login
         //_to.path === `/forms/${_to.params.id}/public`
