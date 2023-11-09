@@ -8,7 +8,7 @@
                 <Icon name="i-mdi-pencil" size="25" color="black" />
             </h3>
 
-            <FormVote v-if="vote" :vote="vote" @submit="confirm = true" :loadingSubmit="loadingSubmit"/>
+            <FormVote v-if="vote" :vote="vote" @submit="confirm = true" :loadingSubmit="loadingSubmit" :create="true"/>
             
         </div>
         <ModalSuccess v-model="confirm" title="แจ้งเตือน" close>

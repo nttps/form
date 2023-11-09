@@ -5,7 +5,7 @@
         :schema="schema" 
         @submit="emit('submit')"
     >
-        <UTabs :items="tabs" class="w-full">
+        <UTabs :items="showTabs" class="w-full">
             <template #form="{ item }">
                 <div class="px-6 py-4 bg-white rounded-lg mb-4">
                     <div class="font-bold text-xl mb-2">{{ item.label }}</div>
@@ -86,9 +86,7 @@
             <template #settings="{ item }">
                 <div class="px-6 py-4 bg-white rounded-lg mb-4">
                     <div class="font-bold text-xl mb-2">{{ item.label }}</div>
-
                     <FormPermission :permissions="props.permissions.all" :user-permissions="props.permissions.user"  @fetchData="emit('fetchData')" />
-
                 </div>
             </template>
         </UTabs>
@@ -104,7 +102,7 @@
 <script setup>
     import { object, string, date } from 'yup'
 
-    const props = defineProps(['vote', 'loadingSubmit', 'permissions'])
+    const props = defineProps(['vote', 'loadingSubmit', 'permissions', 'create'])
 
     const emit = defineEmits(['submit', 'fetchData'])
 
@@ -123,6 +121,16 @@
         label: 'การเข้าถึง',
     }]
 
+    const showTabs = computed(() => {
+        if(props.create) {
+            return [{
+                slot: 'form',
+                label: 'แบบฟอร์มสอบถาม',
+            }]
+        }
+
+        return tabs
+    })
     
     const drag = ref(false)
     const dragOptions = computed(() => {

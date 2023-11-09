@@ -7,10 +7,7 @@
                 <div>สร้าง<span class="color-primary">แบบฟอร์มสมัคร</span></div> 
                 <Icon name="i-mdi-pencil" size="25" color="black" />
             </h3>
-
-        
-
-            <FormRegister v-if="form" :form="form" @submit="confirm = true"/>
+            <FormRegister v-if="form" :form="form" @submit="confirm = true" :create="true"/>
         </div>
 
         <ModalSuccess v-model="confirm" title="แจ้งเตือน" close>

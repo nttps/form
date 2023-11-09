@@ -4,7 +4,7 @@
         :schema="schema"
         @submit="emit('submit')"
     >
-        <UTabs :items="tabs" class="w-full">
+        <UTabs :items="showTabs" class="w-full">
             <template #form="{ item }">
                 <div class="px-6 py-4 bg-white rounded-lg mb-4">
                     <div class="font-bold text-xl mb-2">{{ item.label }}</div>
@@ -50,7 +50,7 @@
     import moment from 'moment';
     import { object, string, date } from 'yup'
 
-    const props = defineProps(['form', 'permissions'])
+    const props = defineProps(['form', 'permissions', 'create'])
 
     const emit = defineEmits(['submit', 'fetchData'])
     const dateNow = moment().format('YYYY-MM-DDT00:00:00')
@@ -69,6 +69,17 @@
         slot: 'settings',
         label: 'การเข้าถึง',
     }]
+
+    const showTabs = computed(() => {
+        if(props.create) {
+            return [{
+                slot: 'form',
+                label: 'แบบฟอร์มสอบถาม',
+            }]
+        }
+
+        return tabs
+    })
 </script>
 
 <style lang="scss" scoped>
