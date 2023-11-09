@@ -4,6 +4,9 @@
         <div class="px-8 mt-4">
             <h2 class="font-bold text-3xl leading-8 mb-2" v-if="form">หัวข้อ {{ form.survey_name  }}</h2>
             <ViewRegistrants v-if="form && type === 'ฟอร์มสมัคร'" :data="registrants" />
+            <ViewQuestionnaire v-if="form && type === 'แบบสอบถาม'" :data="questionnaire" />
+            <ChartPie v-if="form && type === 'ระบบโหวต' && vote.length > 0 " :data="vote"  style="width: 100%; height: 500px" />
+
         </div>
     </div>
 </template>
@@ -17,6 +20,9 @@ const route = useRoute()
 const form = ref()
 const type = computed(() => form.value.survey_type)
 const registrants = ref([]);
+const questionnaire = ref([]);
+const vote = ref([])
+
 const exportUrl = ref('')
 onMounted(() => {
     fetchData()
@@ -29,6 +35,15 @@ const fetchData = async () => {
     if(form.value.survey_type === 'ฟอร์มสมัคร') {
         fetchRegistrants()
     }
+    if(form.value.survey_type === 'แบบสอบถาม') {
+        fetchQuestionnaire()
+    }
+
+    if(form.value.survey_type === 'ระบบโหวต') {
+        fetchVote()
+    }
+
+    
 }
 
 
@@ -43,6 +58,24 @@ const fetchRegistrants = async () => {
 
     registrants.value = response.register
     exportUrl.value = response.url.pdfUrl
+}
+
+const fetchQuestionnaire = async () => {
+    const response = await useApi(`/api/servey/Submit/GetResultQuestionnaire`, 'POST', {
+        SurveyID: route.params.id,//เลขแบบสอบถาม ไม่ต้องระบุก็ได้ 
+        show_excel:1,//0=/ไม่แสดง link 1=แสดง link
+        show_pdf:1,//0=/ไม่แสดง link 1=แสดง link
+        show_image:1//0=/ไม่แสดง link 1=แสดง link
+    });
+
+    questionnaire.value = response.quizResult
+    exportUrl.value = response.url.pdfUrl
+}
+
+const fetchVote = async () => {
+    const response = await useApi(`/api/servey/Submit/GetResultVote?sv_id=${route.params.id}`, 'GET');
+
+    vote.value = response
 }
 </script>
 

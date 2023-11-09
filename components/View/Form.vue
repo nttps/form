@@ -3,11 +3,11 @@
         class="rounded-md mb-4 bg- relative"
         v-for="(question, index) in form.quizSet" :key="question.quiz.quiz_sort"
     >
-        <div class="text-center bg-[#FFA133] rounded-t-lg cursor-move py-4"></div>
+        <div class="text-center bg-[#FFA133] rounded-t-lg py-4"></div>
         <div class="p-4 bg-white">
             <div class="mb-2">
                 <div class="text-xl font-bold">{{ question.quiz.quiz_title }}</div>
-                <p class="text-lg code-description el-tiptap-editor__content" v-dompurify-html="question.quiz.quiz_desc"></p>
+                <p class="text-lg code-description el-tiptap-editor__content" v-if="question.quiz.quiz_desc" v-dompurify-html="question.quiz.quiz_desc"></p>
             </div>
 
             <div v-for="(answer, index) of question.answers" v-if="question.quiz.answer_type == 'ตัวเลือกได้ข้อเดียว' || question.quiz.answer_type == 'เลือกได้หลายข้อ'">
