@@ -9,11 +9,19 @@
         </label>
     </div>
     
-    <div class="block font-medium text-gray-700 dark:text-gray-200">สถานะ</div>
+    <div class="block font-medium text-gray-700 dark:text-gray-200">แสดงแบบฟอร์ม</div>
     <UToggle
         on-icon="i-heroicons-check-20-solid"
         off-icon="i-heroicons-x-mark-20-solid"
         v-model="status"
+        color="green"
+        class="mb-4"
+    />
+    <div class="block font-medium text-gray-700 dark:text-gray-200">จำเป็นต้อง Login</div>
+    <UToggle
+        on-icon="i-heroicons-check-20-solid"
+        off-icon="i-heroicons-x-mark-20-solid"
+        v-model="needLogin"
         color="green"
         class="mb-4"
     />
@@ -51,6 +59,13 @@ const status = computed({
   }
 })
 
+
+const needLogin = computed({
+  get: () => props.form.is_require_login,
+  set: (value) => {
+    props.form.is_require_login = value;
+  }
+})
 
 const types = []
 

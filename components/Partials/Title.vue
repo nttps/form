@@ -4,7 +4,7 @@
             <div class="text-2xl md:text-4xl bg-white py-4 pl-6 pr-3 font-bold rounded-tr-lg rounded-br-lg flex items-center space-x-2">
                 <div>{{ props.prefix ?? `ระบบ` }}<span class="color-primary">{{ props.title }}</span></div> <Icon v-if="props.icon" :name="props.icon" />
             </div>
-            <NuxtLink target="_blank" to="/" v-if="props.export" class="text-xl font-bold rounded-lg px-4 py-2 bg-[#FFA133] flex space-x-2 items-center">
+            <NuxtLink target="_blank" :to="props.export" v-if="props.export" class="text-xl font-bold rounded-lg px-4 py-2 bg-[#FFA133] flex space-x-2 items-center">
                 <span>Export</span>
                 <Icon name="i-uil-file-export" size="25" />
             </NuxtLink>

@@ -8,7 +8,7 @@
                 <Icon name="i-mdi-pencil" size="25" color="black" />
             </h3>
 
-            <FormQuestion v-if="form" :form="form" @submit="confirm = true"/>
+            <FormQuestion v-if="form" :form="form" @submit="confirm = true" :create="true"/>
             
         </div>
 
@@ -32,6 +32,8 @@
         middleware: ["auth"]
     })
 
+    const { username } = useAuthStore();
+
     const toast = useToast()
     const confirm = ref(false)
 
@@ -51,7 +53,7 @@
         is_require_login:true,
         status: "ปิด",
         remark:"",
-        created_by: "tammon.y",
+        created_by: username,
         modified_by: "",
         questions: [
             {

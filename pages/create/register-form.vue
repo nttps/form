@@ -7,10 +7,7 @@
                 <div>สร้าง<span class="color-primary">แบบฟอร์มสมัคร</span></div> 
                 <Icon name="i-mdi-pencil" size="25" color="black" />
             </h3>
-
-        
-
-            <FormRegister v-if="form" :form="form" @submit="confirm = true"/>
+            <FormRegister v-if="form" :form="form" @submit="confirm = true" :create="true"/>
         </div>
 
         <ModalSuccess v-model="confirm" title="แจ้งเตือน" close>
@@ -37,6 +34,7 @@
     })
 
     const toast = useToast()
+    const { username } = useAuthStore();
 
     const dateNow = moment().format('YYYY-MM-DDT00:00:00')
 
@@ -54,7 +52,7 @@
         is_require_login:true,
         status: "ปิด",
         remark:"",
-        created_by: "tammon.y",
+        created_by: username,
         modified_by: ""
     })
     const confirm = ref(false)

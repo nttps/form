@@ -44,6 +44,7 @@ export default defineNuxtConfig({
     },
     runtimeConfig: {
         public: {
+            cookieLifetime: 7,
             version: version,
             apiUrl: apiBaseUrl,
         },

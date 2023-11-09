@@ -18,7 +18,7 @@ useHead({
   titleTemplate: title => title !== 'DDPM Questionnaire' ? `${title} - DDPM Questionnaire` : title,
   meta: [
     { name: 'description', content: 'DDPM Questionnaire' },
-    { property: 'og:image', content: 'https://movies.nuxt.space/social-card.png' },
+    { property: 'og:image', content: '/no-cover.jpg' },
     { name: 'twitter:card', content: 'summary_large_image' },
     { name: 'twitter:site', content: '@nuxt_js' },
     { name: 'twitter:creator', content: '@nuxt_js' },
