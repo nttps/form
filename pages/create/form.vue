@@ -8,7 +8,7 @@
                 <Icon name="i-mdi-pencil" size="25" color="black" />
             </h3>
 
-            <FormQuestion v-if="form" :form="form" @submit="confirm = true"/>
+            <FormQuestion v-if="form" :form="form" @submit="confirm = true" :create="true"/>
             
         </div>
 

@@ -17,6 +17,14 @@
         color="green"
         class="mb-4"
     />
+    <div class="block font-medium text-gray-700 dark:text-gray-200">จำเป็นต้อง Login</div>
+    <UToggle
+        on-icon="i-heroicons-check-20-solid"
+        off-icon="i-heroicons-x-mark-20-solid"
+        v-model="needLogin"
+        color="green"
+        class="mb-4"
+    />
     <UFormGroup label="วันที่เริ่มการโหวต" name="survey_date_from" size="xl" class="mb-2">
         <UPopover :popper="{ placement: 'bottom-start' }">
             <UButton icon="i-heroicons-calendar-days-20-solid" class="md:w-4/5" size="md" :label="surveyDateFrom" />
@@ -51,6 +59,13 @@ const status = computed({
   }
 })
 
+
+const needLogin = computed({
+  get: () => props.form.is_require_login,
+  set: (value) => {
+    props.form.is_require_login = value;
+  }
+})
 
 const types = []
 
