@@ -7,7 +7,7 @@ export const useAuthStore = defineStore("auth-store", {
 
     getters: {
         isLoggedIn: (state) => !!state.user,
-        username: (state) => state.user.currentUser,
+        username: (state) => state.user.currentUser || '',
     },
     actions: {
         async login(loginForm) {
@@ -34,13 +34,6 @@ export const useAuthStore = defineStore("auth-store", {
                         secure: true,
                     });
                     newCookie.value = this.user;
-                    /* Store user in local storage to keep them logged in between page refreshes */
-                    // localStorage.setItem("user", JSON.stringify(this.user));
-                    // localStorage.setItem("token", JSON.stringify(this.token));
-                    // localStorage.setItem(
-                    //     "isLogin",
-                    //     JSON.stringify(this.isLogin)
-                    // );
                 })
                 .catch((error) => {
                     throw error;
