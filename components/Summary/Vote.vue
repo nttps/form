@@ -14,6 +14,15 @@
                         :loading-state="{ label: 'กำลังโหลด ...' }" 
                         :empty-state="{ label: 'ไม่พบรายการ' }"
                     >
+                        <template #answer_desc-data="{ row }">
+                            <div class="flex items-center justify-center">
+                                <div class="text-center w-1/2">{{ row.answer_desc }}</div>
+                                <div class="w-1/2" v-if="row.answer_img_url">
+                                    <img :src="row.answer_img_url" class="h-[80px]" />
+                                </div>
+                                
+                            </div>
+                        </template>
                         <template #count_answer-data="{ row }">
                             <div class="text-center">{{ row.count_answer }}</div>
                         </template>
