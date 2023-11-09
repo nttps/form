@@ -43,8 +43,8 @@ export default defineNuxtConfig({
         dirs: ["stores"],
     },
     runtimeConfig: {
-        cookieLifetime: 7,
         public: {
+            cookieLifetime: 7,
             version: version,
             apiUrl: apiBaseUrl,
         },
