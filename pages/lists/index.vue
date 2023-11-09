@@ -132,6 +132,7 @@ definePageMeta({
 })
 
 const toast = useToast()
+const { username } = useAuthStore();
 
 const types = [{
   name: 'ทั้งหมด',
@@ -195,11 +196,6 @@ const pageTotal = computed(() => lists.value.length)
 const pageFrom = computed(() => (page.value - 1) * pageCount.value + 1)
 const pageTo = computed(() => Math.min(page.value * pageCount.value, pageTotal.value))
 
-
-
-onMounted(() => {
-})
-
 // Data
 const { data: lists, pending, refresh } = await useAsyncData(
   'lists',
@@ -232,7 +228,7 @@ const deletePopup = (id) => {
 const deleteItem = async () => {
   const response = await useApi('/api/servey/ServeyInfo/DeleteDoc', 'DELETE', { 
     SurveyID : deleteId.value,
-    DeletedBy :"tammon.y"
+    DeletedBy : username
   });
 
   if(response.result === 'ok') {
@@ -263,7 +259,7 @@ const deleteAll = async () => {
 
   const response = await useApi('/api/servey/ServeyInfo/DeleteDocs', 'DELETE', { 
     SurveyID : itemsDelete,
-    DeletedBy :"tammon.y"
+    DeletedBy : username
   });
 
   if(response.result === 'ok') {

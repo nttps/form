@@ -31,6 +31,7 @@
         middleware: ["auth"]
     })
     const toast = useToast()
+    const { username } = useAuthStore();
 
     const dateNow = moment().format('YYYY-MM-DDT00:00:00')
 
@@ -50,7 +51,7 @@
         status: "ปิด",
         answer_type: "ตัวเลือกได้ข้อเดียว",
         remark:"",
-        created_by: "tammon.y",
+        created_by: username,
         modified_by: "",
         choices: [
             {

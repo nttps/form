@@ -32,6 +32,8 @@
         middleware: ["auth"]
     })
 
+    const { username } = useAuthStore();
+
     const toast = useToast()
     const confirm = ref(false)
 
@@ -51,7 +53,7 @@
         is_require_login:true,
         status: "ปิด",
         remark:"",
-        created_by: "tammon.y",
+        created_by: username,
         modified_by: "",
         questions: [
             {

@@ -1,3 +1,5 @@
+const { username } = useAuthStore();
+
 export const submitQuestion = async (form, survey) => {
     let status = false;
 
@@ -5,7 +7,7 @@ export const submitQuestion = async (form, survey) => {
         for (let index = 0; index < form.value.questions.length; index++) {
             const quiz = form.value.questions[index];
             quiz.quiz.survey_id = survey.surveyInfo.survey_id;
-            quiz.quiz.modified_by = "";
+            quiz.quiz.modified_by = username;
             quiz.quiz.quiz_sort = index + 1;
             const resQuiz = await quizSubmit(quiz.quiz);
 
@@ -21,7 +23,7 @@ export const submitQuestion = async (form, survey) => {
             for (let index = 0; index < quiz.answers.length; index++) {
                 const answer = quiz.answers[index];
                 answer.quiz_id = quizId;
-                answer.modified_by = "";
+                answer.modified_by = username;
                 answer.answer_sort = index + 1;
                 const res = await answerSubmit(answer);
 
@@ -35,7 +37,6 @@ export const submitQuestion = async (form, survey) => {
             }
         }
 
-       
         status = true;
     }
 

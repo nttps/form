@@ -101,12 +101,14 @@
     const urlShare = url.href
     const confirm = ref(false)
     const success = ref(false)
+    const { username } = useAuthStore();
+
 
     const { data: submitData, refresh } = await useAsyncData('submitData', async () => await useApi(`/api/servey/Submit/Save`, 'POST', {
         survey_id:  route.params.id,//แบบแบบสอบถาม
         username:   "xxxxxxxyyyy", 
-        created_by: "tammon.y",
-        modified_by:    "tammon.y"
+        created_by: username,
+        modified_by: username
     }))
 
     const submitStatus = computed(() => submitData.value.submit.status === 'เสร็จสมบูรณ์')
