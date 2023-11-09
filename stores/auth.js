@@ -1,4 +1,3 @@
-const { cookieLifetime  } = useRuntimeConfig();
 
 
 export const useAuthStore = defineStore("auth-store", {
@@ -13,6 +12,7 @@ export const useAuthStore = defineStore("auth-store", {
     actions: {
         async login(loginForm) {
             const config = useRuntimeConfig();
+
             const baseUrl = `${config.public.apiUrl}/api/AppsLogin/LoginMini`;
 
             await $fetch(`${baseUrl}`, {
@@ -27,7 +27,7 @@ export const useAuthStore = defineStore("auth-store", {
                     this.user = response;
 
                     const newCookie = useCookie("user", {
-                        maxAge: 60 * 24 * cookieLifetime,
+                        maxAge: 60 * 24 * config.cookieLifetime,
                         sameSite: true,
                         secure: true,
                     });
