@@ -2,7 +2,7 @@
     <div>
         <PartialsTitle prefix="ผล" v-if="form" :title="type" icon="i-ri-chat-poll-fill" :export="exportUrl" back="/lists"/>
         <div class="px-8 mt-4 ">
-            <UCard class="mb-4" :ui="{ ring: 'ring-1 ring-[#FFA800] dark:ring-gray-800', header: { background: 'bg-[#FFA800]'}}">
+            <UCard class="mb-4" :ui="{ ring: 'ring-1 ring-[#FFA800] dark:ring-gray-800', header: { background: 'bg-[#FFA800]'}}" id="print-me">
                 <template #header>
                     <h2 class="font-bold text-3xl leading-8" v-if="form">หัวข้อ {{ form.survey_name  }}</h2>
                 </template>
@@ -19,6 +19,8 @@
 </template>
 
 <script setup>
+
+import { usePaperizer } from 'paperizer'
 definePageMeta({
   middleware: ["auth"]
 })
@@ -31,6 +33,16 @@ const questionnaire = ref([]);
 const vote = ref([])
 
 const exportUrl = ref('')
+
+const { paperize } = usePaperizer('print-me', {
+  styles: [
+    '/tailwind.css'
+  ]
+})
+const print = () => {
+  paperize()
+}
+
 onMounted(() => {
     fetchData()
 })
