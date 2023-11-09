@@ -15,6 +15,8 @@ export const useAuthStore = defineStore("auth-store", {
 
             const baseUrl = `${config.public.apiUrl}/api/AppsLogin/LoginMini`;
 
+            const lifetime = (60 * 24 * config.public.cookieLifetime);
+
             await $fetch(`${baseUrl}`, {
                 method: "POST",
                 body: loginForm,
@@ -27,7 +29,7 @@ export const useAuthStore = defineStore("auth-store", {
                     this.user = response;
 
                     const newCookie = useCookie("user", {
-                        maxAge: 60 * 24 * config.cookieLifetime,
+                        maxAge: lifetime,
                         sameSite: true,
                         secure: true,
                     });
