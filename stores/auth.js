@@ -1,4 +1,6 @@
-// store/auth.ts
+const { cookieLifetime  } = useRuntimeConfig();
+
+
 export const useAuthStore = defineStore("auth-store", {
     state: () => ({
         user: useCookie("user"),
@@ -25,7 +27,7 @@ export const useAuthStore = defineStore("auth-store", {
                     this.user = response;
 
                     const newCookie = useCookie("user", {
-                        maxAge: 60 * 24 * 28,
+                        maxAge: 60 * 24 * cookieLifetime,
                         sameSite: true,
                         secure: true,
                     });
