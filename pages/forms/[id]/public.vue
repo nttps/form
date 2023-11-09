@@ -170,8 +170,8 @@
     const submit = async () => {
         const res = await useApi(`/api/servey/Submit/SubmitTest`, 'POST', {
             SubmitID: submitData.value.submit.submit_id,//ปล่อยว่างคือเพิ่ม ระบุค่าคือแก้ไข
-            Comment: submitData.value.submit.comment
-
+            Comment: submitData.value.submit.comment,
+            Fullname: submitData.value.submit.full_name
        });
 
         if(res.result === 'ok') {
