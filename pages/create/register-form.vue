@@ -37,6 +37,7 @@
     })
 
     const toast = useToast()
+    const { username } = useAuthStore();
 
     const dateNow = moment().format('YYYY-MM-DDT00:00:00')
 
@@ -54,7 +55,7 @@
         is_require_login:true,
         status: "ปิด",
         remark:"",
-        created_by: "tammon.y",
+        created_by: username,
         modified_by: ""
     })
     const confirm = ref(false)

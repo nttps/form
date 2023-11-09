@@ -67,6 +67,9 @@
     const props = defineProps(['question', 'index'])
     const emits = defineEmits(['addAnswer', 'deleteAnswer'])
 
+    const { username } = useAuthStore();
+
+
     const alertImageDelete = ref(false)
     const dragOptions = computed(() => {
       return {
@@ -111,7 +114,7 @@
 
         const res = await useApi('/api/servey/Quiz/DeleteAnswerPhoto', 'DELETE', { 
             AnswerID: answer.answer_id,
-            ActionBy:"tammon.y"
+            ActionBy: username
         })
 
         if(res.result == 'ok') {

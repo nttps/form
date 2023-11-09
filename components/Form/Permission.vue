@@ -101,6 +101,8 @@
 
     const emit = defineEmits(['fetchData'])
     const route = useRoute()
+    const { username } = useAuthStore();
+
 
     const userPermis = computed(() =>  props.userPermissions[0].permission)
 
@@ -115,7 +117,7 @@
         survey_id: route.params.id,
         permission_type: null,
         permission_value: null,
-        modified_by: "tammon.y",
+        modified_by: username,
 
     })
 
@@ -163,7 +165,7 @@
         dataUserName.value = name
         dataDeletePermissions.value.permission_type = 'ปิดกั้นบุคคล'
         dataDeletePermissions.value.permission_value = username
-        dataDeletePermissions.value.modified_by = "tammon.y"
+        dataDeletePermissions.value.modified_by = username
     }
 
     const addPermission = (permission) => {
@@ -173,7 +175,7 @@
                 'survey_id': route.params.id,
                 'permission_type':'หน่วยงาน',//มีได้ 3 ค่าคือ หน่วยงาน , ระดับ , ตำแหน่ง 
                 'permission_value':'',//ให้เลือกจาก dropdown โดยใช้ API จาก JobType,JobLevel,Department(ให้โดยคำว่า 'ทั้งหมด' สำหรับการมองเห็นทั้งหมด
-                'modified_by': "tammon.y"//current user login
+                'modified_by': username//current user login
             })
 
         }
@@ -182,7 +184,7 @@
                 'survey_id': route.params.id,
                 'permission_type':'ตำแหน่ง',//มีได้ 3 ค่าคือ หน่วยงาน , ระดับ , ตำแหน่ง 
                 'permission_value':'',//ให้เลือกจาก dropdown โดยใช้ API จาก JobType,JobLevel,Department(ให้โดยคำว่า 'ทั้งหมด' สำหรับการมองเห็นทั้งหมด
-                'modified_by': "tammon.y"//current user login
+                'modified_by': username//current user login
             })
 
         }
@@ -191,7 +193,7 @@
                 'survey_id': route.params.id,
                 'permission_type':'ระดับ',//มีได้ 3 ค่าคือ หน่วยงาน , ระดับ , ตำแหน่ง 
                 'permission_value':'',//ให้เลือกจาก dropdown โดยใช้ API จาก JobType,JobLevel,Department(ให้โดยคำว่า 'ทั้งหมด' สำหรับการมองเห็นทั้งหมด
-                'modified_by': "tammon.y"//current user login
+                'modified_by': username//current user login
             })
         }
         
@@ -237,7 +239,7 @@
             survey_id: route.params.id,
             permission_type: null,
             permission_value: null,
-            modified_by: "tammon.y",
+            modified_by: username,
         }
     }
 
