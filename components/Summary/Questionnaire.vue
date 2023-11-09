@@ -1,6 +1,6 @@
 <template>
     <div v-for="({ quiz, answers }, index) in props.data">
-        <UCard class="mb-4">
+        <UCard class="mb-4" :ui="{ header: { background: 'bg-[#FFA800]'}}">
             <template #header>
                 <h3 class="text-2xl font-bold">คำถามที่ {{ index +1 }} {{ quiz.quiz_title }}</h3>
             </template>
@@ -12,7 +12,14 @@
                 <div class="w-1/2 flex items-center">
                     <div class="flex border relative rounded-2xl border-[#FFA800] mb-2 w-full">
                         <div class="w-full ">
-                            <UTable :rows="answers" :columns="answerColumns" :ui="{ td: { base: 'w-1/2'}, tr: {base: 'divide-x divide-[#FFA800]'}}" class="bg-white">
+                            <UTable 
+                                :rows="answers" 
+                                :columns="answerColumns" 
+                                :ui="{ td: { base: 'w-1/2'}, tr: {base: 'divide-x divide-[#FFA800]'}}" 
+                                class="bg-white"
+                                :loading-state="{ label: 'กำลังโหลด ...' }" 
+                                :empty-state="{ label: 'ไม่พบรายการ' }"
+                            >
                                 <template #count_answer-data="{ row }">
                                     <div class="text-center">{{ row.count_answer }}</div>
                                 </template>

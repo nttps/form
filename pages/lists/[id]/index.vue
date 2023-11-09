@@ -1,12 +1,19 @@
 <template>
     <div>
         <PartialsTitle prefix="ผล" v-if="form" :title="type" icon="i-ri-chat-poll-fill" :export="exportUrl" back="/lists"/>
-        <div class="px-8 mt-4">
-            <h2 class="font-bold text-3xl leading-8 mb-2" v-if="form">หัวข้อ {{ form.survey_name  }}</h2>
-            <ViewRegistrants v-if="form && type === 'ฟอร์มสมัคร'" :data="registrants" />
-            <ViewQuestionnaire v-if="form && type === 'แบบสอบถาม'" :data="questionnaire" />
-            <ChartPie v-if="form && type === 'ระบบโหวต' && vote.length > 0 " :data="vote"  style="width: 100%; height: 500px" />
+        <div class="px-8 mt-4 ">
+            <UCard class="mb-4" :ui="{ ring: 'ring-1 ring-[#FFA800] dark:ring-gray-800', header: { background: 'bg-[#FFA800]'}}">
+                <template #header>
+                    <h2 class="font-bold text-3xl leading-8" v-if="form">หัวข้อ {{ form.survey_name  }}</h2>
+                </template>
 
+                <SummaryRegistrants v-if="form && type === 'ฟอร์มสมัคร'" :data="registrants" />
+                <SummaryQuestionnaire v-if="form && type === 'แบบสอบถาม'" :data="questionnaire" />
+                <SummaryVote v-if="form && type === 'ระบบโหวต' && vote.length > 0 " :data="vote"/>
+            </UCard>
+
+            
+            
         </div>
     </div>
 </template>

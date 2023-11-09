@@ -1,7 +1,14 @@
 <template>
     <div class="flex border relative not-prose rounded-2xl border-[#FFA800] mb-2 div">
         <div class="w-full ">
-            <UTable :columns="columns" :rows="props.data" class="bg-white" :ui="{ tr: {base: 'divide-x divide-[#FFA800]'} }"> 
+            <UTable 
+              :columns="columns" 
+              :rows="props.data" 
+              class="bg-white" 
+              :ui="{ tr: {base: 'divide-x divide-[#FFA800]'} }"
+              :loading-state="{ label: 'กำลังโหลด ...' }" 
+              :empty-state="{ label: 'ไม่พบรายการ' }"
+            > 
                 <template #created_date-data="{ row }">
                     <div class="text-center">{{ fomatDate(row.created_date) }}</div>
                 </template>
