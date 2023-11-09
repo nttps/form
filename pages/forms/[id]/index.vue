@@ -88,7 +88,7 @@
 
 <script setup>
     import { SFacebook, SLine } from 'vue-socials';
-    const { isLoggedIn } = useAuthStore();
+    const { isLoggedIn, username } = useAuthStore();
 
     const { copy } = useCopyToClipboard()
     const url = useRequestURL()
@@ -101,12 +101,12 @@
     const urlShare = url.href
     const confirm = ref(false)
     const success = ref(false)
-    const { username } = useAuthStore();
 
 
     const { data: submitData, refresh } = await useAsyncData('submitData', async () => await useApi(`/api/servey/Submit/Save`, 'POST', {
         survey_id:  route.params.id,//แบบแบบสอบถาม
-        username:   "xxxxxxxyyyy", 
+        username:   username,
+        full_name: "", 
         created_by: username,
         modified_by: username
     }))
