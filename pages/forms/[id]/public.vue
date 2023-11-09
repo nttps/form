@@ -16,7 +16,11 @@
                 <div class="p-4 bg-white">
                     <div class="text-lg font-bold mb-2">ข้อเสนอแนะ</div>
                     <UTextarea v-model="submitData.submit.comment" placeholder="กรอกข้อเสนอแนะ" color="gray" :rows="5" size="xl" :disabled="submitStatus"/>
+                    <div class="text-lg font-bold mb-2 mt-2">ชื่อ - นามสกุล</div>
+                    <UInput v-model="submitData.submit.full_name" placeholder="กรอกชื่อ - นามสกุล"/>
                 </div>
+
+                 
             </div>
             <div class="text-center" v-if="!submitStatus">
                 <button class="rounded-lg px-6 py-1.5 bg-[#FFA133]" type="submit">{{ submitData.submit.survey_type === 'ฟอร์มสมัคร' ? 'สมัคร' : 'ส่ง' }}</button>
@@ -88,8 +92,6 @@
 
 <script setup>
     import { SFacebook, SLine } from 'vue-socials';
-    const { isLoggedIn, username } = useAuthStore();
-
     const { copy } = useCopyToClipboard()
     const url = useRequestURL()
     const route = useRoute()
@@ -105,10 +107,10 @@
 
     const { data: submitData, refresh } = await useAsyncData('submitData', async () => await useApi(`/api/servey/Submit/Save`, 'POST', {
         survey_id:  route.params.id,//แบบแบบสอบถาม
-        username:   username,
+        username:   "guest",
         full_name: "", 
-        created_by: username,
-        modified_by: username
+        created_by: "",
+        modified_by: ""
     }))
 
     const submitStatus = computed(() => submitData.value.submit.status === 'เสร็จสมบูรณ์')
@@ -130,9 +132,8 @@
 
     definePageMeta({
         key: route => route.fullPath,
-        middleware: [
-            'auth'
-        ]
+        layout: 'guest',
+        middleware: ['auth-redirect']
     })
 
     const shareModal = () => {
@@ -170,6 +171,7 @@
         const res = await useApi(`/api/servey/Submit/SubmitTest`, 'POST', {
             SubmitID: submitData.value.submit.submit_id,//ปล่อยว่างคือเพิ่ม ระบุค่าคือแก้ไข
             Comment: submitData.value.submit.comment
+
        });
 
         if(res.result === 'ok') {
