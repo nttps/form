@@ -55,7 +55,7 @@
         modified_by: "",
         choices: [
             {
-                answer: 'ตัวเลือกที่ 1',
+                answer: '',
                 answer_id: '',
                 image: null,
                 answer_type: 'ตัวเลือกได้ข้อเดียว',

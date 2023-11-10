@@ -47,7 +47,7 @@
                                                     <button type="button" class=" cursor-move"><Icon name="i-uil-draggabledots" /></button>
                                                 </div>
                                                 <div class="flex-1">
-                                                    <UInput :id="`answer${index}`" name="answer" v-model="choice.answer" size="md" />
+                                                    <UInput :id="`answer${index}`" name="answer" v-model="choice.answer" :placeholder="`ตัวเลือกที่ ${index+1}`" size="md" />
                                                 </div>
                                                 <div class="min-w-max px-1">
                                                     <label :for="`image_${index}`" class="cursor-pointer">
@@ -148,7 +148,7 @@
     
     const addChoice = () => {
         props.vote.choices.push({
-            answer: 'ตัวเลือกที่ ' + (props.vote.choices.length + 1),
+            answer: '',
             answer_sort: (props.vote.choices.length + 1),
             answer_type: 'ตัวเลือกได้ข้อเดียว',
         })
