@@ -14,10 +14,20 @@
     let vueChart = shallowRef({ root: null })
     onMounted(() => {
         let  root = am5.Root.new(chartdiv.value);
+
+        const myTheme = am5.Theme.new(root);
+
+        myTheme.rule("Label").setAll({
+            fontFamily: "Kanit"
+        });
+
         root._logo.dispose();
         root.setThemes([
-            am5themes_Animated.new(root)
+            am5themes_Animated.new(root),
+            myTheme
         ]);
+
+      
 
         // Create chart
         // https://www.amcharts.com/docs/v5/charts/percent-charts/pie-chart/
@@ -34,7 +44,9 @@
             am5percent.PieSeries.new(root, {
                 valueField: "count_answer",
                 categoryField: "answer_desc",
-                endAngle: 270
+                endAngle: 270,
+                legendLabelText: "[{fill}]{category}[/]",
+                legendValueText: "[{fill}] ({value} คน)[/]"
             })
         );
 
@@ -48,13 +60,20 @@
 
         // Create legend
         // https://www.amcharts.com/docs/v5/charts/percent-charts/legend-percent-series/
-        let legend = chart.children.push(am5.Legend.new(root, {
-            centerX: am5.percent(50),
-            x: am5.percent(50),
-            marginTop: 15,
-            marginBottom: 15
-        }));
+       // Add legend
+        let legend = chart.children.push( 
+            am5.Legend.new(root, {
+                centerX: am5.percent(50),
+                x: am5.percent(50),
+            })
+        );
 
+        legend.markerRectangles.template.setAll({
+            cornerRadiusTL: 10,
+            cornerRadiusTR: 10,
+            cornerRadiusBL: 10,
+            cornerRadiusBR: 10
+        });
         legend.data.setAll(series.dataItems);
             
 
