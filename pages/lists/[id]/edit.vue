@@ -75,8 +75,10 @@
                 icon: 'i-heroicons-check-badge',
                 timeout: 1000,
             })
+
+            navigateTo(`/lists`)
         }
-        fetchData()
+        //fetchData()
     }
 
 </script>

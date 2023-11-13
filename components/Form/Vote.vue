@@ -15,11 +15,11 @@
                         </div>
                         <div class="md:w-4/5">
                             <UFormGroup label="หัวข้อการโหวต" name="survey_name" size="xl" class="mb-2" required>
-                                <UInput v-model="props.vote.survey_name" placeholder="กรอกหัวข้อ" size="md" />
+                                <UInput v-model="props.vote.survey_name" placeholder="กรอกหัวข้อ" size="md" :disabled="props.vote.status === 'เปิด'" />
                             </UFormGroup>
                             <UFormGroup label="รายละเอียด" name="description" size="xl" class="mb-2">
                                 <ClientOnly>
-                                    <Editor v-model="props.vote.description" height="300px" />
+                                    <Editor v-model="props.vote.description" :disabled="props.vote.status === 'เปิด'" height="300px" />
                                 </ClientOnly>
                             </UFormGroup>
                             <UFormGroup label="ตัวเลือก" name="choices" size="xl" class="mb-3">
@@ -44,21 +44,21 @@
                                         >
                                             <div class="flex items-center space-x-2">
                                                 <div class="min-w-max px-1 list-group-item-drag">
-                                                    <button type="button" class=" cursor-move"><Icon name="i-uil-draggabledots" /></button>
+                                                    <button type="button" :class="props.vote.status === 'เปิด' ? ' cursor-not-allowed' : 'cursor-move'" :disabled="props.vote.status === 'เปิด'"><Icon name="i-uil-draggabledots" /></button>
                                                 </div>
                                                 <div class="flex-1">
-                                                    <UInput :id="`answer${index}`" name="answer" v-model="choice.answer" :placeholder="`ตัวเลือกที่ ${index+1}`" size="md" />
+                                                    <UInput :id="`answer${index}`" name="answer" v-model="choice.answer" :placeholder="`ตัวเลือกที่ ${index+1}`" size="md" :disabled="props.vote.status === 'เปิด'" required />
                                                 </div>
                                                 <div class="min-w-max px-1">
-                                                    <label :for="`image_${index}`" class="cursor-pointer">
+                                                    <label :for="`image_${index}`" :class="props.vote.status === 'เปิด' ? '' : 'cursor-pointer'" >
                                                         <Icon name="i-mdi-file-image-box" size="25" />
-                                                        <UInput type="file" :name="`image_${index}`" accept="image/x-png,image/gif,image/jpeg" @change="pickImage($event, index)" :id="`image_${index}`" class="hidden" />
+                                                        <UInput type="file" :name="`image_${index}`" accept="image/x-png,image/gif,image/jpeg" @change="pickImage($event, index)" :id="`image_${index}`" class="hidden" :disabled="props.vote.status === 'เปิด'"/>
                                                     </label>
                                                    
                                                     <!-- <button type="button" @click="addImageChoice(index)"><Icon name="i-mdi-file-image-box" size="25" /></button> -->
                                                 </div>
                                                 <div class="min-w-max px-1" v-if="vote.choices.length > 1">
-                                                    <button type="button" @click="deleteChoice(index)"><Icon name="i-mdi-close" /></button>
+                                                    <button type="button" @click="deleteChoice(index)" :disabled="props.vote.status === 'เปิด'"><Icon name="i-mdi-close" /></button>
                                                 </div>
                                             </div>
                                             <div v-if="choice.answer_img || choice.image_path" class="ml-7 mt-4 relative max-w-max">

@@ -16,6 +16,8 @@
         v-model="status"
         color="green"
         class="mb-4"
+        :disabled="props.form.status === 'เปิด'"
+        @update:model-value="updatePublic"
     />
     <div class="block font-medium text-gray-700 dark:text-gray-200">จำเป็นต้อง Login</div>
     <UToggle
@@ -23,19 +25,20 @@
         off-icon="i-heroicons-x-mark-20-solid"
         v-model="needLogin"
         color="green"
+        :disabled="props.form.status === 'เปิด'"
         class="mb-4"
     />
-    <UFormGroup label="วันที่เริ่มการโหวต" name="survey_date_from" size="xl" class="mb-2">
+    <UFormGroup :label="labelStartDate" name="survey_date_from" size="xl" class="mb-2">
         <UPopover :popper="{ placement: 'bottom-start' }">
-            <UButton icon="i-heroicons-calendar-days-20-solid" class="md:w-4/5" size="md" :label="surveyDateFrom" />
+            <UButton icon="i-heroicons-calendar-days-20-solid" class="md:w-4/5" size="md" :label="surveyDateFrom" :disabled="props.form.status === 'เปิด'" />
             <template #panel="{ close }">
                 <FormDatePicker v-model="props.form.survey_date_from" @close="close"  @update:model-value="validateStartDate" />
             </template>
         </UPopover>
     </UFormGroup>
-    <UFormGroup label="วันที่สิ้นสุดการโหวต" name="survey_date_to" size="xl" class="mb-2">
+    <UFormGroup :label="labelEndDate" name="survey_date_to" size="xl" class="mb-2">
         <UPopover :popper="{ placement: 'bottom-start' }">
-            <UButton icon="i-heroicons-calendar-days-20-solid" class="md:w-4/5" size="md" :label="surveyDateTo" />
+            <UButton icon="i-heroicons-calendar-days-20-solid" class="md:w-4/5" size="md" :label="surveyDateTo" :disabled="props.form.status === 'เปิด'"/>
             <template #panel="{ close }">
                 <FormDatePicker v-model="props.form.survey_date_to"  @close="close" @update:model-value="validateEndDate" />
             </template>
@@ -46,6 +49,14 @@
             {{ messageAlert }}
         </div>
     </UModal>
+
+    <ModalSuccess v-model="alertPublicModal" title="แจ้งเตือน">
+        <div class="text-2xl text-center font-bold pb-2">เมื่อเปิดการแสดงแบบฟอร์ม จะไม่สามารถแก้ไขข้อมูลได้ <br /> ยืนยันการเปิดแบบฟอร์มใช่หรือไม่</div>
+        <div class="flex justify-center space-x-3">
+            <button type="button" class="px-4 py-2 bg-green-600 text-base rounded-[5px] text-white" @click="props.form.status = 'เปิด';alertPublicModal = false">ยืนยัน</button>
+            <button type="button" class="px-4 py-2 bg-red-600 text-base rounded-[5px] text-white" @click="props.form.status = 'ปิด';alertPublicModal = false">ไม่ยืนยัน</button>
+        </div>
+    </ModalSuccess>
    
 </template>
 
@@ -57,7 +68,7 @@ moment.locale('th')
 const props = defineProps(['form'])
 const alertDateModal = ref(false)
 const messageAlert = ref('')
-
+const alertPublicModal = ref(false)
  
 const surveyDateFrom = computed(() => props.form.survey_date_from ? moment(props.form.survey_date_from).format('DD/MM/yyyy') : ``)
 const surveyDateTo = computed(() => props.form.survey_date_to ? moment(props.form.survey_date_to).format('DD/MM/yyyy')  : ``) 
@@ -68,7 +79,25 @@ const status = computed({
   }
 })
 
+const labelStartDate = computed(() => {
+    if(props.form.survey_type === 'ระบบโหวต') {
+        return 'วันที่เริ่มการโหวต'
+    }else if (props.form.survey_type === 'แบบสอบถาม') {
+        return 'วันที่เริ่มตอบแบบสอบถาม'
+    }else if (props.form.survey_type === 'ฟอร์มสมัคร') {
+        return 'วันที่เริ่มต้นสมัคร'
+    }
+})
 
+const labelEndDate = computed(() => {
+    if(props.form.survey_type === 'ระบบโหวต') {
+        return 'วันที่สิ้นสุดการโหวต'
+    }else if (props.form.survey_type === 'แบบสอบถาม') {
+        return 'วันที่สิ้นสุดตอบแบบสอบถาม'
+    }else if (props.form.survey_type === 'ฟอร์มสมัคร') {
+        return 'วันที่สิ้นสุดการสมัคร'
+    }
+})
 const needLogin = computed({
   get: () => props.form.is_require_login,
   set: (value) => {
@@ -101,6 +130,13 @@ const validateStartDate = (value) => {
 
         alertDateModal.value = true
         messageAlert.value = 'กรุณาเลือกวันที่ให้ถูกต้อง วันที่เริ่มไม่ควรมากกว่าวันที่สิ้นสุด'
+    }
+}
+
+const updatePublic = (value) => {
+
+    if(value) {
+        alertPublicModal.value = true
     }
 }
 

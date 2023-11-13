@@ -14,7 +14,7 @@
                         </div>
                         <div class="md:w-4/5">
                             <UFormGroup label="ชื่อแบบฟอร์มสมัคร" name="survey_name" size="xl" class="mb-2">
-                                <UInput v-model="props.form.survey_name" placeholder="กรอกชื่อแบบฟอร์มสมัคร" size="md" />
+                                <UInput v-model="props.form.survey_name" :disabled="props.form.status === 'เปิด'" placeholder="กรอกชื่อแบบฟอร์มสมัคร" size="md" />
                             </UFormGroup>
                             <UFormGroup label="รายละเอียด" name="description" size="xl" class="mb-2">
                                 <ClientOnly>
@@ -40,7 +40,7 @@
         </UTabs>
 
         <div class="text-right mt-4">
-            <button class="rounded-lg px-6 py-1.5 bg-[#FFA133]" type="submit">{{ props.form.survey_id ? `แก้ไข` : `สร้าง` }}</button>
+            <UButton size="xl" :label="props.form.survey_id ? `แก้ไข` : `สร้าง`" type="submit" />
             <NuxtLink :to="`${props.form.survey_id ? `/lists` : `/`}`" class="ml-4 rounded-lg px-6 py-1.5 border border-gray-400">ยกเลิก</NuxtLink>
         </div>
     </UForm>
@@ -74,7 +74,7 @@
         if(props.create) {
             return [{
                 slot: 'form',
-                label: 'แบบฟอร์มสอบถาม',
+                label: 'แบบฟอร์มสมัคร',
             }]
         }
 

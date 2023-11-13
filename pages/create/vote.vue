@@ -80,7 +80,7 @@
                 timeout: 2000,
             })
 
-            navigateTo(`/lists/${survey.surveyInfo.survey_id}/edit`)
+            navigateTo(`/lists`)
         }
     }
 </script>

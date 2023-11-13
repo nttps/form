@@ -24,17 +24,17 @@
                         </div>
                     </div>
                     <div class="flex-1">
-                        <UInput placeholder="กรอกคำตอบ" v-model="answer.answer" required/>
+                        <UInput placeholder="กรอกคำตอบ" v-model="answer.answer" :placeholder="`ตัวเลือกที่ ${indexA+1}`" required :disabled="props.status === 'เปิด'"/>
                     </div>
                     <div class="min-w-max flex space-x-2">
                         <UTooltip text="แทรกรูปภาพตัวเลือก">
-                            <label :for="`image_${indexA}`" class="cursor-pointer">
+                            <label :for="`image_${indexA}`" :class="props.status === 'เปิด' ? 'cursor-not-allowed' : 'cursor-pointer'" >
                                 <Icon name="i-mdi-file-image-box" size="25" />
-                                <UInput type="file" :name="`image_${indexA}`" accept="image/x-png,image/gif,image/jpeg" @change="pickImage($event, indexA)" :id="`image_${indexA}`" class="hidden" />
+                                <UInput type="file" :name="`image_${indexA}`" :disabled="props.status === 'เปิด'" accept="image/x-png,image/gif,image/jpeg" @change="pickImage($event, indexA)" :id="`image_${indexA}`" class="hidden" />
                             </label>
                         </UTooltip>
                         <UTooltip text="ลบตัวเลือก" v-if="props.question.answers.length > 1" >
-                            <button class="hover:bg-black/5 text-gray-600 " type="button" @click="emits('deleteAnswer', { index: props.index, indexA})"> 
+                            <button class="hover:bg-black/5 text-gray-600" :class="props.status === 'เปิด' ? 'cursor-not-allowed' : ''" :disabled="props.status === 'เปิด'" type="button" @click="emits('deleteAnswer', { index: props.index, indexA})"> 
                                 <Icon name="i-mdi-close" size="30"/> 
                             </button>
                         </UTooltip>
@@ -43,7 +43,7 @@
 
                 <div v-if="answer.answer_img_url || answer.image_path" class="ml-7 mt-4 relative max-w-max">
                     <div class="absolute top-1 right-1">
-                        <UButton type="button" icon="i-heroicons-x-mark" variant="soft" color="red" class="ml-2" @click="alertDeleteImage(indexA)" />
+                        <UButton type="button" icon="i-heroicons-x-mark" variant="soft" color="red" class="ml-2" @click="alertDeleteImage(indexA)" :disabled="props.status === 'เปิด'" />
                     </div>
                     <img :src="answer.answer_img_url" class="h-[200px]">
                 </div>
@@ -64,7 +64,7 @@
 
 
 <script setup>
-    const props = defineProps(['question', 'index'])
+    const props = defineProps(['question', 'index', 'status'])
     const emits = defineEmits(['addAnswer', 'deleteAnswer'])
 
     const { username } = useAuthStore();

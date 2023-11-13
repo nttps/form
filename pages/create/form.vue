@@ -64,7 +64,7 @@
                     placeholder: 'คำถาม',
                 },
                 answers: [{
-                    answer: 'ตัวเลือกที่ 1',
+                    answer: '',
                     quiz_img: '',
                     quiz_img_url: '',
                     answer_sort: 0,
@@ -79,7 +79,6 @@
         const survey = await surveySubmit(form.value);
         const { status } = await submitQuestion(form, survey)
         if(status) {
-            
 
             toast.add({
                 id: 'create_form',
@@ -89,7 +88,7 @@
                 timeout: 2000,
             })
 
-             navigateTo(`/lists/${survey.surveyInfo.survey_id}/edit`)
+            navigateTo(`/lists`)
         }
        
     }

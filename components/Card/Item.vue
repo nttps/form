@@ -9,13 +9,20 @@
             <div class="line-clamp-2">{{ props.item.description ? props.item.description.replace(/<\/?[^>]+(>|$)/g, "") : `&nbsp;` }}</div>
         </div>
         <div class="text-right px-4 pt-2">
-            <NuxtLink :to="`/forms/${props.item.survey_id}`" class="bg-[#FFA800] transition-all px-3 py-1 rounded-full hover:border border-[#FFA800] hover:bg-white hover:text-[#FFA800]">เข้าร่วม</NuxtLink>
+            <UButton label="แบ่งปัน" color="blue" :ui="{ rounded: 'rounded-full' }" size="xl" @click="emit('share')"/>
+            <NuxtLink :to="`/forms/${props.item.survey_id}`" class="ml-2 bg-[#FFA800] transition-all px-5 py-1.5 rounded-full border hover:border border-[#FFA800] hover:bg-white hover:text-[#FFA800]">เข้าร่วม</NuxtLink>
         </div>
     </div>
+
+    
 </template>
 
 <script setup>
     const props = defineProps(['item'])
+
+    const emit = defineEmits(['share'])
+    
+
 </script>
 
 <style lang="scss" scoped>

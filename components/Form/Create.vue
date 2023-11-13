@@ -5,10 +5,10 @@
             <div class="px-4 py-1 bg-[#FFA133] text-white text-xl">สร้างรายการ <Icon name="i-mdi-checkbox-marked-circle" /></div>
             <div class="flex flex-wrap items-center justify-center p-4 gap-4">
                 <NuxtLink to="/create/vote" class="rounded-3xl basis-1/2-gap-4 h-[200px] bg-white text-center shadow-primary flex justify-center items-center text-3xl font-bold">
-                    ระบบโหวต
+                    การโหวต
                 </NuxtLink>
                 <NuxtLink to="/create/form" class="rounded-3xl basis-1/2-gap-4 h-[200px] bg-white text-center shadow-primary flex justify-center items-center text-3xl font-bold">
-                    ระบบแบบสอบถาม
+                    แบบสอบถาม
                 </NuxtLink>
                 <NuxtLink to="/create/register-form" class="rounded-3xl basis-1/2-gap-4 h-[200px] bg-white text-center shadow-primary flex justify-center items-center text-3xl font-bold">
                     ฟอร์มสมัคร
