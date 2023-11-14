@@ -16,7 +16,7 @@
                             <UFormGroup label="ชื่อแบบฟอร์มสมัคร" name="survey_name" size="xl" class="mb-2">
                                 <UInput v-model="props.form.survey_name" :disabled="props.form.status === 'เปิด'" placeholder="กรอกชื่อแบบฟอร์มสมัคร" size="md" />
                             </UFormGroup>
-                            <UFormGroup label="รายละเอียด" name="description" size="xl" class="mb-2">
+                            <UFormGroup label="รายละเอียดแบบฟอร์มสมัคร" name="description" size="xl" class="mb-2">
                                 <ClientOnly>
                                     <Editor v-model="props.form.description" height="800px" />
                                 </ClientOnly>

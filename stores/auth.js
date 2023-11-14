@@ -7,7 +7,8 @@ export const useAuthStore = defineStore("auth-store", {
 
     getters: {
         isLoggedIn: (state) => !!state.user,
-        username: (state) => state.user.currentUser || '',
+        username: (state) => state.user.currentUser || "",
+        fullName: (state) => state.user.currentUserInfo.fullName || "",
     },
     actions: {
         async login(loginForm) {
@@ -15,7 +16,9 @@ export const useAuthStore = defineStore("auth-store", {
 
             const baseUrl = `${config.public.apiUrl}/api/AppsLogin/LoginMini`;
 
-            const lifetime = (60 * 24 * config.public.cookieLifetime);
+            const lifetime = 60 * 24 * config.public.cookieLifetime;
+
+            console.log(lifetime);
 
             await $fetch(`${baseUrl}`, {
                 method: "POST",

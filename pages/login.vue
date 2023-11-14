@@ -2,13 +2,13 @@
     <div>
         <div v-if="!register && !reset" class="py-16">
             <div class="text-center text-3xl font-bold mb-24">เข้าสู่ระบบ</div>
-            <form @submit.prevent="login">
+            <form @submit.prevent="login" method="POST">
                 <div class="mb-8">
-                    <UInput placeholder="ชื่อผู้ใช้งาน" v-model="loginForm.username"/>
+                    <UInput placeholder="ชื่อผู้ใช้งาน" v-model="loginForm.username" required/>
                 </div>
             
                 <div>
-                    <UInput type="password" placeholder="รหัสผ่าน" v-model="loginForm.password" />
+                    <UInput type="password" placeholder="รหัสผ่าน" v-model="loginForm.password" required/>
                 </div>
                 
                 <button type="submit" :disabled="waitingLogin" class="w-full border text-white py-3 text-xl rounded-[20px] bg-[#FFA133] border-[#FFA133] my-4">เข้าสู่ระบบ</button>

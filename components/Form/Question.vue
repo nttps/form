@@ -17,7 +17,7 @@
                             <UFormGroup label="ชื่อแบบสอบถาม" name="survey_name" size="xl" class="mb-2">
                                 <UInput v-model="props.form.survey_name" placeholder="กรอกชื่อแบบสอบถาม" size="md" :disabled="props.form.status === 'เปิด'" />
                             </UFormGroup>
-                            <UFormGroup label="รายละเอียด" name="description" size="xl" class="mb-2">
+                            <UFormGroup label="รายละเอียดแบบสอบถาม" name="description" size="xl" class="mb-2">
                                 <ClientOnly>
                                     <Editor v-model="props.form.description" height="500px" />
                                 </ClientOnly>
@@ -93,12 +93,12 @@
                                     <Icon name="i-mdi-plus-circle-outline" size="35" />
                                 </button>
                             </UTooltip>
-                            <UTooltip text="เพิ่มข้อความ">
+                            <UTooltip text="เพิ่มคำถามแบบกรอกข้อความ">
                                 <button @click="addText" type="button" class="text-gray-600 flex items-center space-x-2 px-1" :disabled="props.form.status === 'เปิด'">
                                     <Icon name="i-ic-twotone-text-fields" size="35" />
                                 </button>
                             </UTooltip>
-                            <UTooltip text="เพิ่มรูปภาพ">
+                            <UTooltip text="เพิ่มคำถามแบบใส่รูปภาพ">
                                 <button @click="addImage" type="button" class="text-gray-600 flex items-center space-x-2 px-1" :disabled="props.form.status === 'เปิด'">
                                     <Icon name="i-ic-round-image" size="35" />
                                 </button>

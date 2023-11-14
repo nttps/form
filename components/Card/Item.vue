@@ -10,7 +10,7 @@
         </div>
         <div class="text-right px-4 pt-2">
             <UButton label="แบ่งปัน" color="blue" :ui="{ rounded: 'rounded-full' }" size="xl" @click="emit('share')"/>
-            <NuxtLink :to="`/forms/${props.item.survey_id}`" class="ml-2 bg-[#FFA800] transition-all px-5 py-1.5 rounded-full border hover:border border-[#FFA800] hover:bg-white hover:text-[#FFA800]">เข้าร่วม</NuxtLink>
+            <NuxtLink :to="`/forms/${props.item.survey_id}/public`" class="ml-2 bg-[#FFA800] transition-all px-5 py-1.5 rounded-full border hover:border border-[#FFA800] hover:bg-white hover:text-[#FFA800]">เข้าร่วม</NuxtLink>
         </div>
     </div>
 

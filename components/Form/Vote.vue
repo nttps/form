@@ -17,7 +17,7 @@
                             <UFormGroup label="หัวข้อการโหวต" name="survey_name" size="xl" class="mb-2" required>
                                 <UInput v-model="props.vote.survey_name" placeholder="กรอกหัวข้อ" size="md" :disabled="props.vote.status === 'เปิด'" />
                             </UFormGroup>
-                            <UFormGroup label="รายละเอียด" name="description" size="xl" class="mb-2">
+                            <UFormGroup label="รายละเอียดการโหวต" name="description" size="xl" class="mb-2">
                                 <ClientOnly>
                                     <Editor v-model="props.vote.description" :disabled="props.vote.status === 'เปิด'" height="300px" />
                                 </ClientOnly>

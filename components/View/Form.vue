@@ -9,7 +9,6 @@
                 <div class="text-xl font-bold">{{ question.quiz.quiz_title }}</div>
                 <p class="text-lg code-description el-tiptap-editor__content" v-if="question.quiz.quiz_desc" v-dompurify-html="question.quiz.quiz_desc"></p>
             </div>
-
             <div v-for="(answer, index) of question.answers" v-if="question.quiz.answer_type == 'ตัวเลือกได้ข้อเดียว' || question.quiz.answer_type == 'เลือกได้หลายข้อ'">
                 <label :for="answer.answer_id" class="flex space-x-2 items-center">
                     <input 
@@ -29,8 +28,6 @@
                     <img :src="answer.answer_img_url" class="h-[200px] my-4" :alt="answer.answer">
                 </div>
             </div>
-          
-           
             <div v-if="question.quiz.answer_type === 'image'" class="text-center">
                 <img :src="question.quiz.quiz_img_url" alt="" class="mx-auto h-[200px] my-4" />
             </div>

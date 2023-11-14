@@ -14,13 +14,24 @@
             <div class="mb-4">
                 <div class="text-center bg-[#FFA133] rounded-t-lg py-4"></div>
                 <div class="p-4 bg-white">
-                    <div class="text-lg font-bold mb-2">ข้อเสนอแนะ</div>
+                    
+                    <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-4">
+                        <div>
+                            <div class="text-lg font-bold mb-2 mt-2">ชื่อ - นามสกุล</div>
+                            <UInput v-model="submitData.submit.full_name" placeholder="กรอกชื่อ - นามสกุล" required />
+                        </div>
+                        <div>
+                            <div class="text-lg font-bold mb-2 mt-2">เบอร์โทรศัพท์</div>
+                            <UInput v-model="submitData.submit.telephone" placeholder="กรอกเบอร์โทรศัพท์" required />
+                        </div>
+                    </div>
+                    <div>
+                        <div class="text-lg font-bold mb-2 mt-2">ที่อยู่</div>
+                        <UTextarea v-model="submitData.submit.address" placeholder="กรอกที่อยู่ " :rows="2" size="xl" :disabled="submitStatus" required />
+                    </div>
+                    <div class="text-lg font-bold mb-2 mt-4">ข้อเสนอแนะ <span class="text-red-600"> (*ไม่จำเป็นต้องกรอก)</span></div>
                     <UTextarea v-model="submitData.submit.comment" placeholder="กรอกข้อเสนอแนะ" color="gray" :rows="5" size="xl" :disabled="submitStatus"/>
-                    <div class="text-lg font-bold mb-2 mt-2">ชื่อ - นามสกุล</div>
-                    <UInput v-model="submitData.submit.full_name" placeholder="กรอกชื่อ - นามสกุล"/>
                 </div>
-
-                 
             </div>
             <div class="text-center" v-if="!submitStatus">
                 <button class="rounded-lg px-6 py-1.5 bg-[#FFA133]" type="submit">{{ submitData.submit.survey_type === 'ฟอร์มสมัคร' ? 'สมัคร' : 'ส่ง' }}</button>
@@ -96,6 +107,7 @@
     const url = useRequestURL()
     const route = useRoute()
 
+    const { username, fullName } = useAuthStore();
 
     const share = ref(false)
     const shareUrl= ref()
@@ -107,8 +119,8 @@
 
     const { data: submitData, refresh } = await useAsyncData('submitData', async () => await useApi(`/api/servey/Submit/Save`, 'POST', {
         survey_id:  route.params.id,//แบบแบบสอบถาม
-        username:   "guest",
-        full_name: "", 
+        username:   username || 'guest',
+        full_name: fullName, 
         created_by: "",
         modified_by: ""
     }))

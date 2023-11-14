@@ -1,6 +1,6 @@
 <template>
     <div>
-        <PartialsTitle prefix="ระบบ" title="โหวตและแบบสอบถาม" icon="i-mdi-file-document-plus" back="/lists"/>
+        <PartialsTitle prefix="ระบบ" v-if="form" :title="type" icon="i-mdi-file-document-plus" back="/lists"/>
         <div class="px-8 mt-4">
             <h3 class="text-xl md:text-2xl font-bold mb-4 flex items-center space-x-2">
                 <div>แก้ไข<span class="color-primary">แบบฟอร์ม</span></div> 
@@ -21,7 +21,7 @@
     const route = useRoute()
     const toast = useToast()
     const form = ref(null)
-
+    const type = computed(() => form.value.survey_type)
     const permissions = ref({
         all: [],
         user: []

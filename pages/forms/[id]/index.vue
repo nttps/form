@@ -1,6 +1,6 @@
 <template>
     <div>
-        <PartialsTitle prefix="ระบบ" title="แบบสอบถาม" icon="i-mdi-vote" back/>
+        <PartialsTitle prefix="" v-if="submitData" :title="type" icon="i-mdi-vote" back/>
 
         <UForm :state="submitData.submit" class="px-8 mt-4" @submit="confirm = true" v-if="submitData.submit">
             <div class="mb-4">
@@ -14,8 +14,23 @@
             <div class="mb-4">
                 <div class="text-center bg-[#FFA133] rounded-t-lg py-4"></div>
                 <div class="p-4 bg-white">
-                    <div class="text-lg font-bold mb-2">ข้อเสนอแนะ</div>
+                    <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-4" v-if="submitData.submit.survey_type === 'ฟอร์มสมัคร'">
+                        <div>
+                            <div class="text-lg font-bold mb-2 mt-2">ชื่อ - นามสกุล</div>
+                            <UInput v-model="submitData.submit.full_name" placeholder="กรอกชื่อ - นามสกุล" required disabled />
+                        </div>
+                        <div>
+                            <div class="text-lg font-bold mb-2 mt-2">เบอร์โทรศัพท์</div>
+                            <UInput v-model="submitData.submit.telephone" placeholder="กรอกเบอร์โทรศัพท์" required :disabled="submitStatus" />
+                        </div>
+                    </div>
+                    <div  v-if="submitData.submit.survey_type === 'ฟอร์มสมัคร'">
+                        <div class="text-lg font-bold mb-2 mt-2">ที่อยู่</div>
+                        <UTextarea v-model="submitData.submit.address" placeholder="กรอกที่อยู่" autoresize :rows="2" size="xl" :disabled="submitStatus" />
+                    </div>
+                    <div class="text-lg font-bold mb-2" :class="submitData.submit.survey_type === 'ฟอร์มสมัคร' ? 'mt-4' : ''">ข้อเสนอแนะ <span class="text-red-600"> (*ไม่จำเป็นต้องกรอก)</span></div>
                     <UTextarea v-model="submitData.submit.comment" placeholder="กรอกข้อเสนอแนะ" color="gray" :rows="5" size="xl" :disabled="submitStatus"/>
+                  
                 </div>
             </div>
             <div class="text-center" v-if="!submitStatus">
@@ -45,7 +60,7 @@
 
 <script setup>
   
-    const { username } = useAuthStore();
+    const { username, fullName } = useAuthStore();
 
  
     const route = useRoute()
@@ -53,11 +68,12 @@
     const confirm = ref(false)
     const success = ref(false)
 
+    const type = computed(() => submitData.value.submit.survey_type)
 
     const { data: submitData, refresh } = await useAsyncData('submitData', async () => await useApi(`/api/servey/Submit/Save`, 'POST', {
         survey_id:  route.params.id,//แบบแบบสอบถาม
         username:   username,
-        full_name: "", 
+        full_name: fullName, 
         created_by: username,
         modified_by: username
     }))

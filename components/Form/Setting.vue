@@ -16,7 +16,6 @@
         v-model="status"
         color="green"
         class="mb-4"
-        :disabled="props.form.status === 'เปิด'"
         @update:model-value="updatePublic"
     />
     <div class="block font-medium text-gray-700 dark:text-gray-200">จำเป็นต้อง Login</div>
