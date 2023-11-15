@@ -3,7 +3,7 @@
         <PartialsTitle title="โหวตและแบบสอบถาม" icon="i-ri-chat-poll-fill" create/>
         <div class="px-8 mt-4">
             <h3 class="text-2xl font-bold mb-4">เข้าร่วมการ<span class="color-primary">โหวตและแบบสอบถาม</span></h3>
-            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-10" v-if="!pending">
+            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-10" v-if="!pending && forms">
                 <CardItem :item="row" v-for="row in rows" @share="shareModal(`/forms/${row.survey_id}/public`, row.survey_name)"/>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-10" v-else>
@@ -72,8 +72,6 @@
             
         </UModal>
     </div>
-
-    
 </template>
 
 <script setup>

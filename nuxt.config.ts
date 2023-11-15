@@ -51,10 +51,8 @@ export default defineNuxtConfig({
     },
     routeRules: {
         // Render these routes on the client (SPA)
-        "/**": { ssr: true },
-        "/lists/**": { ssr: false },
-        "/create/**": { ssr: false },
-        "/settings/**": { ssr: false },
+        "/**": { ssr: false },
+        "/forms/**": { ssr: true },
     },
     vite: {
         build: {

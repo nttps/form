@@ -1,8 +1,8 @@
 
 
-export const useAuthStore = defineStore("user", {
+export const useAuthStore = defineStore("auth", {
     state: () => ({
-        user: {},
+        user: null,
     }),
 
     getters: {
@@ -18,35 +18,32 @@ export const useAuthStore = defineStore("user", {
 
             const lifetime = 60 * 60 * 24 * config.public.cookieLifetime;
 
-            console.log(lifetime);
-
-            await $fetch(`${baseUrl}`, {
+            const response = await $fetch(`${baseUrl}`, {
                 method: "POST",
                 body: loginForm,
-            })
-                .then((response) => {
-                    /* Update Pinia state */
-                    if (response.loginResult == "fail")
-                        throw response.loginResultInfo;
+            });
 
-                    this.user = response;
+            console.log(response);
 
-                    const newCookie = useCookie("user", {
-                        maxAge: lifetime,
-                        sameSite: true,
-                        secure: true,
-                    });
+            /* Update Pinia state */
+            if (response.loginResult == "fail") throw response.loginResultInfo;
 
-                    
-                    newCookie.value = this.user;
-                })
-                .catch((error) => {
-                    throw error;
-                });
+            this.user = response;
+
+            const newCookie = useCookie("user", {
+                maxAge: lifetime,
+                sameSite: true,
+                secure: true,
+            });
+
+            newCookie.value = this.user;
         },
         logout() {
             const user = useCookie("user");
             user.value = null;
+            this.user = null;
+
+            console.log(this.user);
         },
         fetchUser() {
             return this.user;

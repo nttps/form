@@ -6,7 +6,7 @@
                 <MenuLink @click="goToSetting" class="flex items-center">การตั้งค่า</MenuLink>
             </li> -->
             <li class="px-4 py-2">
-                <MenuLink @click="logoutButton" class="flex items-center"> ออกจากระบบ</MenuLink>
+                <MenuLink @click.prevent="logoutButton" class="flex items-center"> ออกจากระบบ</MenuLink>
             </li>
         </ul>
     </div>
@@ -16,8 +16,8 @@
     const { logout } = useAuthStore();
 
     const logoutButton = async () => {
-        logout()
-        navigateTo('/')
+        await logout()
+        navigateTo('/login')
         
     }
 
