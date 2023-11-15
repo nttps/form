@@ -144,7 +144,6 @@
        });
 
         if(res.result === 'ok') {
-            console.log('test');
             refresh()
 
             confirm.value = false
