@@ -6,8 +6,6 @@ export default defineNuxtRouteMiddleware((_to, from) => {
 // Accessing getters and state
     const { isLoggedIn } = storeToRefs(authStore);
     if (!isLoggedIn.value) {
-
-        console.log('t');
         return navigateTo({ name: "login" });
     }
 });

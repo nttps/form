@@ -151,8 +151,6 @@
         modified_by: ""
     }))
 
-    console.log(submitData);
-
     const submitStatus = computed(() => submitData.value.submit.status === 'เสร็จสมบูรณ์')
 
     const title = computed(() => submitData.value.submit.survey_name )
@@ -213,7 +211,6 @@
        });
 
         if(res.result === 'ok') {
-            console.log('test');
             refresh()
 
             confirm.value = false

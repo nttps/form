@@ -42,8 +42,6 @@ export const useAuthStore = defineStore("auth", {
             const user = useCookie("user");
             user.value = null;
             this.user = null;
-
-            console.log(this.user);
         },
         fetchUser() {
             return this.user;
