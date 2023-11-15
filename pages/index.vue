@@ -122,10 +122,12 @@ const copyToClipboard = () => {
     copy(urlShare.value, { title: 'คัดลอกลิงก์สำเร็จ', closeButton : false, timeout: 2000})
 }
 
-const shareFBOptions = ref({
-    url: urlShare.value,
-    quote: 'Quote',
-    hashtag: '#DDPM',
+const shareFBOptions = computed(() => {
+   return {
+        url: urlShare.value,
+        quote: 'Quote',
+        hashtag: '#DDPM',
+   }
 })
 
 const shareLineOptions = computed(() => {
