@@ -43,7 +43,7 @@
             form.value.choices = response.quizSetList[0].answers
         }
 
-        if(response.surveyInfo.survey_type == "แบบสอบถาม") {
+        if(response.surveyInfo.survey_type == "แบบสอบถาม" || response.surveyInfo.survey_type == "ฟอร์มสมัคร") {
             form.value.questions = response.quizSetList
         }
     }
@@ -53,16 +53,12 @@
 
         let status;
 
-        if(survey.surveyInfo.survey_type == "ฟอร์มสมัคร") {
-            status = (survey.outputAction.result === 'ok')
-        }
-
         if(survey.surveyInfo.survey_type == "ระบบโหวต") {
             const res = await submitVote(form, survey)
 
             status = res.status
         }
-        if(survey.surveyInfo.survey_type == "แบบสอบถาม") {
+        if(survey.surveyInfo.survey_type == "แบบสอบถาม" || survey.surveyInfo.survey_type == "ฟอร์มสมัคร") {
             const res = await submitQuestion(form, survey)
             status = res.status
         }

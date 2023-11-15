@@ -56,7 +56,7 @@
                                     
                                     <div class="flex flex-wrap space-x-4 mb-2">
                                         <div :class="`${question.quiz.answer_type === 'ตัวเลือกได้ข้อเดียว' || question.quiz.answer_type === 'เลือกได้หลายข้อ' ? `basis-1/2-gap-4` : `w-full` }`">
-                                            <UInput v-model="question.quiz.quiz_title" :placeholder="question.quiz.answer_type === 'image' ? `หัวข้อของภาพ ( ไม่จำเป็นต้องกรอก )` : question.quiz.placeholder" size="md" :required="question.quiz.answer_type !== 'image'" :disabled="props.form.status === 'เปิด'" />
+                                            <UInput v-model="question.quiz.quiz_title" :placeholder="question.quiz.answer_type === 'image' ? `คำถามแบบใส่รูปภาพ` : question.quiz.placeholder" size="md" :required="question.quiz.answer_type !== 'image'" :disabled="props.form.status === 'เปิด'" />
                                         </div>
                                         <div class="basis-1/2-gap-4" v-if="question.quiz.answer_type === 'ตัวเลือกได้ข้อเดียว' || question.quiz.answer_type === 'เลือกได้หลายข้อ'">
                                             <USelect size="md" :options="types" v-model="question.quiz.answer_type" placeholder="ประเภทคำถาม" option-attribute="name" required :disabled="props.form.status === 'เปิด'"/>
@@ -65,7 +65,7 @@
                                     <div v-if="question.quiz.answer_type !== 'image'">
                                         <UFormGroup label="รายละเอียด" name="description" size="xl" class="mb-2">
                                             <ClientOnly>
-                                                <Editor v-model="question.quiz.quiz_desc" :height="question.quiz.answer_type == 'ข้อความ' ? `350px` : `300px`" />
+                                                <Editor v-model="question.quiz.quiz_desc" :height="question.quiz.answer_type == 'ข้อเขียน' ? `350px` : `300px`" />
                                             </ClientOnly>
                                         </UFormGroup>
                                     </div>
@@ -74,12 +74,7 @@
                                         <FormAnswer :index="index" :question="question" :status="props.form.status" @delete-answer="deleteAnswer" @add-answer="addAnswer"/>
                                     </div>
                                     <div v-if="question.quiz.answer_type === 'image'" class="mt-2">
-                                        <UTooltip text="แก้ไขรูปภาพ">
-                                            <button @click="editImage(index)" type="button" :disabled="props.form.status === 'เปิด'" class="text-gray-600 flex items-center space-x-2 px-1">
-                                                <Icon name="i-ic-round-image" size="35" />
-                                            </button>
-                                        </UTooltip>
-                                        <img :src="question.quiz.quiz_img_url" alt="" class="mx-auto" />
+                                        คำถามแบบใส่รูปภาพ
                                     </div>
                                 </div>
                                
@@ -216,7 +211,19 @@
     const quizImage = ref(null)
 
     const addImage = () => {
-        uploadImageModal.value = true
+        props.form.questions.push({
+            quiz: {
+                quiz_title: '',
+                quiz_desc: '',
+                answer_type: 'image',
+                placeholder: 'หัวข้อของภาพ ( ไม่จำเป็นต้องกรอก )',
+                description: '',
+                image_path: fileImage.value,
+                quiz_img_url: previewImage.value,
+                quiz_sort: (props.form.questions.length + 1),
+            },
+            answers: []
+        })
     }
 
     const editImage = (index) => {
@@ -269,7 +276,7 @@
             quiz: {
                 quiz_title: '',
                 quiz_desc: '',
-                answer_type: 'ข้อความ',
+                answer_type: 'ข้อเขียน',
                 placeholder: 'หัวข้อ',
                 description: '',
                 image_path: null,
@@ -284,7 +291,7 @@
         props.form.questions.splice(index, 1)
     }
 
-    const addAnswer = (indexQuestion) => {
+     const addAnswer = (indexQuestion) => {
         const question = props.form.questions[indexQuestion];
         question.answers.push({
             answer: ``,
@@ -294,9 +301,18 @@
             answer_sort: (question.answers.length + 1),
         })
     }
-    const deleteAnswer = (value) => {
+    const deleteAnswer = async (value) => {
         const question = props.form.questions[value.index];
+        const answer = props.form.answers[value.indexA]
         question.answers.splice(value.indexA, 1)
+
+        if(answer?.answer_id) {
+            const response = await useApi(`/api/servey/Quiz/DeleteAnswer`, 'DELETE', {
+                AnswerID: answer.answer_id,
+                ActionBy: username
+            });
+        }
+
     }
 </script>
 

@@ -53,7 +53,8 @@
         status: "ปิด",
         remark:"",
         created_by: username,
-        modified_by: ""
+        modified_by: "",
+        questions: []
     })
     const confirm = ref(false)
 

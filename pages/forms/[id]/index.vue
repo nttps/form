@@ -14,13 +14,34 @@
             <div class="mb-4">
                 <div class="text-center bg-[#FFA133] rounded-t-lg py-4"></div>
                 <div class="p-4 bg-white">
-                    <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-4" v-if="submitData.submit.survey_type === 'ฟอร์มสมัคร'">
+                    <div class="grid grid-cols-1 xl:grid-cols-3 xl:gap-4" v-if="submitData.submit.survey_type === 'ฟอร์มสมัคร'">
+                        <div>
+                            <div class="text-lg font-bold mb-2 mt-2">คำนำหน้าชื่อ</div>
+                            <USelect :options="['นาย', 'นาง', 'นางสาว']"  v-model="submitData.submit.prefix" placeholder="คำนำหน้าชื่อ" :disabled="submitStatus"/>
+                        </div>
                         <div>
                             <div class="text-lg font-bold mb-2 mt-2">ชื่อ - นามสกุล</div>
                             <UInput v-model="submitData.submit.full_name" placeholder="กรอกชื่อ - นามสกุล" required disabled />
                         </div>
                         <div>
                             <div class="text-lg font-bold mb-2 mt-2">เบอร์โทรศัพท์</div>
+                            <UInput v-model="submitData.submit.telephone" placeholder="กรอกเบอร์โทรศัพท์" required :disabled="submitStatus" />
+                        </div>
+                        <div>
+                            <div class="text-lg font-bold mb-2 mt-2">บัตรประชาชน</div>
+                             <UInput v-model="submitData.submit.citizen" placeholder="กรอกชื่อ - นามสกุล" required :disabled="submitStatus" />
+                        </div>
+                        <div>
+                            <div class="text-lg font-bold mb-2 mt-2">วัน/เดือน/ปี</div>
+                            <UPopover :popper="{ placement: 'bottom-start' }">
+                                <UButton icon="i-heroicons-calendar-days-20-solid" class="md:w-4/5" :label="dateLabel" :disabled="submitStatus" />
+                                <template #panel="{ close }">
+                                    <FormDatePicker v-model="date" @close="close" />
+                                </template>
+                            </UPopover>
+                        </div>
+                        <div>
+                            <div class="text-lg font-bold mb-2 mt-2">อีเมล์</div>
                             <UInput v-model="submitData.submit.telephone" placeholder="กรอกเบอร์โทรศัพท์" required :disabled="submitStatus" />
                         </div>
                     </div>
@@ -59,7 +80,8 @@
 </template>
 
 <script setup>
-  
+    import moment from 'moment';
+    moment.locale('th')
     const { username, fullName } = useAuthStore();
 
  
@@ -70,6 +92,11 @@
 
     const type = computed(() => submitData.value.submit.survey_type)
 
+
+    
+    const date = ref(moment().format('YYYY-MM-DDT00:00:00'))
+    const dateLabel = computed(() => date.value ? moment(date.value).format('DD/MM/yyyy') : ``)
+
     const { data: submitData, refresh } = await useAsyncData('submitData', async () => await useApi(`/api/servey/Submit/Save`, 'POST', {
         survey_id:  route.params.id,//แบบแบบสอบถาม
         username:   username,
@@ -77,6 +104,8 @@
         created_by: username,
         modified_by: username
     }))
+
+
 
     const submitStatus = computed(() => submitData.value.submit.status === 'เสร็จสมบูรณ์')
 

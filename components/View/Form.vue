@@ -28,12 +28,32 @@
                     <img :src="answer.answer_img_url" class="h-[200px] my-4" :alt="answer.answer">
                 </div>
             </div>
-            <div v-if="question.quiz.answer_type === 'image'" class="text-center">
-                <img :src="question.quiz.quiz_img_url" alt="" class="mx-auto h-[200px] my-4" />
+            <div v-if="question.quiz.answer_type === 'image'">
+                <UTooltip text="แก้ไขรูปภาพ">
+                    <button @click="addImage(index)" type="button" :disabled="props.form.status === 'เปิด'" class="text-gray-600 flex items-center space-x-2 px-1">
+                        <Icon name="i-ic-round-image" size="35" />
+                    </button>
+                </UTooltip>
+                <img :src="question.quiz.quiz_img_url" alt="" class="mx-auto" />
             </div>
-            <div v-if="question.quiz.answer_type === 'text'" class="mt-2 code-description" v-dompurify-html="question.quiz.description"></div>
+            <div v-if="question.quiz.answer_type === 'ข้อเขียน'" class="mt-2">
+                <UTextarea placeholder="กรอกที่อยู่" v-model="question.quiz.answer_desc" @input="setTextAnswer($event, question)"  autoresize :rows="2" size="xl" :disabled="props.form.status === 'เปิด'" />
+            </div>
         </div>
     </div>
+
+     <UModal v-model="uploadImageModal">
+        <UCard :ui="{ divide: 'divide-y divide-gray-100 dark:divide-gray-800' }">
+            <template #header>
+                <div class="text-center">ตัวอย่างรูปภาพ</div>
+            </template>
+            <UInput type="file" @change="pickImage"/>
+            <div class="text-center mt-2">
+                <img :src="previewImage" v-if="previewImage" class="mx-auto mb-4" alt="">
+                <UButton @click="confirmImage" label="แทรก"/>
+            </div>
+        </UCard>
+    </UModal>
 </template>
 
 <script setup>
@@ -60,11 +80,58 @@
         emits('setAnswer', answer.value)
     }
 
+    const setTextAnswer = (event, quiz) => {
+
+        answer.value.QuizID = quiz.quiz.quiz_id
+        answer.value.AnswerDesc = event.target.value
+
+        emits('setAnswer', answer.value)
+    }
+
     const setMultipleAnswer = (event, quiz, index) => {
         answer.value.QuizID = quiz.quiz.quiz_id
         quiz.answers[index].is_select = true
         answer.value.AnswerIDs.push(event.target.value)
         emits('setAnswer', answer.value)
+    }
+
+    const uploadImageModal = ref(false)
+    const previewImage = ref(null)
+    const fileImage = ref(null)
+    const quizImage = ref(null)
+
+
+    const addImage = (index) => {
+        quizImage.value = index
+        uploadImageModal.value = true
+    }
+
+    const pickImage = (e) => {
+        let file = e.target.files
+
+        fileImage.value = file[0]
+        if (file && file[0]) {
+          let reader = new FileReader
+          reader.onload = e => {
+            previewImage.value = e.target.result
+          }
+          reader.readAsDataURL(file[0])
+        }
+    }
+
+
+    const confirmImage = () => {
+
+        if(quizImage.value) {
+            const q = props.form.quizSet[quizImage.value]
+            q.quiz.image_path = fileImage.value
+            q.quiz.quiz_img_url = previewImage.value
+        }
+       
+        uploadImageModal.value = false
+        fileImage.value = null
+        previewImage.value = null
+        quizImage.value = null
     }
 
 </script>
