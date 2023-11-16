@@ -10,7 +10,7 @@
                     <p class="code-description el-tiptap-editor__content" v-dompurify-html="submitData.submit.description"></p>
                 </div>
             </div>
-            <ViewForm :form="submitData" v-if="submitData.submit" :submitId="submitData?.submit?.submit_id" @setAnswer="submitAnswer" :preview="submitStatus"/>
+            <ViewForm :form="submitData" v-if="submitData.submit" :submitId="submitData?.submit?.submit_id" @setAnswer="submitAnswer" @setImage="submitImage" :preview="submitStatus"/>
             <div class="mb-4">
                 <div class="text-center bg-[#FFA133] rounded-t-lg py-4"></div>
                 <div class="p-4 bg-white">
@@ -127,6 +127,15 @@
             'auth'
         ]
     })
+
+    const submitImage = async (data) => {
+    
+        const res = await uploadAnsImage(submitData.value.submit.submit_id, data.quizId, data.file)
+
+        if(res.result === 'ok') {
+            console.log('set answer image');
+        }
+    }
 
     const submitAnswer = async (data) => {
         const res = await useApi(`/api/servey/Submit/SetAnswer`, 'POST', data);

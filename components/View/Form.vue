@@ -35,7 +35,7 @@
                         <Icon name="i-ic-round-image" size="35" />
                     </button>
                 </UTooltip>
-                <img :src="question.quiz.quiz_img_url" alt="" class="mx-auto" />
+                <img v-if="question.quiz.answer_img" :src="question.quiz.answer_img_url" alt="" class="mt-2 h-[200px]" />
             </div>
             <div v-if="question.quiz.answer_type === 'ข้อเขียน'" class="mt-2">
                 <UTextarea placeholder="กรุณากรอก" v-model="question.quiz.answer_desc" @input="setTextAnswer($event, question)"  autoresize :rows="2" size="xl" :disabled="props.form.status === 'เปิด'" />
@@ -51,7 +51,7 @@
             <UInput type="file" @change="pickImage"/>
             <div class="text-center mt-2">
                 <img :src="previewImage" v-if="previewImage" class="mx-auto mb-4" alt="">
-                <UButton @click="confirmImage" label="แทรก"/>
+                <UButton @click="confirmImage" label="ยืนยันการอัพโหลด"/>
             </div>
         </UCard>
     </UModal>
@@ -59,7 +59,7 @@
 
 <script setup>
     const props = defineProps(['form', 'submitId', 'preview'])
-    const emits = defineEmits(['setAnswer'])
+    const emits = defineEmits(['setAnswer', 'setImage'])
 
 
     const answer = ref({
@@ -105,6 +105,8 @@
     const addImage = (index) => {
         quizImage.value = index
         uploadImageModal.value = true
+
+        
     }
 
     const pickImage = (e) => {
@@ -125,14 +127,21 @@
 
         if(quizImage.value) {
             const q = props.form.quizSet[quizImage.value]
-            q.quiz.image_path = fileImage.value
-            q.quiz.quiz_img_url = previewImage.value
+            q.quiz.answer_img_url = previewImage.value
+
+
+            emits('setImage', {
+                quizId: q.quiz.quiz_id,
+                file: fileImage.value
+            })
         }
        
+       
         uploadImageModal.value = false
-        fileImage.value = null
         previewImage.value = null
         quizImage.value = null
+
+       
     }
 
 </script>
