@@ -1,5 +1,37 @@
 # Version 1.0.0 (2023-11-XX)
 
+## Version 1.0.0-alpha.2 (2023-11-17)
+
+### Fix Bugs
+
+* ลบข้อความ auto เมื่อจะพิมพ์ ([DQ-33](https://ck-consulting.atlassian.net/browse/DQ-33))
+* ไม่ควรเลือกวันที่เริ่มต้น,สิ้นสุดที่ไม่สอดคล้องกัน ([DQ-34](https://ck-consulting.atlassian.net/browse/DQ-34))
+* ตอนดูผลโหวต มีแสดงรูปไม่ถูกต้อง ([DQ-36](https://ck-consulting.atlassian.net/browse/DQ-36))
+* ข้อความผลโหวตทับกัน ([DQ-37](https://ck-consulting.atlassian.net/browse/DQ-37))
+* ลบข้อความ auto เมื่อจะพิมพ์ในแบบสอบถาม ([DQ-41](https://ck-consulting.atlassian.net/browse/DQ-41))
+* ฟอร์มสมัคร ไม่มีตัวเลือกให้ใส่ ([DQ-49](https://ck-consulting.atlassian.net/browse/DQ-49))
+  
+### Improve performance
+
+* แก้ไขชื่อปุ่ม "ระบบโหวต" เป็น "การโหวต" ([DQ-38](https://ck-consulting.atlassian.net/browse/DQ-38))
+* แก้ไขชื่อปุ่ม "ระบบแบบสอบถาม" เป็น "แบบสอบถาม" ([DQ-39](https://ck-consulting.atlassian.net/browse/DQ-39))
+* เมื่อบันทึกข้อมูล หรือแก้ไขข้อมูลแล้ว ให้กลับมาหน้า list รายการทุกครั้ง ([DQ-40](https://ck-consulting.atlassian.net/browse/DQ-40))
+* ย้ายปุ่มลบข้อในแบบสอบถามให้ชัดเจน ([DQ-42](https://ck-consulting.atlassian.net/browse/DQ-42))
+* แก้ไขข้อความในหน้าสร้างแบบสอบถาม วันที่เริ่มการโหวต เป็น วันที่เริ่มตอบแบบสอบถาม ([DQ-44](https://ck-consulting.atlassian.net/browse/DQ-44))
+* แก้ไขข้อความในหน้าสร้างแบบสอบถาม วันที่สิ้นสุดการโหวต เป็น วันที่สิ้นสุดตอบแบบสอบถาม ([DQ-45](https://ck-consulting.atlassian.net/browse/DQ-45))
+* แก้ไขข้อความในหน้าสร้างแบบฟอร์มสมัคร แบบฟอร์มสอบถาม เป็น แบบฟอร์มสมัคร ([DQ-46](https://ck-consulting.atlassian.net/browse/DQ-46))
+* แก้ไขข้อความในหน้าสร้างแบบฟอร์มสมัคร วันที่เริ่มการโหวต เป็น วันที่เริ่มต้นสมัคร ([DQ-47](https://ck-consulting.atlassian.net/browse/DQ-47))
+* แก้ไขข้อความในหน้าสร้างแบบฟอร์มสมัคร วันที่สิ้นสุดการโหวต เป็น วันที่สิ้นสุดการสมัคร ([DQ-48](https://ck-consulting.atlassian.net/browse/DQ-48))
+* ย้ายปุ่ม แบ่งปัน มาไว้หน้าการ์ด รวมรายการ ([DQ-50](https://ck-consulting.atlassian.net/browse/DQ-50))
+* เมื่อทำการโหวต หรือตอบแบบสอบถามแล้ว กดปุ่มส่งแล้ว ควรกลับมาหน้าแรก ([DQ-51](https://ck-consulting.atlassian.net/browse/DQ-51))
+* หน้าตอบแบบสอบถาม ถ้าคำถามที่ให้แนบรูป ควรมีข้อความว่า "เลือกรูป" เพราะขึ้นมาแต่ icon user อาจไม่เข้าใจ ([DQ-52](https://ck-consulting.atlassian.net/browse/DQ-52))
+* หน้ากรอกแบบสอบถาม ถ้าเปิดให้กรอกข้อความ ให้เอาคำว่า "กรอกที่อยู่" ออก เปลี่ยนเป็น "กรุณากรอก" ([DQ-54](https://ck-consulting.atlassian.net/browse/DQ-54))
+
+### Features
+
+* แบบสอบถามควรมีข้อที่เปิดให้กรอกคำตอบเองได้แบบข้อความ หรือแนบรูปได้ ([DQ-43](https://ck-consulting.atlassian.net/browse/DQ-43))
+  
+
 ## Version 1.0.0-alpha.1 (2023-11-10)
 
 ### Features
