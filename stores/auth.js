@@ -9,6 +9,8 @@ export const useAuthStore = defineStore("auth", {
         isLoggedIn: (state) => !!state.user,
         username: (state) => state.user?.currentUser || "",
         fullName: (state) => state.user?.currentUserInfo?.fullName || "",
+        firstName: (state) => state.user?.currentUserInfo?.firstName || "",
+        lastName: (state) => state.user?.currentUserInfo?.lastName || "",
     },
     actions: {
         async login(loginForm) {

@@ -14,41 +14,44 @@
             <div class="mb-4">
                 <div class="text-center bg-[#FFA133] rounded-t-lg py-4"></div>
                 <div class="p-4 bg-white">
-                    
                     <div class="grid grid-cols-1 xl:grid-cols-3 xl:gap-4" v-if="submitData.submit.survey_type === 'ฟอร์มสมัคร'">
                         <div>
                             <div class="text-lg font-bold mb-2 mt-2">คำนำหน้าชื่อ</div>
-                            <USelect :options="['นาย', 'นาง', 'นางสาว']"  v-model="submitData.submit.prefix" placeholder="คำนำหน้าชื่อ" :disabled="submitStatus"/>
+                            <USelect :options="['นาย', 'นาง', 'นางสาว']"  v-model="submitData.submit.title" placeholder="คำนำหน้าชื่อ" :disabled="submitStatus"/>
                         </div>
                         <div>
-                            <div class="text-lg font-bold mb-2 mt-2">ชื่อ - นามสกุล</div>
-                            <UInput v-model="submitData.submit.full_name" placeholder="กรอกชื่อ - นามสกุล" required :disabled="submitStatus" />
+                            <div class="text-lg font-bold mb-2 mt-2">ชื่อ</div>
+                            <UInput v-model="submitData.submit.firstname" placeholder="กรอกชื่อ" required :disabled="submitStatus" />
+                        </div>
+                        <div>
+                            <div class="text-lg font-bold mb-2 mt-2">นามสกุล</div>
+                            <UInput v-model="submitData.submit.lastname" placeholder="กรอกนามสกุล" required :disabled="submitStatus" />
                         </div>
                         <div>
                             <div class="text-lg font-bold mb-2 mt-2">เบอร์โทรศัพท์</div>
-                            <UInput v-model="submitData.submit.telephone" placeholder="กรอกเบอร์โทรศัพท์" required :disabled="submitStatus" />
+                            <UInput v-model="submitData.submit.phone" placeholder="กรอกเบอร์โทรศัพท์" required :disabled="submitStatus" />
                         </div>
                         <div>
-                            <div class="text-lg font-bold mb-2 mt-2">บัตรประชาชน</div>
-                             <UInput v-model="submitData.submit.citizen" placeholder="กรอกชื่อ - นามสกุล" required :disabled="submitStatus" />
+                            <div class="text-lg font-bold mb-2">บัตรประชาชน</div>
+                             <UInput v-model="submitData.submit.people_id" placeholder="กรอกบัตรประชาชน" required :disabled="submitStatus" />
                         </div>
                         <div>
-                            <div class="text-lg font-bold mb-2 mt-2">วัน/เดือน/ปี</div>
-                            <UPopover :popper="{ placement: 'bottom-start' }">
-                                <UButton icon="i-heroicons-calendar-days-20-solid" class="md:w-4/5" :label="dateLabel" :disabled="submitStatus" />
-                                <template #panel="{ close }">
-                                    <FormDatePicker v-model="date" @close="close" />
-                                </template>
-                            </UPopover>
-                        </div>
-                        <div>
-                            <div class="text-lg font-bold mb-2 mt-2">อีเมล์</div>
-                            <UInput v-model="submitData.submit.telephone" placeholder="กรอกเบอร์โทรศัพท์" required :disabled="submitStatus" />
+                            <div class="text-lg font-bold mb-2">อีเมล์</div>
+                            <UInput v-model="submitData.submit.email" placeholder="กรอกอีเมล์" required :disabled="submitStatus" />
                         </div>
                     </div>
                     <div>
                         <div class="text-lg font-bold mb-2 mt-2">ที่อยู่</div>
-                        <UTextarea v-model="submitData.submit.address" placeholder="กรอกที่อยู่ " :rows="2" size="xl" :disabled="submitStatus" required />
+                        <div class="grid grid-cols-3 gap-4">
+                            <UInput v-model="submitData.submit.house_no" placeholder="เลขที่" required :disabled="submitStatus" />
+                            <UInput v-model="submitData.submit.moo_no" placeholder="หมู่ที่" :disabled="submitStatus" />
+                            <UInput v-model="submitData.submit.soi" placeholder="ดรอก/ซอย" :disabled="submitStatus" />
+                            <UInput v-model="submitData.submit.road" placeholder="ถนน" required :disabled="submitStatus" />
+                            <UInput v-model="submitData.submit.t_name" placeholder="ตำบล / แขวง" required :disabled="submitStatus" />
+                            <UInput v-model="submitData.submit.a_name" placeholder="อำเภอ / เขต" required :disabled="submitStatus" />
+                            <UInput v-model="submitData.submit.p_name" placeholder="จังหวัด" required :disabled="submitStatus" />
+                            <UInput v-model="submitData.submit.post_code" placeholder="รหัสไปรษณีย์" required :disabled="submitStatus" />
+                        </div>
                     </div>
                     <div class="text-lg font-bold mb-2 mt-4">ข้อเสนอแนะ <span class="text-red-600"> (*ไม่จำเป็นต้องกรอก)</span></div>
                     <UTextarea v-model="submitData.submit.comment" placeholder="กรอกข้อเสนอแนะ" color="gray" :rows="5" size="xl" :disabled="submitStatus"/>
@@ -130,7 +133,7 @@
     const url = useRequestURL()
     const route = useRoute()
 
-    const { username, fullName } = useAuthStore();
+    const { username, fullName, firstName, lastName } = useAuthStore();
 
     const share = ref(false)
     const shareUrl= ref()
@@ -139,17 +142,16 @@
     const confirm = ref(false)
     const success = ref(false)
 
-     
-    const date = ref(moment().format('YYYY-MM-DDT00:00:00'))
-    const dateLabel = computed(() => date.value ? moment(date.value).format('DD/MM/yyyy') : ``)
-
-    const { data: submitData, refresh } = await useAsyncData('submitData', async () => await useApi(`/api/servey/Submit/Save`, 'POST', {
+    const { data: submitData } = await useAsyncData('submitData', async () => await useApi(`/api/servey/Submit/Save`, 'POST', {
         survey_id:  route.params.id,//แบบแบบสอบถาม
         username:   username || 'guest',
         full_name: fullName || '', 
         created_by: "",
         modified_by: ""
     }))
+
+    submitData.value.submit.firstname = firstName
+    submitData.value.submit.lastname = lastName
 
     const submitStatus = computed(() => submitData.value.submit.status === 'เสร็จสมบูรณ์')
 
@@ -207,14 +209,28 @@
         const res = await useApi(`/api/servey/Submit/SubmitTest`, 'POST', {
             SubmitID: submitData.value.submit.submit_id,//ปล่อยว่างคือเพิ่ม ระบุค่าคือแก้ไข
             Comment: submitData.value.submit.comment,
-            Fullname: submitData.value.submit.full_name
+            Fullname: submitData.value.submit.firstname + ' ' + submitData.value.submit.lastname,
+            title: submitData.value.submit.title,
+            firstname: submitData.value.submit.firstname,
+            lastname: submitData.value.submit.lastname,
+            phone: submitData.value.submit.phone,
+            people_id: submitData.value.submit.people_id,
+            email: submitData.value.submit.email,
+            house_no: submitData.value.submit.house_no,
+            moo_no: submitData.value.submit.moo_no,
+            soi: submitData.value.submit.soi,
+            road: submitData.value.submit.road,
+            t_name: submitData.value.submit.t_name,
+            a_name: submitData.value.submit.a_name,
+            p_name: submitData.value.submit.p_name,
+            post_code: submitData.value.submit.post_code,
        });
 
         if(res.result === 'ok') {
-            refresh()
-
             confirm.value = false
             success.value = true
+
+            navigateTo(`/`)
         }
     }
     const onClose = () => {}
