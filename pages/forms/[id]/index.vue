@@ -1,6 +1,6 @@
 <template>
     <div>
-        <PartialsTitle prefix="" v-if="submitData" :title="type" icon="i-mdi-vote" back/>
+        <PartialsTitle prefix="" v-if="submitData.submit" :title="submitData.submit.survey_type" icon="i-mdi-vote" back/>
 
         <UForm :state="submitData.submit" class="px-8 mt-4" @submit="confirm = true" v-if="submitData.submit">
             <div class="mb-4">
@@ -10,48 +10,51 @@
                     <p class="code-description el-tiptap-editor__content" v-dompurify-html="submitData.submit.description"></p>
                 </div>
             </div>
-            <ViewForm :form="submitData" v-if="submitData?.submit?.survey_type" :submitId="submitData?.submit?.submit_id" @setAnswer="submitAnswer" :preview="submitStatus"/>
+            <ViewForm :form="submitData" v-if="submitData.submit" :submitId="submitData?.submit?.submit_id" @setAnswer="submitAnswer" :preview="submitStatus"/>
             <div class="mb-4">
                 <div class="text-center bg-[#FFA133] rounded-t-lg py-4"></div>
                 <div class="p-4 bg-white">
                     <div class="grid grid-cols-1 xl:grid-cols-3 xl:gap-4" v-if="submitData.submit.survey_type === 'ฟอร์มสมัคร'">
                         <div>
                             <div class="text-lg font-bold mb-2 mt-2">คำนำหน้าชื่อ</div>
-                            <USelect :options="['นาย', 'นาง', 'นางสาว']"  v-model="submitData.submit.prefix" placeholder="คำนำหน้าชื่อ" :disabled="submitStatus"/>
+                            <USelect :options="['นาย', 'นาง', 'นางสาว']"  v-model="submitData.submit.title" placeholder="คำนำหน้าชื่อ" :disabled="submitStatus"/>
+                        </div>
+                         <div>
+                            <div class="text-lg font-bold mb-2 mt-2">ชื่อ</div>
+                            <UInput v-model="submitData.submit.firstname" placeholder="กรอกชื่อ" required :disabled="submitStatus" />
                         </div>
                         <div>
-                            <div class="text-lg font-bold mb-2 mt-2">ชื่อ - นามสกุล</div>
-                            <UInput v-model="submitData.submit.full_name" placeholder="กรอกชื่อ - นามสกุล" required disabled />
+                            <div class="text-lg font-bold mb-2 mt-2">นามสกุล</div>
+                            <UInput v-model="submitData.submit.lastname" placeholder="กรอกนามสกุล" required :disabled="submitStatus" />
                         </div>
                         <div>
-                            <div class="text-lg font-bold mb-2 mt-2">เบอร์โทรศัพท์</div>
-                            <UInput v-model="submitData.submit.telephone" placeholder="กรอกเบอร์โทรศัพท์" required :disabled="submitStatus" />
+                            <div class="text-lg font-bold mb-2">เบอร์โทรศัพท์</div>
+                            <UInput v-model="submitData.submit.phone" placeholder="กรอกเบอร์โทรศัพท์" required :disabled="submitStatus" />
                         </div>
                         <div>
-                            <div class="text-lg font-bold mb-2 mt-2">บัตรประชาชน</div>
-                             <UInput v-model="submitData.submit.citizen" placeholder="กรอกชื่อ - นามสกุล" required :disabled="submitStatus" />
+                            <div class="text-lg font-bold mb-2">บัตรประชาชน</div>
+                             <UInput v-model="submitData.submit.people_id" placeholder="กรอกบัตรประชาชน" required :disabled="submitStatus" />
                         </div>
                         <div>
-                            <div class="text-lg font-bold mb-2 mt-2">วัน/เดือน/ปี</div>
-                            <UPopover :popper="{ placement: 'bottom-start' }">
-                                <UButton icon="i-heroicons-calendar-days-20-solid" class="md:w-4/5" :label="dateLabel" :disabled="submitStatus" />
-                                <template #panel="{ close }">
-                                    <FormDatePicker v-model="date" @close="close" />
-                                </template>
-                            </UPopover>
-                        </div>
-                        <div>
-                            <div class="text-lg font-bold mb-2 mt-2">อีเมล์</div>
-                            <UInput v-model="submitData.submit.telephone" placeholder="กรอกเบอร์โทรศัพท์" required :disabled="submitStatus" />
+                            <div class="text-lg font-bold mb-2">อีเมล์</div>
+                            <UInput v-model="submitData.submit.email" placeholder="กรอกอีเมล์" required :disabled="submitStatus" />
                         </div>
                     </div>
-                    <div  v-if="submitData.submit.survey_type === 'ฟอร์มสมัคร'">
+                    <div v-if="submitData.submit.survey_type === 'ฟอร์มสมัคร'">
                         <div class="text-lg font-bold mb-2 mt-2">ที่อยู่</div>
-                        <UTextarea v-model="submitData.submit.address" placeholder="กรอกที่อยู่" autoresize :rows="2" size="xl" :disabled="submitStatus" />
+                        <div class="grid grid-cols-3 gap-4">
+                            <UInput v-model="submitData.submit.house_no" placeholder="เลขที่" required :disabled="submitStatus" />
+                            <UInput v-model="submitData.submit.moo_no" placeholder="หมู่ที่" required :disabled="submitStatus" />
+                            <UInput v-model="submitData.submit.soi" placeholder="ดรอก/ซอย" required :disabled="submitStatus" />
+                            <UInput v-model="submitData.submit.road" placeholder="ถนน" required :disabled="submitStatus" />
+                            <UInput v-model="submitData.submit.t_name" placeholder="ตำบล / แขวง" required :disabled="submitStatus" />
+                            <UInput v-model="submitData.submit.a_name" placeholder="อำเภอ / เขต" required :disabled="submitStatus" />
+                            <UInput v-model="submitData.submit.p_name" placeholder="จังหวัด" required :disabled="submitStatus" />
+                            <UInput v-model="submitData.submit.post_code" placeholder="รหัสไปรษณีย์" required :disabled="submitStatus" />
+                        </div>
                     </div>
-                    <div class="text-lg font-bold mb-2" :class="submitData.submit.survey_type === 'ฟอร์มสมัคร' ? 'mt-4' : ''">ข้อเสนอแนะ <span class="text-red-600"> (*ไม่จำเป็นต้องกรอก)</span></div>
+                    <div class="text-lg font-bold mb-2 mt-4">ข้อเสนอแนะ <span class="text-red-600"> (*ไม่จำเป็นต้องกรอก)</span></div>
                     <UTextarea v-model="submitData.submit.comment" placeholder="กรอกข้อเสนอแนะ" color="gray" :rows="5" size="xl" :disabled="submitStatus"/>
-                  
                 </div>
             </div>
             <div class="text-center" v-if="!submitStatus">
@@ -82,44 +85,40 @@
 <script setup>
     import moment from 'moment';
     moment.locale('th')
-    const { username, fullName } = useAuthStore();
+    const { username, fullName, firstName, lastName } = useAuthStore();
 
- 
     const route = useRoute()
 
     const confirm = ref(false)
     const success = ref(false)
 
-    const type = computed(() => submitData.value.submit.survey_type)
+    const submitData = ref({
+        submit: null
+    })
 
-
+    const submitStatus = ref(false)
     
-    const date = ref(moment().format('YYYY-MM-DDT00:00:00'))
-    const dateLabel = computed(() => date.value ? moment(date.value).format('DD/MM/yyyy') : ``)
+    onMounted(async () => {
 
-    const { data: submitData, refresh } = await useAsyncData('submitData', async () => await useApi(`/api/servey/Submit/Save`, 'POST', {
-        survey_id:  route.params.id,//แบบแบบสอบถาม
-        username:   username,
-        full_name: fullName, 
-        created_by: username,
-        modified_by: username
-    }))
+         const responed = await useApi(`/api/servey/Submit/Save`, 'POST', {
+            survey_id:  route.params.id,//แบบแบบสอบถาม
+            username:   username,
+            full_name: fullName, 
+            created_by: username,
+            modified_by: username
+        })
+        submitData.value = responed
 
+        submitData.value.submit.firstname = firstName
+        submitData.value.submit.lastname = lastName
 
-
-    const submitStatus = computed(() => submitData.value.submit.status === 'เสร็จสมบูรณ์')
-
-    const title = computed(() => submitData.value.submit.survey_name )
-    const description = computed(() => submitData.value.submit.description.replace(/<\/?[^>]+(>|$)/g, "") )
-    const image = computed(() => submitData.value.submit.photo_cover_url ? submitData.value.submit.photo_cover_url : `/images/no-cover.jpg` )
+        submitStatus.value = submitData.value.submit.status === 'เสร็จสมบูรณ์'
+    })
+    
+   
 
     useHead({
-        title: title,
-        meta: [
-            { name: 'description', content: description },
-            { property: 'og:image', content: image },
-            { property: 'og:description', content: description },
-        ]
+        title: submitData.value?.submit?.survey_name,
     })
 
     definePageMeta({
@@ -140,14 +139,30 @@
     const submit = async () => {
         const res = await useApi(`/api/servey/Submit/SubmitTest`, 'POST', {
             SubmitID: submitData.value.submit.submit_id,//ปล่อยว่างคือเพิ่ม ระบุค่าคือแก้ไข
-            Comment: submitData.value.submit.comment
+            Comment: submitData.value.submit.comment,
+            Fullname: submitData.value.submit.firstname + ' ' + submitData.value.submit.lastname,
+            title: submitData.value.submit.title,
+            firstname: submitData.value.submit.firstname,
+            lastname: submitData.value.submit.lastname,
+            phone: submitData.value.submit.phone,
+            people_id: submitData.value.submit.people_id,
+            email: submitData.value.submit.email,
+            house_no: submitData.value.submit.house_no,
+            moo_no: submitData.value.submit.moo_no,
+            soi: submitData.value.submit.soi,
+            road: submitData.value.submit.road,
+            t_name: submitData.value.submit.t_name,
+            a_name: submitData.value.submit.a_name,
+            p_name: submitData.value.submit.p_name,
+            post_code: submitData.value.submit.post_code,
        });
 
         if(res.result === 'ok') {
-            refresh()
-
+           
             confirm.value = false
             success.value = true
+
+            navigateTo(`/`)
         }
     }
     const onClose = () => {}

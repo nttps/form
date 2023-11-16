@@ -29,15 +29,16 @@
                 </div>
             </div>
             <div v-if="question.quiz.answer_type === 'image'">
-                <UTooltip text="แก้ไขรูปภาพ">
+                <UTooltip text="เลือกรูป">
                     <button @click="addImage(index)" type="button" :disabled="props.form.status === 'เปิด'" class="text-gray-600 flex items-center space-x-2 px-1">
+                        <span>เลือกรูป</span>
                         <Icon name="i-ic-round-image" size="35" />
                     </button>
                 </UTooltip>
                 <img :src="question.quiz.quiz_img_url" alt="" class="mx-auto" />
             </div>
             <div v-if="question.quiz.answer_type === 'ข้อเขียน'" class="mt-2">
-                <UTextarea placeholder="กรอกที่อยู่" v-model="question.quiz.answer_desc" @input="setTextAnswer($event, question)"  autoresize :rows="2" size="xl" :disabled="props.form.status === 'เปิด'" />
+                <UTextarea placeholder="กรุณากรอก" v-model="question.quiz.answer_desc" @input="setTextAnswer($event, question)"  autoresize :rows="2" size="xl" :disabled="props.form.status === 'เปิด'" />
             </div>
         </div>
     </div>
