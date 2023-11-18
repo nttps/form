@@ -44,8 +44,8 @@
                         <div class="text-lg font-bold mb-2 mt-2">ที่อยู่</div>
                         <div class="grid grid-cols-3 gap-4">
                             <UInput v-model="submitData.submit.house_no" placeholder="เลขที่" required :disabled="submitStatus" />
-                            <UInput v-model="submitData.submit.moo_no" placeholder="หมู่ที่" required :disabled="submitStatus" />
-                            <UInput v-model="submitData.submit.soi" placeholder="ดรอก/ซอย" required :disabled="submitStatus" />
+                            <UInput v-model="submitData.submit.moo_no" placeholder="หมู่ที่" :disabled="submitStatus" />
+                            <UInput v-model="submitData.submit.soi" placeholder="ดรอก/ซอย" :disabled="submitStatus" />
                             <UInput v-model="submitData.submit.road" placeholder="ถนน" required :disabled="submitStatus" />
                             <UInput v-model="submitData.submit.t_name" placeholder="ตำบล / แขวง" required :disabled="submitStatus" />
                             <UInput v-model="submitData.submit.a_name" placeholder="อำเภอ / เขต" required :disabled="submitStatus" />
@@ -85,7 +85,7 @@
 <script setup>
     import moment from 'moment';
     moment.locale('th')
-    const { username, fullName, firstName, lastName } = useAuthStore();
+    const { username, fullName, firstName, lastName, prefix } = useAuthStore();
 
     const route = useRoute()
 
@@ -111,6 +111,7 @@
 
         submitData.value.submit.firstname = firstName
         submitData.value.submit.lastname = lastName
+        submitData.value.submit.title = prefix
 
         submitStatus.value = submitData.value.submit.status === 'เสร็จสมบูรณ์'
     })

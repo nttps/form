@@ -1,7 +1,7 @@
 <template>
     <div
         class="rounded-md mb-4 bg- relative"
-        v-for="(question, index) in form.quizSet" :key="question.quiz.quiz_sort"
+        v-for="(question, index) in props.form.quizSet" :key="question.quiz.quiz_sort"
     >
         <div class="text-center bg-[#FFA133] rounded-t-lg py-4"></div>
         <div class="p-4 bg-white">

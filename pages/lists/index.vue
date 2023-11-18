@@ -187,8 +187,6 @@ const labelRangeDate = computed(() => !range.value.start && !range.value.end ? '
 const isDeleteAlert = ref(false)
 const deleteId = ref(null)
 const isDeleteAlertAll = ref(false)
-
-
 // Pagination
 const page = ref(1)
 const pageCount = ref(20)
@@ -202,7 +200,7 @@ const { data: lists, pending, refresh } = await useAsyncData(
   async () => await useApi('/api/servey/ServeyInfo/ListData', 'POST', {
     SearchText: search.value,
     Status:"",
-    User:"",
+    User: username,
     start_date: range.value.start ? moment(range.value.start).format('YYYY-MM-DD') : null,
     end_date: range.value.start ? moment(range.value.end).format('YYYY-MM-DD') : null,
     Type: selectedType.value,

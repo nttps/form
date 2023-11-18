@@ -1,5 +1,11 @@
 # Version 1.0.0 (2023-11-XX)
 
+## Version 1.0.0-alpha.3 (2023-11-18)
+
+### Improve performance
+
+* ข้อเสนอแนะที่กรอกมา ทั้งโหวต,แบบสอบถาม,ใบสมัคร ต้องแสดงในหน้าผลการตอบด้วย ([DQ-53](https://ck-consulting.atlassian.net/browse/DQ-53))
+
 ## Version 1.0.0-alpha.2 (2023-11-17)
 
 ### Fix Bugs
