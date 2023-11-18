@@ -11,6 +11,7 @@ export const useAuthStore = defineStore("auth", {
         fullName: (state) => state.user?.currentUserInfo?.fullName || "",
         firstName: (state) => state.user?.currentUserInfo?.firstName || "",
         lastName: (state) => state.user?.currentUserInfo?.lastName || "",
+        prefix: (state) => state.user?.currentUserInfo?.title || "",
     },
     actions: {
         async login(loginForm) {

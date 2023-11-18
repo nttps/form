@@ -60,7 +60,10 @@
 
     const submit = async () => {
         const survey = await surveySubmit(form.value);
-        if(survey.outputAction.result === 'ok') {
+        const { status } = await submitQuestion(form, survey)
+        
+        if(status) {
+
             toast.add({
                 id: 'create_form',
                 color: 'green',

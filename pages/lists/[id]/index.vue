@@ -12,8 +12,20 @@
                 <SummaryVote v-if="form && type === 'ระบบโหวต' && vote.length > 0 " :data="vote"/>
             </UCard>
 
-            
-            
+            <UCard class="mb-4" :ui="{ ring: 'ring-1 ring-[#FFA800] dark:ring-gray-800', header: { background: 'bg-[#FFA800]'}}" id="print-me" v-if="form && type !== 'ฟอร์มสมัคร'">
+                <template #header>
+                    <h2 class="font-bold text-3xl leading-8" v-if="form">ข้อแสนอแนะ</h2>
+                </template>
+
+                <div class="flex border relative rounded-2xl border-[#FFA800] w-full">
+                    <div class="w-full ">
+                        <UTable 
+                            :rows="comments" 
+                            :columns="commentColumns"
+                        />
+                    </div>
+                </div>
+            </UCard>
         </div>
     </div>
 </template>
@@ -31,8 +43,24 @@ const type = computed(() => form.value.survey_type)
 const registrants = ref([]);
 const questionnaire = ref([]);
 const vote = ref([])
-
+const comments = ref([])
 const exportUrl = ref('')
+
+const commentColumns = [{
+    key: 'username',
+    label: 'Username',
+    class: 'text-center'
+},
+{
+    key: 'fullName',
+    label: 'ชื่อ - นามสกุล',
+    class: 'text-center'
+},
+{
+    key: 'comment',
+    label: 'ข้อเสนอแนะ',
+    class: 'text-center'
+}]
 
 const { paperize } = usePaperizer('print-me', {
   styles: [
@@ -46,6 +74,8 @@ const print = () => {
 onMounted(() => {
     fetchData()
 })
+
+
 
 const fetchData = async () => {
     const response = await useApi(`/api/servey/ServeyInfo/GetDocSet?survey_id=${route.params.id}`, 'GET');
@@ -89,12 +119,14 @@ const fetchQuestionnaire = async () => {
 
     questionnaire.value = response.quizResult
     exportUrl.value = response.url.pdfUrl
+    comments.value = response.comments
 }
 
 const fetchVote = async () => {
     const response = await useApi(`/api/servey/Submit/GetResultVote?sv_id=${route.params.id}`, 'GET');
 
-    vote.value = response
+    vote.value = response.resultVote
+    comments.value = response.comments
 }
 </script>
 
