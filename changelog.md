@@ -1,5 +1,13 @@
 # Version 1.0.0 (2023-11-XX)
 
+
+## Version 1.0.0-beta.1 (2023-11-20)
+
+### Improve performance
+
+* ในหน้ากรอกฟอร์มสมัคร เปลี่ยน text field เป็น dropdown ในส่วน จังหวัด, อำเภอ,​ตำบล ([DQ-57](https://ck-consulting.atlassian.net/browse/DQ-57))
+* ในหน้ากรอกฟอร์มสมัคร ในส่วนบัตรประชาชน ให้ใส่ format ใน text field เป็นรูปแบบบัตรประชาชน x-xxxx-xxxxx-xx-x ([DQ-58](https://ck-consulting.atlassian.net/browse/DQ-58))
+
 ## Version 1.0.0-alpha.3 (2023-11-18)
 
 ### Improve performance
