@@ -29,11 +29,17 @@
                         </div>
                         <div>
                             <div class="text-lg font-bold mb-2 mt-2">เบอร์โทรศัพท์</div>
-                            <UInput v-model="submitData.submit.phone" placeholder="กรอกเบอร์โทรศัพท์" required :disabled="submitStatus" />
+                            <UInput v-model="submitData.submit.phone" placeholder="กรอกเบอร์โทรศัพท์" v-maska data-maska="###-###-####" required :disabled="submitStatus" />
                         </div>
                         <div>
                             <div class="text-lg font-bold mb-2">บัตรประชาชน</div>
-                             <UInput v-model="submitData.submit.people_id" placeholder="กรอกบัตรประชาชน" required :disabled="submitStatus" />
+                            <UInput v-model="submitData.submit.people_id" 
+                                v-maska
+                                data-maska="#-####-#####-##-#" 
+                                placeholder="กรอกบัตรประชาชน" 
+                                required 
+                                :disabled="submitStatus" 
+                            />
                         </div>
                         <div>
                             <div class="text-lg font-bold mb-2">อีเมล์</div>
@@ -42,7 +48,7 @@
                     </div>
                     <div>
                         <div class="text-lg font-bold mb-2 mt-2">ที่อยู่</div>
-                        <div class="grid grid-cols-3 gap-4">
+                        <div class="grid grid-cols-4 gap-4">
                             <UInput v-model="submitData.submit.house_no" placeholder="เลขที่" required :disabled="submitStatus" />
                             <UInput v-model="submitData.submit.moo_no" placeholder="หมู่ที่" :disabled="submitStatus" />
                             <UInput v-model="submitData.submit.soi" placeholder="ดรอก/ซอย" :disabled="submitStatus" />
