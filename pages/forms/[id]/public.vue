@@ -48,15 +48,33 @@
                     </div>
                     <div>
                         <div class="text-lg font-bold mb-2 mt-2">ที่อยู่</div>
+                        <div class="grid grid-cols-4 gap-4 mb-4">
+                            <UInput v-model="submitData.submit.house_no" placeholder="เลขที่" required :disabled="submitStatus"  />
+                            <UInput v-model="submitData.submit.moo_no" placeholder="หมู่ที่" :disabled="submitStatus"  />
+                            <UInput v-model="submitData.submit.soi" placeholder="ดรอก/ซอย" :disabled="submitStatus"  />
+                            <UInput v-model="submitData.submit.road" placeholder="ถนน" required :disabled="submitStatus"  />
+                        </div>
+                        <div class="mb-2">
+                            <UInput v-model="textSearchAddress" @input="searchAddress" placeholder="พิมพ์ชื่อ ตำบล, อำเภอ หรือจังหวัด เพื่อค้นหาข้อมูลที่อยู่ของคุณ" />
+
+                            <div v-if="listAddress.length" class="mt-2 border rounded">
+                                <div class="px-2 font-bold py-2 text-blue-500">คลิกรายการข้างล่างเพื่อเลือกข้อมูลที่อยู่ของคุณ</div>
+                                <div class="px-2 py-1 border-b cursor-pointer hover:bg-slate-300" v-for="address in listAddress" @click="selectAddress(address)">{{ address.fulladdr }}</div>
+                            </div>
+                        </div>
                         <div class="grid grid-cols-4 gap-4">
-                            <UInput v-model="submitData.submit.house_no" placeholder="เลขที่" required :disabled="submitStatus" />
-                            <UInput v-model="submitData.submit.moo_no" placeholder="หมู่ที่" :disabled="submitStatus" />
-                            <UInput v-model="submitData.submit.soi" placeholder="ดรอก/ซอย" :disabled="submitStatus" />
-                            <UInput v-model="submitData.submit.road" placeholder="ถนน" required :disabled="submitStatus" />
-                            <UInput v-model="submitData.submit.t_name" placeholder="ตำบล / แขวง" required :disabled="submitStatus" />
-                            <UInput v-model="submitData.submit.a_name" placeholder="อำเภอ / เขต" required :disabled="submitStatus" />
-                            <UInput v-model="submitData.submit.p_name" placeholder="จังหวัด" required :disabled="submitStatus" />
-                            <UInput v-model="submitData.submit.post_code" placeholder="รหัสไปรษณีย์" required :disabled="submitStatus" />
+                            <UFormGroup name="t_name" >
+                                <UInput v-model="submitData.submit.t_name" placeholder="ตำบล / แขวง" required readonly />
+                            </UFormGroup>
+                            <UFormGroup name="a_name">
+                                <UInput v-model="submitData.submit.a_name" placeholder="อำเภอ / เขต" required readonly />
+                            </UFormGroup>
+                            <UFormGroup name="p_name">
+                                <UInput v-model="submitData.submit.p_name" placeholder="จังหวัด" required readonly />
+                            </UFormGroup>
+                            <UFormGroup name="post_code">
+                                <UInput v-model="submitData.submit.post_code" placeholder="รหัสไปรษณีย์" required readonly />
+                            </UFormGroup>
                         </div>
                     </div>
                     <div class="text-lg font-bold mb-2 mt-4">ข้อเสนอแนะ <span class="text-red-600"> (*ไม่จำเป็นต้องกรอก)</span></div>
@@ -133,6 +151,7 @@
 
 <script setup>
     import moment from 'moment';
+    import { object, string } from 'yup'
     moment.locale('th')
     import { SFacebook, SLine } from 'vue-socials';
     const { copy } = useCopyToClipboard()
@@ -140,6 +159,18 @@
     const route = useRoute()
 
     const { username, fullName, firstName, lastName } = useAuthStore();
+
+    const listAddress = ref([])
+    const textSearchAddress = ref('')
+    const showInputAddress = ref(false)
+
+    const schema = object({
+        email: string().email('คุณใส่รูปแบบอีเมล์ผิด').required('กรอกอีเมล์ของคุณ'),
+        t_name: string().required('ค้นหาข้อมูลที่อยู่ของคุณ'),
+        a_name: string().required('ค้นหาข้อมูลที่อยู่ของคุณ'),
+        p_name: string().required('ค้นหาข้อมูลที่อยู่ของคุณ'),
+        post_code: string().required('ค้นหาข้อมูลที่อยู่ของคุณ')
+    })
 
     const share = ref(false)
     const shareUrl= ref()
@@ -238,6 +269,25 @@
 
             navigateTo(`/`)
         }
+    }
+
+    const searchAddress = async (e) => {
+        const data = await useApi(`/api/share/addr/ListAddress?search=${e.target.value}`, 'GET');
+    
+        listAddress.value = data
+    }
+
+    const selectAddress = (address) => {
+
+
+        submitData.value.submit.t_name  = address.districT_NAME
+        submitData.value.submit.a_name  = address.bordeR_NAME
+        submitData.value.submit.p_name  = address.provincE_NAME
+        submitData.value.submit.post_code   = address.districT_POSTAL_CODE
+
+        showInputAddress.value = true
+        textSearchAddress.value = ''
+        listAddress.value = []
     }
     const onClose = () => {}
     const onOpen = () => {}
