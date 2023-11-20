@@ -22,6 +22,8 @@
                         <UTable 
                             :rows="comments" 
                             :columns="commentColumns"
+                            :loading-state="{ label: 'กำลังโหลด ...' }" 
+                            :empty-state="{ label: 'ไม่มีข้อเสนอแนะ' }"
                         />
                     </div>
                 </div>
