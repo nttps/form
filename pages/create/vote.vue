@@ -8,7 +8,7 @@
                 <Icon name="i-mdi-pencil" size="25" color="black" />
             </h3>
 
-            <FormVote v-if="vote" :vote="vote" @submit="confirm = true" :loadingSubmit="loadingSubmit" :create="true"/>
+            <FormVote v-if="vote" :vote="vote" @submit="confirmSubmit" :loadingSubmit="loadingSubmit" :create="true"/>
             
         </div>
         <ModalSuccess v-model="confirm" title="แจ้งเตือน" close>
@@ -66,6 +66,22 @@
 
     const loadingSubmit = ref(false)
     const confirm = ref(false)
+
+
+    const confirmSubmit = () => {
+
+        const start = moment(vote.value.survey_date_from, 'YYYY-MM-DDT00:00:00')
+        const end = moment(vote.value.survey_date_to, 'YYYY-MM-DDT00:00:00')
+
+        if(end.isBefore(start)){
+            alertDateModal.value = true
+            messageAlert.value = 'กรุณาเลือกวันที่ให้ถูกต้อง วันที่เริ่มไม่ควรมากกว่าวันที่สิ้นสุด'
+
+            return
+        }
+
+        confirm.value = true
+    }
     
     const submit = async () => {
         confirm.value = false
