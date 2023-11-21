@@ -31,7 +31,7 @@
         <UPopover :popper="{ placement: 'bottom-start' }">
             <UButton icon="i-heroicons-calendar-days-20-solid" class="md:w-4/5" size="md" :label="surveyDateFrom" :disabled="props.form.status === 'เปิด'" />
             <template #panel="{ close }">
-                <FormDatePicker v-model="props.form.survey_date_from" @close="close"  @update:model-value="validateStartDate" />
+                <FormDatePicker v-model="props.form.survey_date_from" @close="close" />
             </template>
         </UPopover>
     </UFormGroup>
@@ -115,20 +115,6 @@ const validateEndDate = (value) => {
 
         alertDateModal.value = true
         messageAlert.value = 'กรุณาเลือกวันที่ให้ถูกต้อง วันที่สิ้นสุดไม่ควรน้อยกว่าวันที่เริ่ม'
-    }
-}
-
-const validateStartDate = (value) => {
-  
-
-    const start = moment(value, 'YYYY-MM-DDT00:00:00')
-    const end = moment(props.form.survey_date_to, 'YYYY-MM-DDT00:00:00')
-
-    if(end.isBefore(start)){
-        props.form.survey_date_from = props.form.survey_date_to
-
-        alertDateModal.value = true
-        messageAlert.value = 'กรุณาเลือกวันที่ให้ถูกต้อง วันที่เริ่มไม่ควรมากกว่าวันที่สิ้นสุด'
     }
 }
 
