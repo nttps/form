@@ -8,7 +8,7 @@
                 <Icon name="i-mdi-pencil" size="25" color="black" />
             </h3>
 
-            <FormQuestion v-if="form" :form="form" @submit="confirm = true" :create="true"/>
+            <FormQuestion v-if="form" :form="form" @submit="confirmSubmit" :create="true"/>
             
         </div>
 
@@ -19,7 +19,14 @@
                 <button type="button" class="px-4 py-2 bg-gray-500 text-base rounded-[5px] text-white" @click="confirm = false">ทำรายการต่อ</button>
             </div>
         </ModalSuccess>
+
+        <UModal v-model="alertDateModal">
+            <div class="text-xl text-center py-4 font-bold text-red-600">
+                {{ messageAlert }}
+            </div>
+        </UModal>
     </div>
+
    
 </template>
 
@@ -36,6 +43,9 @@
 
     const toast = useToast()
     const confirm = ref(false)
+
+    const alertDateModal = ref(false)
+    const messageAlert = ref('')
 
 
     const dateNow = moment().format('YYYY-MM-DDT00:00:00')
@@ -73,7 +83,25 @@
         ]
     })
 
+    const confirmSubmit = () => {
+
+        
+        const start = moment(form.value.survey_date_from, 'YYYY-MM-DDT00:00:00')
+        const end = moment(form.value.survey_date_to, 'YYYY-MM-DDT00:00:00')
+
+        if(end.isBefore(start)){
+            alertDateModal.value = true
+            messageAlert.value = 'กรุณาเลือกวันที่ให้ถูกต้อง วันที่เริ่มไม่ควรมากกว่าวันที่สิ้นสุด'
+
+            return
+        }
+
+        confirm.value = true
+    }
+
     const submit = async () => {
+
+       
 
         confirm.value = false
         const survey = await surveySubmit(form.value);
