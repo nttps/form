@@ -90,7 +90,7 @@
             <UCard :ui="{ divide: 'divide-y divide-gray-100 dark:divide-gray-800' }">
                 <template #header>
                     <div class="flex justify-between items-center">
-                        <div class="text-xl font-bold">แบ่งปันแบบสอบถามนี้</div>
+                        <div class="text-xl font-bold">แบ่งปันรายการนี้</div>
                         <div>
                             <UButton icon="i-heroicons-x-mark" size="sm" color="gray" square variant="link" @click="share = false" />
                         </div>
