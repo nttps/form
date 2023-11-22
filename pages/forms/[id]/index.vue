@@ -2,7 +2,7 @@
     <div>
         <PartialsTitle prefix="" v-if="submitData.submit" :title="submitData.submit.survey_type" icon="i-mdi-vote" back/>
 
-        <UForm :state="submitData.submit" :schema="schema" class="px-8 mt-4" @submit="confirm = true" v-if="submitData.submit">
+        <UForm :state="submitData.submit" :schema="schema" class="px-8 mt-4" @submit="confirmSubmit" v-if="submitData.submit">
             <div class="mb-4">
                 <div class="text-center bg-[#FFA133] rounded-t-lg py-4"></div>
                 <div class="p-4 bg-white">
@@ -99,6 +99,13 @@
             </div>
         </ModalSuccess>
 
+        <ModalSuccess v-model="alert" title="แจ้งเตือน" close>
+            <div class="text-2xl text-center font-bold pb-4 text-red-600">กรุณาตอบให้ครบทุกข้อ</div>
+            <div class="flex justify-center space-x-3">
+                <button type="button" class="px-4 py-2 bg-gray-500 text-base rounded-[5px] text-white" @click="alert = false">ตกลง</button>
+            </div>
+        </ModalSuccess>
+
         <ModalSuccess v-model="success" title="แจ้งเตือน">
             <div class="text-2xl text-center font-bold pb-2">{{  submitData.submit.survey_type === 'ฟอร์มสมัคร' ? 'สมัครแบบฟอร์มสำเร็จ' : 'ตอบแบบฟอร์มสำเร็จ' }}</div>
             <div class="flex justify-center space-x-3">
@@ -119,6 +126,7 @@
 
     const confirm = ref(false)
     const success = ref(false)
+    const alert = ref(false)
     const listAddress = ref([])
     const textSearchAddress = ref('')
     const showInputAddress = ref(false)
@@ -154,7 +162,11 @@
     
     onMounted(async () => {
 
-         const responed = await useApi(`/api/servey/Submit/Save`, 'POST', {
+        fetchData()
+    })
+    
+    const fetchData = async () => {
+        const responed = await useApi(`/api/servey/Submit/Save`, 'POST', {
             survey_id:  route.params.id,//แบบแบบสอบถาม
             username:   username,
             full_name: fullName, 
@@ -168,9 +180,7 @@
         submitData.value.submit.title = prefix
 
         submitStatus.value = submitData.value.submit.status === 'เสร็จสมบูรณ์'
-    })
-    
-   
+    }
 
     useHead({
         title: submitData.value?.submit?.survey_name,
@@ -220,7 +230,20 @@
         listAddress.value = []
     }
 
+    const confirmSubmit = () => {
+
+        const countAs = submitData.value.quizSet.some(q => (q.answers.filter(a => a.is_select).length > 0))
+
+        if(countAs) {
+            confirm.value = true
+        }else {
+            alert.value = true
+        }
+       
+    }
     const submit = async () => {
+
+       
         const res = await useApi(`/api/servey/Submit/SubmitTest`, 'POST', {
             SubmitID: submitData.value.submit.submit_id,//ปล่อยว่างคือเพิ่ม ระบุค่าคือแก้ไข
             Comment: submitData.value.submit.comment,

@@ -19,11 +19,11 @@
                         @input="question.quiz.answer_type == 'ตัวเลือกได้ข้อเดียว' ? setAnswer($event, question, index) : setMultipleAnswer($event, question, index)"   
                         :checked="answer.is_select === true"
                         :disabled="preview"
-                        required
+                        :required="question.quiz.answer_type == 'ตัวเลือกได้ข้อเดียว' ? true : false"
                         class="hover:bg-amber-700 checked:bg-rose-500"
                     />
                     <div>{{ answer.answer }}</div>
-                    </label>
+                </label>
                 <div v-if="answer.answer_img_url">
                     <img :src="answer.answer_img_url" class="h-[200px] my-4" :alt="answer.answer">
                 </div>
@@ -69,6 +69,8 @@
         AnswerIDs: []
     })
 
+
+  
     const setAnswer = (event, quiz, index) => {
 
         answer.value.QuizID = quiz.quiz.quiz_id
@@ -81,6 +83,11 @@
         emits('setAnswer', answer.value)
     }
 
+    const requiredCheckboxMultiple = (quiz, index) => {
+
+        return quiz.answers.find(a => a.is_select == true).length > 0
+    }
+
     const setTextAnswer = (event, quiz) => {
 
         answer.value.QuizID = quiz.quiz.quiz_id
@@ -90,9 +97,18 @@
     }
 
     const setMultipleAnswer = (event, quiz, index) => {
+        
         answer.value.QuizID = quiz.quiz.quiz_id
-        quiz.answers[index].is_select = true
-        answer.value.AnswerIDs.push(event.target.value)
+        var indexA = answer.value.AnswerIDs.indexOf(event.target.value);
+
+        if(!quiz.answers[index].is_select && indexA === -1) {
+
+            answer.value.AnswerIDs.push(event.target.value);
+            quiz.answers[index].is_select = true
+        }else {
+            answer.value.AnswerIDs.splice(indexA, 1);
+            quiz.answers[index].is_select = false
+        }
         emits('setAnswer', answer.value)
     }
 
