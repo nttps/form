@@ -1,7 +1,7 @@
 # Version 1.0.0 (2023-11-XX)
 
 
-## Version 1.0.0-beta.1 (2023-11-20)
+## Version 1.0.0-beta.1 (2023-11-23)
 
 ### Improve performance
 
