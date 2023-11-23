@@ -2,7 +2,7 @@
     <div>
         <PartialsTitle prefix="" v-if="submitData.submit" :title="submitData.submit.survey_type" icon="i-mdi-vote" back/>
 
-        <UForm :state="submitData.submit" :schema="schema" class="px-8 mt-4" @submit="confirm = true" v-if="submitData.submit">
+        <UForm :state="submitData.submit" :schema="schema" class="px-8 mt-4" @submit="confirmSubmit" v-if="submitData.submit">
             <div class="mb-4">
                 <div class="text-center bg-[#FFA133] rounded-t-lg py-4"></div>
                 <div class="p-4 bg-white">
@@ -11,13 +11,15 @@
                 </div>
             </div>
             <ViewForm :form="submitData" v-if="submitData.submit" :submitId="submitData?.submit?.submit_id" @setAnswer="submitAnswer" @setImage="submitImage" :preview="submitStatus"/>
+
             <div class="mb-4">
                 <div class="text-center bg-[#FFA133] rounded-t-lg py-4"></div>
                 <div class="p-4 bg-white">
+                    <div v-if="submitStatus" class="text-red-600 font-bold text-lg font">*ไม่สามารถแก้ไขข้อมูลได้ เนื่องจากคุณได้ทำรายการของแบบฟอร์มนี้ไปเรียบร้อยแล้ว</div>
                     <div class="grid grid-cols-1 xl:grid-cols-3 xl:gap-4" v-if="submitData.submit.survey_type === 'ฟอร์มสมัคร'">
                         <div>
                             <div class="text-lg font-bold mb-2 mt-2">คำนำหน้าชื่อ</div>
-                            <USelect :options="['นาย', 'นาง', 'นางสาว']"  v-model="submitData.submit.title" placeholder="คำนำหน้าชื่อ" :disabled="submitStatus"/>
+                            <USelect :options="['นาย', 'นาง', 'นางสาว']" required v-model="submitData.submit.title" placeholder="คำนำหน้าชื่อ" :disabled="submitStatus"/>
                         </div>
                          <div>
                             <div class="text-lg font-bold mb-2 mt-2">ชื่อ</div>
@@ -57,7 +59,7 @@
                             <UInput v-model="submitData.submit.road" placeholder="ถนน" required :disabled="submitStatus"  />
                         </div>
                         <div class="mb-2">
-                            <UInput v-model="textSearchAddress" @input="searchAddress" placeholder="พิมพ์ชื่อ ตำบล, อำเภอ หรือจังหวัด เพื่อค้นหาข้อมูลที่อยู่ของคุณ" />
+                            <UInput v-model="textSearchAddress" @input="searchAddress" placeholder="พิมพ์ชื่อ ตำบล, อำเภอ หรือจังหวัด เพื่อค้นหาข้อมูลที่อยู่ของคุณ" :disabled="submitStatus" />
 
                             <div v-if="listAddress.length" class="mt-2 border rounded">
                                 <div class="px-2 font-bold py-2 text-blue-500">คลิกรายการข้างล่างเพื่อเลือกข้อมูลที่อยู่ของคุณ</div>
@@ -66,16 +68,16 @@
                         </div>
                         <div class="grid grid-cols-4 gap-4">
                             <UFormGroup name="t_name" >
-                                <UInput v-model="submitData.submit.t_name" placeholder="ตำบล / แขวง" required readonly />
+                                <UInput v-model="submitData.submit.t_name" placeholder="ตำบล / แขวง" required readonly :disabled="submitStatus" />
                             </UFormGroup>
                             <UFormGroup name="a_name">
-                                <UInput v-model="submitData.submit.a_name" placeholder="อำเภอ / เขต" required readonly />
+                                <UInput v-model="submitData.submit.a_name" placeholder="อำเภอ / เขต" required readonly :disabled="submitStatus" />
                             </UFormGroup>
                             <UFormGroup name="p_name">
-                                <UInput v-model="submitData.submit.p_name" placeholder="จังหวัด" required readonly />
+                                <UInput v-model="submitData.submit.p_name" placeholder="จังหวัด" required readonly :disabled="submitStatus" />
                             </UFormGroup>
                             <UFormGroup name="post_code">
-                                <UInput v-model="submitData.submit.post_code" placeholder="รหัสไปรษณีย์" required readonly />
+                                <UInput v-model="submitData.submit.post_code" placeholder="รหัสไปรษณีย์" required readonly :disabled="submitStatus" />
                             </UFormGroup>
                         </div>
                            
@@ -99,6 +101,13 @@
             </div>
         </ModalSuccess>
 
+        <ModalSuccess v-model="alert" title="แจ้งเตือน" close>
+            <div class="text-2xl text-center font-bold pb-4 text-red-600">กรุณาตอบให้ครบทุกข้อ</div>
+            <div class="flex justify-center space-x-3">
+                <button type="button" class="px-4 py-2 bg-gray-500 text-base rounded-[5px] text-white" @click="alert = false">ตกลง</button>
+            </div>
+        </ModalSuccess>
+
         <ModalSuccess v-model="success" title="แจ้งเตือน">
             <div class="text-2xl text-center font-bold pb-2">{{  submitData.submit.survey_type === 'ฟอร์มสมัคร' ? 'สมัครแบบฟอร์มสำเร็จ' : 'ตอบแบบฟอร์มสำเร็จ' }}</div>
             <div class="flex justify-center space-x-3">
@@ -119,6 +128,7 @@
 
     const confirm = ref(false)
     const success = ref(false)
+    const alert = ref(false)
     const listAddress = ref([])
     const textSearchAddress = ref('')
     const showInputAddress = ref(false)
@@ -129,17 +139,36 @@
 
     
     const schema = object({
-        email: string().email('คุณใส่รูปแบบอีเมล์ผิด').required('กรอกอีเมล์ของคุณ'),
-        t_name: string().required('ค้นหาข้อมูลที่อยู่ของคุณ'),
-        a_name: string().required('ค้นหาข้อมูลที่อยู่ของคุณ'),
-        p_name: string().required('ค้นหาข้อมูลที่อยู่ของคุณ'),
-        post_code: string().required('ค้นหาข้อมูลที่อยู่ของคุณ')
+        email: string().when('survey_type', {
+            is: (survey_type) =>  survey_type === 'ฟอร์มสมัคร',
+            then: (schema) => schema.email('คุณใส่รูปแบบอีเมล์ผิด').required('กรอกอีเมล์ของคุณ'),
+        }),
+        t_name: string().when('survey_type', {
+            is: (survey_type) =>  survey_type === 'ฟอร์มสมัคร',
+            then: (schema) => schema.required('ค้นหาข้อมูลที่อยู่ของคุณ')
+        }),
+        a_name: string().when('survey_type', {
+            is: (survey_type) =>  survey_type === 'ฟอร์มสมัคร',
+            then: (schema) => schema.required('ค้นหาข้อมูลที่อยู่ของคุณ')
+        }),
+        p_name: string().when('survey_type', {
+            is: (survey_type) => survey_type === 'ฟอร์มสมัคร',
+            then: (schema) => schema.required('ค้นหาข้อมูลที่อยู่ของคุณ')
+        }),
+        post_code: string().when('survey_type', {
+            is: (survey_type) =>  survey_type === 'ฟอร์มสมัคร',
+            then: (schema) => schema.required('ค้นหาข้อมูลที่อยู่ของคุณ')
+        })
     })
     const submitStatus = ref(false)
     
     onMounted(async () => {
 
-         const responed = await useApi(`/api/servey/Submit/Save`, 'POST', {
+        fetchData()
+    })
+    
+    const fetchData = async () => {
+        const responed = await useApi(`/api/servey/Submit/Save`, 'POST', {
             survey_id:  route.params.id,//แบบแบบสอบถาม
             username:   username,
             full_name: fullName, 
@@ -153,9 +182,7 @@
         submitData.value.submit.title = prefix
 
         submitStatus.value = submitData.value.submit.status === 'เสร็จสมบูรณ์'
-    })
-    
-   
+    }
 
     useHead({
         title: submitData.value?.submit?.survey_name,
@@ -205,7 +232,20 @@
         listAddress.value = []
     }
 
+    const confirmSubmit = () => {
+
+        const countAs = submitData.value.quizSet.some(q => (q.answers.filter(a => a.is_select).length > 0))
+
+        if(submitData.value.submit.survey_type === 'ฟอร์มสมัคร' || (submitData.value.survey_type !== 'ฟอร์มสมัคร' && countAs)) {
+            confirm.value = true
+        }else {
+            alert.value = true
+        }
+       
+    }
     const submit = async () => {
+
+       
         const res = await useApi(`/api/servey/Submit/SubmitTest`, 'POST', {
             SubmitID: submitData.value.submit.submit_id,//ปล่อยว่างคือเพิ่ม ระบุค่าคือแก้ไข
             Comment: submitData.value.submit.comment,

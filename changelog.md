@@ -1,12 +1,25 @@
 # Version 1.0.0 (2023-11-XX)
 
 
-## Version 1.0.0-beta.1 (2023-11-20)
+## Version 1.0.0-beta.1 (2023-11-23)
 
 ### Improve performance
 
 * ในหน้ากรอกฟอร์มสมัคร เปลี่ยน text field เป็น dropdown ในส่วน จังหวัด, อำเภอ,​ตำบล ([DQ-57](https://ck-consulting.atlassian.net/browse/DQ-57))
 * ในหน้ากรอกฟอร์มสมัคร ในส่วนบัตรประชาชน ให้ใส่ format ใน text field เป็นรูปแบบบัตรประชาชน x-xxxx-xxxxx-xx-x ([DQ-58](https://ck-consulting.atlassian.net/browse/DQ-58))
+* เมื่อสร้างแบบสอบถาม ตัวเลือก : ไม่สารถลบได้เมื่อต้องการลบ ([DQ-60](https://ck-consulting.atlassian.net/browse/DQ-60))
+* การกำหนดวันที่เริ่มการโหวตและวันที่สิ้นสุดการโหวตไม่เป็นช่วงวันที่กำหนด ([DQ-61](https://ck-consulting.atlassian.net/browse/DQ-61))
+* การกำหนดวันที่เริ่มตอบแบบสอบถามและวันที่สิ้นสุดตอบแบบสอบถามไม่เป็นช่วงวันที่กำหนด ([DQ-62](https://ck-consulting.atlassian.net/browse/DQ-62))
+* การกำหหนดวันที่เริ่มต้นสมัครและวันที่สิ้นสุดการสมัครไม่เป็นช่วงเวลาที่กำหนด ([DQ-63](https://ck-consulting.atlassian.net/browse/DQ-63))
+* การค้นหารายการระบบโหวต พิมพ์ค้นหาแล้วไม่พบราบการ ([DQ-64](https://ck-consulting.atlassian.net/browse/DQ-64))
+* การค้นหารายการแบบสอบถาม พิมพ์ค้นหาแล้วไม่พบราบการ ([DQ-65](https://ck-consulting.atlassian.net/browse/DQ-65))
+* ค้นหารายการฟอร์มสมัคร พิมพ์ค้นหาแล้วไม่พบราบการ ([DQ-66](https://ck-consulting.atlassian.net/browse/DQ-66))
+* แบบสอบถาม แบบหลายตัวเลือก บังคับเลือกทั้งหมด ([DQ-67](https://ck-consulting.atlassian.net/browse/DQ-67))
+* ไม่สามารถกดส่งโหวตได้ ([DQ-68](https://ck-consulting.atlassian.net/browse/DQ-68))
+* ไม่สามารถกดส่งแบบสอบถามได้ ([DQ-69](https://ck-consulting.atlassian.net/browse/DQ-69))
+* ฟอร์มสมัครไม่มีปุ่มยืนยันการสมัคร ([DQ-71](https://ck-consulting.atlassian.net/browse/DQ-71))
+* ฟอร์มสมัครกรอกข้อมูลรายละเอียดไม่ได้ ([DQ-72](https://ck-consulting.atlassian.net/browse/DQ-72))
+  
 
 ## Version 1.0.0-alpha.3 (2023-11-18)
 

@@ -2,7 +2,7 @@
     <div>
         <PartialsTitle prefix="ระบบ" title="แบบสอบถาม" icon="i-mdi-vote" back share @share="shareModal"/>
 
-        <UForm :state="submitData.submit" class="px-8 mt-4" @submit="confirm = true" v-if="submitData.submit">
+        <UForm :state="submitData.submit" :schema="schema" class="px-8 mt-4" @submit="confirm = true" v-if="submitData.submit">
             <div class="mb-4">
                 <div class="text-center bg-[#FFA133] rounded-t-lg py-4"></div>
                 <div class="p-4 bg-white">
@@ -64,16 +64,16 @@
                         </div>
                         <div class="grid grid-cols-4 gap-4">
                             <UFormGroup name="t_name" >
-                                <UInput v-model="submitData.submit.t_name" placeholder="ตำบล / แขวง" required readonly />
+                                <UInput v-model="submitData.submit.t_name" placeholder="ตำบล / แขวง" required readonly :disabled="submitStatus"/>
                             </UFormGroup>
                             <UFormGroup name="a_name">
-                                <UInput v-model="submitData.submit.a_name" placeholder="อำเภอ / เขต" required readonly />
+                                <UInput v-model="submitData.submit.a_name" placeholder="อำเภอ / เขต" required readonly :disabled="submitStatus"/>
                             </UFormGroup>
                             <UFormGroup name="p_name">
-                                <UInput v-model="submitData.submit.p_name" placeholder="จังหวัด" required readonly />
+                                <UInput v-model="submitData.submit.p_name" placeholder="จังหวัด" required readonly :disabled="submitStatus"/>
                             </UFormGroup>
                             <UFormGroup name="post_code">
-                                <UInput v-model="submitData.submit.post_code" placeholder="รหัสไปรษณีย์" required readonly />
+                                <UInput v-model="submitData.submit.post_code" placeholder="รหัสไปรษณีย์" required readonly :disabled="submitStatus"/>
                             </UFormGroup>
                         </div>
                     </div>
@@ -165,11 +165,26 @@
     const showInputAddress = ref(false)
 
     const schema = object({
-        email: string().email('คุณใส่รูปแบบอีเมล์ผิด').required('กรอกอีเมล์ของคุณ'),
-        t_name: string().required('ค้นหาข้อมูลที่อยู่ของคุณ'),
-        a_name: string().required('ค้นหาข้อมูลที่อยู่ของคุณ'),
-        p_name: string().required('ค้นหาข้อมูลที่อยู่ของคุณ'),
-        post_code: string().required('ค้นหาข้อมูลที่อยู่ของคุณ')
+        email: string().when('survey_type', {
+            is: (survey_type) =>  survey_type === 'ฟอร์มสมัคร',
+            then: (schema) => schema.email('คุณใส่รูปแบบอีเมล์ผิด').required('กรอกอีเมล์ของคุณ'),
+        }),
+        t_name: string().when('survey_type', {
+            is: (survey_type) =>  survey_type === 'ฟอร์มสมัคร',
+            then: (schema) => schema.required('ค้นหาข้อมูลที่อยู่ของคุณ')
+        }),
+        a_name: string().when('survey_type', {
+            is: (survey_type) =>  survey_type === 'ฟอร์มสมัคร',
+            then: (schema) => schema.required('ค้นหาข้อมูลที่อยู่ของคุณ')
+        }),
+        p_name: string().when('survey_type', {
+            is: (survey_type) => survey_type === 'ฟอร์มสมัคร',
+            then: (schema) => schema.required('ค้นหาข้อมูลที่อยู่ของคุณ')
+        }),
+        post_code: string().when('survey_type', {
+            is: (survey_type) =>  survey_type === 'ฟอร์มสมัคร',
+            then: (schema) => schema.required('ค้นหาข้อมูลที่อยู่ของคุณ')
+        })
     })
 
     const share = ref(false)
