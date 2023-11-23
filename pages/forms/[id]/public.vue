@@ -64,16 +64,16 @@
                         </div>
                         <div class="grid grid-cols-4 gap-4">
                             <UFormGroup name="t_name" >
-                                <UInput v-model="submitData.submit.t_name" placeholder="ตำบล / แขวง" required readonly />
+                                <UInput v-model="submitData.submit.t_name" placeholder="ตำบล / แขวง" required readonly :disabled="submitStatus"/>
                             </UFormGroup>
                             <UFormGroup name="a_name">
-                                <UInput v-model="submitData.submit.a_name" placeholder="อำเภอ / เขต" required readonly />
+                                <UInput v-model="submitData.submit.a_name" placeholder="อำเภอ / เขต" required readonly :disabled="submitStatus"/>
                             </UFormGroup>
                             <UFormGroup name="p_name">
-                                <UInput v-model="submitData.submit.p_name" placeholder="จังหวัด" required readonly />
+                                <UInput v-model="submitData.submit.p_name" placeholder="จังหวัด" required readonly :disabled="submitStatus"/>
                             </UFormGroup>
                             <UFormGroup name="post_code">
-                                <UInput v-model="submitData.submit.post_code" placeholder="รหัสไปรษณีย์" required readonly />
+                                <UInput v-model="submitData.submit.post_code" placeholder="รหัสไปรษณีย์" required readonly :disabled="submitStatus"/>
                             </UFormGroup>
                         </div>
                     </div>

@@ -12,17 +12,28 @@
                 <template #created_date-data="{ row }">
                     <div class="text-center">{{ fomatDate(row.created_date) }}</div>
                 </template>
+
+                <template #comment-data="{ row }">
+                    <div class="text-center">{{ row.comment || '-' }}</div>
+                </template>
+                
                 <template #details-data="{ row }">
-                    <div class="text-center">{{ row.username }}</div>
-                    <div class="text-center">
+                    <div>Username: {{ row.username }}</div>
+                    <div>
                       <div>
-                        {{ row.title }} {{ row.fullname }}
+                        ชื่อ - นามสกุล: {{ row.title }} {{ row.fullname }}
                       </div>
                       <div>
-                        {{ row.people_id }} {{ row.phone }} {{ row.email }}
+                        เลขประจำตัวประชาชน: {{ row.people_id }}  
                       </div>
                       <div>
-                        {{ row.house_no }} {{ row.moo_no }} {{ row.soi }} {{ row.road }} {{ row.t_name }} {{ row.a_name }} {{ row.p_name }} {{ row.post_code }}
+                        เบอร์โทรศัพท์: {{ row.phone }}
+                      </div>
+                      <div>
+                        อีเมล์: {{ row.email }}
+                      </div>
+                      <div>
+                        ที่อยู่: {{ row.house_no }} {{ row.moo_no }} {{ row.soi }} {{ row.road }} {{ row.t_name }} {{ row.a_name }} {{ row.p_name }} {{ row.post_code }}
                       </div>
                     </div>
                 </template>

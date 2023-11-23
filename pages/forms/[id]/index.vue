@@ -11,13 +11,15 @@
                 </div>
             </div>
             <ViewForm :form="submitData" v-if="submitData.submit" :submitId="submitData?.submit?.submit_id" @setAnswer="submitAnswer" @setImage="submitImage" :preview="submitStatus"/>
+
             <div class="mb-4">
                 <div class="text-center bg-[#FFA133] rounded-t-lg py-4"></div>
                 <div class="p-4 bg-white">
+                    <div v-if="submitStatus" class="text-red-600 font-bold text-lg font">*ไม่สามารถแก้ไขข้อมูลได้ เนื่องจากคุณได้ทำรายการของแบบฟอร์มนี้ไปเรียบร้อยแล้ว</div>
                     <div class="grid grid-cols-1 xl:grid-cols-3 xl:gap-4" v-if="submitData.submit.survey_type === 'ฟอร์มสมัคร'">
                         <div>
                             <div class="text-lg font-bold mb-2 mt-2">คำนำหน้าชื่อ</div>
-                            <USelect :options="['นาย', 'นาง', 'นางสาว']"  v-model="submitData.submit.title" placeholder="คำนำหน้าชื่อ" :disabled="submitStatus"/>
+                            <USelect :options="['นาย', 'นาง', 'นางสาว']" required v-model="submitData.submit.title" placeholder="คำนำหน้าชื่อ" :disabled="submitStatus"/>
                         </div>
                          <div>
                             <div class="text-lg font-bold mb-2 mt-2">ชื่อ</div>
@@ -57,7 +59,7 @@
                             <UInput v-model="submitData.submit.road" placeholder="ถนน" required :disabled="submitStatus"  />
                         </div>
                         <div class="mb-2">
-                            <UInput v-model="textSearchAddress" @input="searchAddress" placeholder="พิมพ์ชื่อ ตำบล, อำเภอ หรือจังหวัด เพื่อค้นหาข้อมูลที่อยู่ของคุณ" />
+                            <UInput v-model="textSearchAddress" @input="searchAddress" placeholder="พิมพ์ชื่อ ตำบล, อำเภอ หรือจังหวัด เพื่อค้นหาข้อมูลที่อยู่ของคุณ" :disabled="submitStatus" />
 
                             <div v-if="listAddress.length" class="mt-2 border rounded">
                                 <div class="px-2 font-bold py-2 text-blue-500">คลิกรายการข้างล่างเพื่อเลือกข้อมูลที่อยู่ของคุณ</div>
@@ -66,16 +68,16 @@
                         </div>
                         <div class="grid grid-cols-4 gap-4">
                             <UFormGroup name="t_name" >
-                                <UInput v-model="submitData.submit.t_name" placeholder="ตำบล / แขวง" required readonly />
+                                <UInput v-model="submitData.submit.t_name" placeholder="ตำบล / แขวง" required readonly :disabled="submitStatus" />
                             </UFormGroup>
                             <UFormGroup name="a_name">
-                                <UInput v-model="submitData.submit.a_name" placeholder="อำเภอ / เขต" required readonly />
+                                <UInput v-model="submitData.submit.a_name" placeholder="อำเภอ / เขต" required readonly :disabled="submitStatus" />
                             </UFormGroup>
                             <UFormGroup name="p_name">
-                                <UInput v-model="submitData.submit.p_name" placeholder="จังหวัด" required readonly />
+                                <UInput v-model="submitData.submit.p_name" placeholder="จังหวัด" required readonly :disabled="submitStatus" />
                             </UFormGroup>
                             <UFormGroup name="post_code">
-                                <UInput v-model="submitData.submit.post_code" placeholder="รหัสไปรษณีย์" required readonly />
+                                <UInput v-model="submitData.submit.post_code" placeholder="รหัสไปรษณีย์" required readonly :disabled="submitStatus" />
                             </UFormGroup>
                         </div>
                            
@@ -234,7 +236,7 @@
 
         const countAs = submitData.value.quizSet.some(q => (q.answers.filter(a => a.is_select).length > 0))
 
-        if(countAs) {
+        if(submitData.value.submit.survey_type === 'ฟอร์มสมัคร' || (submitData.value.survey_type !== 'ฟอร์มสมัคร' && countAs)) {
             confirm.value = true
         }else {
             alert.value = true
