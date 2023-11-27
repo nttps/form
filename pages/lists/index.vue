@@ -49,7 +49,7 @@
                               <div class="text-center">{{ fomatDate(row.created_date) }}</div>
                           </template>
                           <template #dateRange-data="{ row }">
-                              <div class="text-center">{{ fomatDate(row.dateBegin) }} ถึง {{ fomatDate(row.dateEnd) }}</div>
+                              <div class="text-center">{{ fomatDate(row.survey_date_from) }} ถึง {{ fomatDate(row.survey_date_to) }}</div>
                           </template>
                           <template #status-data="{ row }">
                               <div class="text-center">{{ row.status }}</div>

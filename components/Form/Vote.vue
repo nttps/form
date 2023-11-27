@@ -58,7 +58,7 @@
                                                     <!-- <button type="button" @click="addImageChoice(index)"><Icon name="i-mdi-file-image-box" size="25" /></button> -->
                                                 </div>
                                                 <div class="min-w-max px-1" v-if="vote.choices.length > 1">
-                                                    <button type="button" @click="deleteChoice(index)" :disabled="props.vote.status === 'เปิด'"><Icon name="i-mdi-close" /></button>
+                                                    <button type="button" @click="confirmDeleteChoice(index)" :disabled="props.vote.status === 'เปิด'"><Icon name="i-mdi-close" /></button>
                                                 </div>
                                             </div>
                                             <div v-if="choice.answer_img || choice.image_path" class="ml-7 mt-4 relative max-w-max">
@@ -97,6 +97,14 @@
         </div>
     </UForm>
 
+    <ModalSuccess v-model="alertChoiceDelete" title="แจ้งเตือน" close>
+        <div class="text-2xl text-center font-bold pb-4">ยืนยันการลบตัวเลือกนี้</div>
+        <div class="flex justify-end space-x-3">
+            <button type="button" class="px-4 py-2 bg-green-600 text-base rounded-[5px] text-white" @click="deleteChoice">ยืนยัน</button>
+            <button type="button" class="px-4 py-2 bg-gray-500 text-base rounded-[5px] text-white" @click="alertChoiceDelete = false">ทำรายการต่อ</button>
+        </div>
+    </ModalSuccess>
+
 </template>
 
 <script setup>
@@ -133,6 +141,7 @@
     })
     
     const drag = ref(false)
+   
     const dragOptions = computed(() => {
       return {
         animation: 1,
@@ -153,8 +162,31 @@
             answer_type: 'ตัวเลือกได้ข้อเดียว',
         })
     }
-    const deleteChoice = (index) => {
-        props.vote.choices.splice(index, 1)
+
+    const alertChoiceDelete = ref(false)
+    const choiceIndexDel = ref(null)
+
+
+    const { username } = useAuthStore();
+
+    const confirmDeleteChoice = (index) =>{
+        alertChoiceDelete.value = true
+        choiceIndexDel.value = index
+    }
+
+    const deleteChoice = async () => {
+
+        const answer = props.vote.choices[choiceIndexDel.value]
+        props.vote.choices.splice(choiceIndexDel.value, 1)
+
+        alertChoiceDelete.value = false
+
+        if(answer?.answer_id) {
+            const response = await useApi(`/api/servey/Quiz/DeleteAnswer`, 'DELETE', {
+                AnswerID: answer.answer_id,
+                ActionBy: username
+            });
+        }
     }
 
     const pickImage = (e, index) => {
