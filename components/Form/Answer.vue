@@ -34,7 +34,7 @@
                             </label>
                         </UTooltip>
                         <UTooltip text="ลบตัวเลือก" v-if="props.question.answers.length > 1" >
-                            <button class="hover:bg-black/5 text-gray-600" :class="props.status === 'เปิด' ? 'cursor-not-allowed' : ''" :disabled="props.status === 'เปิด'" type="button" @click="emits('deleteAnswer', { index: props.index, indexA})"> 
+                            <button class="hover:bg-black/5 text-gray-600" :class="props.status === 'เปิด' ? 'cursor-not-allowed' : ''" :disabled="props.status === 'เปิด'" type="button" @click="confirmDeleteAnswer(props.index, indexA)"> 
                                 <Icon name="i-mdi-close" size="30"/> 
                             </button>
                         </UTooltip>
@@ -60,6 +60,14 @@
             <button type="button" class="px-4 py-2 bg-gray-500 text-base rounded-[5px] text-white" @click="alertImageDelete = false">ทำรายการต่อ</button>
         </div>
     </ModalSuccess>
+
+    <ModalSuccess v-model="alertAnswerDelete" title="แจ้งเตือน" close>
+        <div class="text-2xl text-center font-bold pb-4">ยืนยันการลบตัวเลือกนี้</div>
+        <div class="flex justify-end space-x-3">
+            <button type="button" class="px-4 py-2 bg-green-600 text-base rounded-[5px] text-white" @click="deleteAnswer">ยืนยัน</button>
+            <button type="button" class="px-4 py-2 bg-gray-500 text-base rounded-[5px] text-white" @click="alertAnswerDelete = false">ทำรายการต่อ</button>
+        </div>
+    </ModalSuccess>
 </template>
 
 
@@ -71,6 +79,12 @@
 
 
     const alertImageDelete = ref(false)
+    const alertAnswerDelete = ref(false)
+    const answerIndexDel = ref({
+        question: null,
+        answer: null
+    })
+
     const dragOptions = computed(() => {
       return {
         animation: 1,
@@ -122,6 +136,21 @@
         }
     }
 
+
+    const confirmDeleteAnswer = (qIndex, AIndex) =>{
+        alertAnswerDelete.value = true
+        answerIndexDel.value.question = qIndex
+        answerIndexDel.value.answer = AIndex
+    }
+
+    const deleteAnswer = () =>{
+
+        alertAnswerDelete.value = false
+        emits('deleteAnswer', { index: answerIndexDel.value.question, indexA: answerIndexDel.value.answer })
+    }
+    
+
+   
 
         
 </script>

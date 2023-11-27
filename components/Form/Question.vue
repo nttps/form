@@ -301,6 +301,9 @@
             answer_sort: (question.answers.length + 1),
         })
     }
+    
+    const { username } = useAuthStore();
+
     const deleteAnswer = async (value) => {
 
         const question = props.form.questions[value.index];
