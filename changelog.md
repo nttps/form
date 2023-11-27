@@ -1,5 +1,10 @@
 # Version 1.0.0 (2023-11-XX)
 
+## Version 1.0.0 (2023-11-27)
+
+### Improve performance
+
+* รายการสร้างการโหวต แต่ที่ไฮไลท์ไปเป็นของการสร้างแบบสอบถาม ([DQ-76](https://ck-consulting.atlassian.net/browse/DQ-76))
 
 ## Version 1.0.0-beta.1 (2023-11-23)
 

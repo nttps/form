@@ -125,7 +125,7 @@
         if(props.create) {
             return [{
                 slot: 'form',
-                label: 'แบบฟอร์มสอบถาม',
+                label: 'แบบฟอร์มการโหวต',
             }]
         }
 
