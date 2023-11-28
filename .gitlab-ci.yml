@@ -4,10 +4,19 @@ variables:
 
 docker-build:
   # Use the official docker image.
-  image: docker:cli
+  image: docker:stable
   stage: build
   services:
-    - docker:dind
+    - name: docker:dind
+      alias: thedockerhost
+      
+  variables:
+    # Tell docker CLI how to talk to Docker daemon; see
+    # https://docs.gitlab.com/ee/ci/docker/using_docker_build.html#use-docker-in-docker-executor
+    DOCKER_HOST: tcp://thedockerhost:2375/
+    # Use the overlayfs driver for improved performance:
+    DOCKER_DRIVER: overlay2
+    DOCKER_TLS_CERTDIR: ""
   # All branches are tagged with $DOCKER_IMAGE_NAME (defaults to commit ref slug)
   # Default branch is also tagged with `latest`
   script:
@@ -15,4 +24,6 @@ docker-build:
     - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $CI_REGISTRY
     - docker push $TAG_COMMIT
     - docker push $TAG_LATEST
+  only:
+    - main
 
