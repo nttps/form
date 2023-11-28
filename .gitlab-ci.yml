@@ -1,9 +1,17 @@
-image: docker
-services:
-  - docker:dind
-stages:
-  - deploy
-step-deploy-prod:
-  stage: deploy
+image: node
+
+before_script:
+  - npm install
+
+cache:
+  paths:
+    - node_modules/
+
+pages:
   script:
-    - echo "test"
+    - npm run generate
+  artifacts:
+    paths:
+      - public
+  rules:
+    - if: $CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH
