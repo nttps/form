@@ -80,6 +80,7 @@ definePageMeta({
   middleware: ["auth"]
 })
 
+
 const { origin } = useRequestURL()
 
 const page = ref(1)
