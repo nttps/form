@@ -58,7 +58,9 @@
                                                     <!-- <button type="button" @click="addImageChoice(index)"><Icon name="i-mdi-file-image-box" size="25" /></button> -->
                                                 </div>
                                                 <div class="min-w-max px-1" v-if="vote.choices.length > 1">
-                                                    <button type="button" @click="confirmDeleteChoice(index)" :disabled="props.vote.status === 'เปิด'"><Icon name="i-mdi-close" /></button>
+                                                    <UTooltip text="ลบตัวเลือก" v-if="props.question.answers.length > 1" >
+                                                        <button type="button" @click="confirmDeleteChoice(index)" :disabled="props.vote.status === 'เปิด'"><Icon name="i-mdi-close" /></button>
+                                                    </UTooltip>
                                                 </div>
                                             </div>
                                             <div v-if="choice.answer_img || choice.image_path" class="ml-7 mt-4 relative max-w-max">
