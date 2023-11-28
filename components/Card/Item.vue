@@ -8,9 +8,14 @@
             <h2 class="text-xl font-bold">{{ props.item.survey_name  }}</h2>
             <div class="line-clamp-2">{{ props.item.description ? props.item.description.replace(/<\/?[^>]+(>|$)/g, "") : `&nbsp;` }}</div>
         </div>
-        <div class="text-right px-4 pt-2">
-            <UButton label="แบ่งปัน" color="blue" :ui="{ rounded: 'rounded-full' }" size="xl" @click="emit('share')"/>
-            <NuxtLink :to="`/forms/${props.item.survey_id}/public`" class="ml-2 bg-[#FFA800] transition-all px-5 py-1.5 rounded-full border hover:border border-[#FFA800] hover:bg-white hover:text-[#FFA800]">เข้าร่วม</NuxtLink>
+        <div class="flex items-center justify-between px-4 pt-2">
+            <div>
+                <UBadge :label="props.item.created_by" color="emerald" />
+            </div>
+            <div>
+                <UButton label="แบ่งปัน" color="blue" :ui="{ rounded: 'rounded-full' }" size="xl" @click="emit('share')"/>
+                <NuxtLink :to="`/forms/${props.item.survey_id}/public`" class="ml-2 bg-[#FFA800] transition-all px-5 py-1.5 rounded-full border hover:border border-[#FFA800] hover:bg-white hover:text-[#FFA800]">เข้าร่วม</NuxtLink>
+            </div>
         </div>
     </div>
 

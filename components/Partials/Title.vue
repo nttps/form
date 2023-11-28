@@ -17,10 +17,10 @@
                 <li>
                     <NuxtLink :to="`${props.back ? props.back : `/`}`" class="ml-8 md:ml-0" v-if="props.back !== undefined"><Icon name="i-mdi-arrow-left-circle" class="text-[#FFA133]" size="40" /></NuxtLink>
                 </li>
-                <li class="bg-white py-1 px-4 rounded-full shadow-primary" v-if="props.back === undefined && props.create !== undefined">
+                <li class="bg-white py-1 px-4 rounded-full shadow-primary" v-if="props.back === undefined && props.create !== undefined && isAdmin">
                     <NuxtLink to="/lists">รายการของฉัน</NuxtLink>
                 </li>
-                <li class="bg-white py-1 px-4 rounded-full shadow-primary" v-if="props.create !== undefined" >
+                <li class="bg-white py-1 px-4 rounded-full shadow-primary" v-if="props.create !== undefined && isAdmin" >
                     <FormCreate />
                 </li>
             </ul>
@@ -33,6 +33,7 @@
     const props = defineProps(['title', 'icon', 'back', 'prefix', 'export', 'share', 'create'])
     const emit = defineEmits(['share'])
     
+    const { isAdmin } = useAuthStore();
 
 </script>
 

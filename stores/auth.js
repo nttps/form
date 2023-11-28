@@ -7,6 +7,8 @@ export const useAuthStore = defineStore("auth", {
 
     getters: {
         isLoggedIn: (state) => !!state.user,
+        isAdmin: (state) =>
+            state.user.userInGroups.some((p) => p.userGroupID == 'ADMIN'),
         username: (state) => state.user?.currentUser || "",
         fullName: (state) => state.user?.currentUserInfo?.fullName || "",
         firstName: (state) => state.user?.currentUserInfo?.firstName || "",
