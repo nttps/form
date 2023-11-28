@@ -46,7 +46,7 @@
                             <UInput v-model="submitData.submit.email" placeholder="กรอกอีเมล์" required :disabled="submitStatus" />
                         </div>
                     </div>
-                    <div>
+                    <div v-if="submitData.submit.survey_type === 'ฟอร์มสมัคร'">
                         <div class="text-lg font-bold mb-2 mt-2">ที่อยู่</div>
                         <div class="grid grid-cols-4 gap-4 mb-4">
                             <UInput v-model="submitData.submit.house_no" placeholder="เลขที่" required :disabled="submitStatus"  />
@@ -190,7 +190,7 @@
     const share = ref(false)
     const shareUrl= ref()
 
-    const urlShare = url.href + '/public'
+    const urlShare = url.href 
     const confirm = ref(false)
     const success = ref(false)
 
