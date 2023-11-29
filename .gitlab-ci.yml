@@ -21,7 +21,7 @@ docker-build:
   # Default branch is also tagged with `latest`
   script:
     - docker build -t $TAG_COMMIT -t $TAG_LATEST .
-    - docker login -u $CI_DEPLOY_USER -p $CI_DEPLOY_PASSWORD $CI_REGISTRY
+    - docker login -u "gitlab+deploy-token-1" -p "yNGX_gZwikXJUeXBoNHL" $CI_REGISTRY
     - docker push $TAG_COMMIT
     - docker push $TAG_LATEST
   only:
