@@ -4,11 +4,18 @@
 
 ### Improve performance
 
-* รายการสร้างการโหวต แต่ที่ไฮไลท์ไปเป็นของการสร้างแบบสอบถาม ([DQ-76](https://ck-consulting.atlassian.net/browse/DQ-76))
 * การแก้ไขรายการของฉัน แบบฟอร์มสอบถาม ลบรูปตัวเลือกได้มี pop up การโหวต ลบรูปตัวเลือกได้แต่ไม่มีpop up ([DQ-79](https://ck-consulting.atlassian.net/browse/DQ-79))
+* เอาช่องที่กรอกพวกที่อยู่ออก ในหน้าฟอร์ม แบบสอบถาม ([DQ-83](https://ck-consulting.atlassian.net/browse/DQ-83))
+* เพิ่ม Badge ชื่อผู้สร้างแบบฟอร์มในกล่อง Card รายการหน้าแรก ([DQ-85](https://ck-consulting.atlassian.net/browse/DQ-85))
+
+### Bug fixes
+* รายการสร้างการโหวต แต่ที่ไฮไลท์ไปเป็นของการสร้างแบบสอบถาม ([DQ-76](https://ck-consulting.atlassian.net/browse/DQ-76))
 * การกำหนดวันที่เริ่มการโหวตและวันที่สิ้นสุดการโหวตไม่เป็นช่วงวันที่กำหนดเป็นวันปัจจุบัน ([DQ-80](https://ck-consulting.atlassian.net/browse/DQ-80))
 * การกำหนดวันที่เริ่มตอบแบบสอบถามและวันที่สิ้นสุดตอบแบบสอบถามไม่เป็นช่วงวันที่กำหนดเป็นวันปัจจุบัน ([DQ-81](https://ck-consulting.atlassian.net/browse/DQ-81))
 * การกำหนดวันที่เริ่มต้นสมัครและวันที่สิ้นสุดการสมัครไม่เป็นช่วงวันที่กำหนดเป็นวันปัจจุบัน ([DQ-82](https://ck-consulting.atlassian.net/browse/DQ-82))
+* ลิงค์ที่แชร์ เข้าไม่ได้ ลิงค์ /public/public ([DQ-84](https://ck-consulting.atlassian.net/browse/DQ-84))
+  
+
 
 ## Version 1.0.0-beta.1 (2023-11-23)
 

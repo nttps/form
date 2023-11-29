@@ -2,8 +2,8 @@ version: "3.3"
 services:
   frontend:
     build:
-      context: .
-      dockerfile: ./docker/Dockerfile
+      context: ./docker
+      dockerfile: Dockerfile
     container_name: ${NUXT_PUBLIC_APP_NAME}
     restart: unless-stopped
     ports:
