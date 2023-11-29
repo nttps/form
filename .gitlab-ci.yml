@@ -12,7 +12,7 @@ deploy:
 
   before_script:
     - echo "Setup Open VPN"
-    - which openvpn || (apt update -y -qq && apt install -y -qq openvpn && apt install -y -qq iputils-ping)
+    - which openvpn || (apk update && apk add openvpn && apk add iputils-ping)
     - cat <<< $CLIENT_OVPN > /etc/openvpn/client.ovpn
     - cat <<< $VPN_USER > /etc/openvpn/cred.txt
     - cat <<< $VPN_PWD >> /etc/openvpn/cred.txt 
