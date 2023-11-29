@@ -28,11 +28,11 @@ build:
    # - docker push $DOCKER_REGISTRY/$APP_NAME:$CI_PIPELINE_IID
     - docker push $REGISTRY
   only:
-    - tags
+    - main
     
 deploy:
   only:
-    - tags
+    - main
   stage: deploy
   script:
     - chmod og= $ID_RSA
