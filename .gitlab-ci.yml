@@ -22,7 +22,7 @@ build:
     - docker --version
   script:
    # - docker build -t $DOCKER_REGISTRY/$APP_NAME:$CI_PIPELINE_IID . 
-    - docker build -t $DOCKER_REGISTRY/$APP_NAME:1.0.0 . 
+    - docker build -f docker/Dockerfile -t $DOCKER_REGISTRY/$APP_NAME:1.0.0 . 
     - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $DOCKER_REGISTRY
    # - docker push $DOCKER_REGISTRY/$APP_NAME:$CI_PIPELINE_IID
     - docker push $DOCKER_REGISTRY/$APP_NAME:1.0.0
