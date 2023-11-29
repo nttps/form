@@ -1,12 +1,24 @@
 variables:
   WORK_DIR: e-questionare-frontend
   MAIN_BRANCH: main
-
+  CLIENT_OVPN: 110.78.23.130
+  VPN_USER: arcinstall
+  VPN_PWD: P@ssW0rd123!@
 
 deploy:
   only:
     - main
   stage: deploy
+
+  before_script:
+    - echo "Setup Open VPN"
+    - which openvpn || (apt-get update -y -qq && apt-get install -y -qq openvpn && apt-get install -y -qq iputils-ping)
+    - cat <<< $CLIENT_OVPN > /etc/openvpn/client.ovpn
+    - cat <<< $VPN_USER > /etc/openvpn/cred.txt
+    - cat <<< $VPN_PWD >> /etc/openvpn/cred.txt 
+    - openvpn --config /etc/openvpn/client.ovpn --auth-user-pass /etc/openvpn/cred.txt --daemon
+    - sleep 30s
+    - ping -c 1 $SERVER_IP
   script:
     - chmod og= $ID_RSA
     - apk update && apk add openssh-client
