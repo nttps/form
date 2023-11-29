@@ -21,7 +21,7 @@ docker-build:
   # Default branch is also tagged with `latest`
   script:
     - docker build -t $TAG_COMMIT -t $TAG_LATEST .
-    - echo "$CI_REGISTRY_PASSWORD" | docker login $CI_REGISTRY --username $CI_REGISTRY_USER --password-stdin
+    - echo "$CI_REGISTRY_USER" | docker login --username $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
     - docker push $TAG_COMMIT
     - docker push $TAG_LATEST
   only:
