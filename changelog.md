@@ -1,6 +1,6 @@
 # Version 1.0.0 (2023-11-XX)
 
-## Version 1.0.0 (2023-11-27)
+## Version 1.0.0 (2023-12-4)
 
 ### Improve performance
 
@@ -14,7 +14,9 @@
 * การกำหนดวันที่เริ่มตอบแบบสอบถามและวันที่สิ้นสุดตอบแบบสอบถามไม่เป็นช่วงวันที่กำหนดเป็นวันปัจจุบัน ([DQ-81](https://ck-consulting.atlassian.net/browse/DQ-81))
 * การกำหนดวันที่เริ่มต้นสมัครและวันที่สิ้นสุดการสมัครไม่เป็นช่วงวันที่กำหนดเป็นวันปัจจุบัน ([DQ-82](https://ck-consulting.atlassian.net/browse/DQ-82))
 * ลิงค์ที่แชร์ เข้าไม่ได้ ลิงค์ /public/public ([DQ-84](https://ck-consulting.atlassian.net/browse/DQ-84))
-  
+* หน้ารายการของฉัน เลือกเวลา เปลี่ยนเป็น เลือกช่วงวันที่ ([DQ-86](https://ck-consulting.atlassian.net/browse/DQ-86))
+* การค้นหารายการของฉัน  ต้อง ค้นหาหัวข้อ เลือกประเภทคำถามทั้งหมด และเลือกช่วงวันที่ ให้ครบ ก่อนค่อยกดค้นหาได้ ([DQ-87](https://ck-consulting.atlassian.net/browse/DQ-87))
+* หน้ารายการของฉัน ตรงช่องทั้งหมด เปลี่ยนwordingเป็น ประเภทคำถามทั้งหมด และตัดคำว่าทั้งหมดออก ([DQ-88](https://ck-consulting.atlassian.net/browse/DQ-88))
 
 
 ## Version 1.0.0-beta.1 (2023-11-23)
