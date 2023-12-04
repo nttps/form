@@ -13,16 +13,20 @@
                   </div>
                   <div class="md:w-2/12 md:ml-4 mb-4">
                     <UPopover :popper="{ placement: 'bottom-start' }">
-                        <UButton icon="i-heroicons-calendar-days-20-solid" class="md:w-4/5" size="md" :label="labelRangeDate" />
+                        <UButton icon="i-heroicons-calendar-days-20-solid" class="w-full" size="md" :label="labelRangeDate" />
                         <template #panel="{ close }">
                             <FormRangeDatePicker v-model="range" @close="close" />
                         </template>
                     </UPopover>
                   </div>
-                  <button class="font-bold rounded-lg px-4 py-2 bg-[#FFA133] mb-4 md:ml-4 text-center"> ค้นหา </button>
+                  <div class="md:w-2/12 md:ml-4 mb-4">
+                    <UButton size="md"  label="ค้นหา" :disabled="search === '' && selectedType === '' && range.start === null && range.end === null" @click="refresh"/>
+                    <UButton color="gray" size="md" class="md:ml-4"  label="รีเซ็ทฟิลเตอร์" @click="resetFilters"/>
+                  </div>
 
+                  
                   <UButton
-                    v-if="selectedRows.length > 1"
+                    v-if="selectedRows.length > 0"
                     class="ml-auto mb-4"
                     trailing
                     color="red"
@@ -134,10 +138,10 @@ definePageMeta({
 const toast = useToast()
 const { username } = useAuthStore();
 
-
+const canSearch = ref(false)
 
 const types = [{
-  name: 'ทั้งหมด',
+  name: 'ประเภทคำถามทั้งหมด',
   value: '',
 }, {
   name: 'ระบบโหวต',
@@ -185,7 +189,7 @@ const range = ref({
   end: null,
 });
 
-const labelRangeDate = computed(() => !range.value.start && !range.value.end ? 'เลือกเวลา' : moment(range.value.start).format('DD/MM/yyyy') + ' ' + moment(range.value.end).format('DD/MM/yyyy'))
+const labelRangeDate = computed(() => !range.value.start && !range.value.end ? 'เลือกช่วงวันที่' : moment(range.value.start).format('DD/MM/yyyy') + ' ' + moment(range.value.end).format('DD/MM/yyyy'))
 const isDeleteAlert = ref(false)
 const deleteId = ref(null)
 const isDeleteAlertAll = ref(false)
@@ -208,9 +212,18 @@ const { data: lists, pending, refresh } = await useAsyncData(
     Type: selectedType.value,
     IsShowActiveOnly:false
   }), {
-    watch: [page, search, selectedType, range]
+    watch: []
   }
 )
+
+const resetFilters = () => {
+  search.value = ''
+  range.value.start = null
+  range.value.end = null
+  selectedType.value = ''
+
+  refresh()
+}
 
 
 const rows = computed(() => {
@@ -252,6 +265,8 @@ const deleteItem = async () => {
   isDeleteAlert.value = false
   refresh()
 }
+
+
 
 const deleteAll = async () => {
 
