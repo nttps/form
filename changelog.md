@@ -1,6 +1,6 @@
 # Version 1.0.0 (2023-11-XX)
 
-## Version 1.0.0 (2023-12-4)
+## Version 1.0.0 (2023-12-25)
 
 ### Improve performance
 
@@ -17,6 +17,9 @@
 * หน้ารายการของฉัน เลือกเวลา เปลี่ยนเป็น เลือกช่วงวันที่ ([DQ-86](https://ck-consulting.atlassian.net/browse/DQ-86))
 * การค้นหารายการของฉัน  ต้อง ค้นหาหัวข้อ เลือกประเภทคำถามทั้งหมด และเลือกช่วงวันที่ ให้ครบ ก่อนค่อยกดค้นหาได้ ([DQ-87](https://ck-consulting.atlassian.net/browse/DQ-87))
 * หน้ารายการของฉัน ตรงช่องทั้งหมด เปลี่ยนwordingเป็น ประเภทคำถามทั้งหมด และตัดคำว่าทั้งหมดออก ([DQ-88](https://ck-consulting.atlassian.net/browse/DQ-88))
+* [สร้างรายการฟอร์มสมัคร] เพิ่มตัวเลือกแล้วลบไม่ได้ ([DQ-89](https://ck-consulting.atlassian.net/browse/DQ-89))
+* [สร้างรายการฟอร์มสมัคร] เพิ่มตัวเลือกที่เป็นรูปภาพแล้วไม่สามารถกดลยรูปภาพได้ ([DQ-90](https://ck-consulting.atlassian.net/browse/DQ-90))
+* [รายการโหวต] รายละเอียดการโหวตอยู่ตำแหน่งใต้หัวข้อการโหวตและในช่องเดียวกับตัวเลือกโหวต ([DQ-91](https://ck-consulting.atlassian.net/browse/DQ-91))
 
 
 ## Version 1.0.0-beta.1 (2023-11-23)
