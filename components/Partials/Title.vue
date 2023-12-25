@@ -35,6 +35,8 @@
     
     const { isAdmin } = useAuthStore();
 
+    console.log(isAdmin);
+
 </script>
 
 <style lang="scss" scoped>
