@@ -138,6 +138,8 @@
 
 
     const confirmDeleteAnswer = (qIndex, AIndex) =>{
+
+        console.log(AIndex);
         alertAnswerDelete.value = true
         answerIndexDel.value.question = qIndex
         answerIndexDel.value.answer = AIndex

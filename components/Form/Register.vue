@@ -251,7 +251,7 @@
     }
     const deleteAnswer = async (value) => {
         const question = props.form.questions[value.index];
-        const answer = props.form.answers[value.indexA]
+        const answer = question.answers[value.indexA]
         question.answers.splice(value.indexA, 1)
 
         if(answer?.answer_id) {
