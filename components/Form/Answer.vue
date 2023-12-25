@@ -124,7 +124,8 @@
     const submitDeleteImage = async () => {
         const answer = props.question.answers[imageIndexDel.value]
         answer.answer_img = null; 
-        answer.image_path = null
+        answer.image_path = null;
+        answer.answer_img_url = null;
 
         const res = await useApi('/api/servey/Quiz/DeleteAnswerPhoto', 'DELETE', { 
             AnswerID: answer.answer_id,
