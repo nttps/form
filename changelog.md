@@ -1,6 +1,6 @@
 # Version 1.0.0 (2023-11-XX)
 
-## Version 1.0.0 (2023-12-25)
+## Version 1.0.0-beta.1 (2023-12-25)
 
 ### Improve performance
 
@@ -22,7 +22,7 @@
 * [รายการโหวต] รายละเอียดการโหวตอยู่ตำแหน่งใต้หัวข้อการโหวตและในช่องเดียวกับตัวเลือกโหวต ([DQ-91](https://ck-consulting.atlassian.net/browse/DQ-91))
 
 
-## Version 1.0.0-beta.1 (2023-11-23)
+## Version 1.0.0-alpha.4 (2023-11-23)
 
 ### Improve performance
 
