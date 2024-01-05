@@ -31,19 +31,15 @@ definePageMeta({
             })
     }
 
-    onMounted(async () =>{
-        const res = await fetch(`${url}`)
-        const data = await res.json()
+    const res = await fetch(`${url}`)
+    const data = await res.json()
 
-        loginForm.value.username = data.userName
-        loginForm.value.password = data.reqID
+    loginForm.value.username = data.userName
+    loginForm.value.password = data.reqID
 
-        login()
-       
+    login()
 
-    })
 
-      
 
     // const url = `${config.public.authUrl}/api/AppsLogin/CreateCrossAppReq`
 
