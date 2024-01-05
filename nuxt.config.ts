@@ -48,6 +48,7 @@ export default defineNuxtConfig({
             version: version,
             apiUrl: apiBaseUrl,
             baseFileUrl: "",
+            authUrl: "",
         },
     },
     routeRules: {
