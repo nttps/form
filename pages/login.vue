@@ -40,7 +40,7 @@ definePageMeta({
 const loginForm = ref({
   username: "tammon.y",
   password: "1234",
-  AppsID: "VOTE"
+  AppsID: "SURVEY"
 })
 
 const register = ref(false)
