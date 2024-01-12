@@ -9,7 +9,7 @@ export const useAuthStore = defineStore("auth-questionaire", {
         isLoggedIn: (state) => !!state.user,
         isAdmin: (state) =>
             state.user.userInGroups.some((p) =>
-                p.userGroupId.includes("ADMIN")
+                p.userGroupId.includes("SurveyAdmin")
             ),
         username: (state) => state.user?.currentUser || "",
         fullName: (state) => state.user?.currentUserInfo?.fullName || "",
