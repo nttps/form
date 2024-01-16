@@ -38,9 +38,12 @@ export default defineNuxtConfig({
         display: "swap",
         prefetch: true,
         preconnect: true,
+        download: false,
         families: {
             Kanit: true,
         },
+        preload: true,
+        useStylesheet: true,
     },
     css: [
         // CSS file in the project
