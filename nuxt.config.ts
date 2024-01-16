@@ -5,6 +5,8 @@ const apiBaseUrl = process.env.NUXT_PUBLIC_API_URL;
 const version = process.env.NUXT_PUBLIC_VERSION;
 const baseURL = process.env.NUXT_BASE_URL;
 
+console.log(baseURL);
+
 
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
