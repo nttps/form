@@ -11,8 +11,13 @@ const assetsDir = process.env.NUXT_BUILD_ASSETSDIR;
 export default defineNuxtConfig({
     app: {
         pageTransition: { name: "page", mode: "out-in" },
-        buildAssetsDir: assetsDir,
     },
+    vite: {
+        build: {
+            assetsDir
+        }
+    },
+    buildDir: assetsDir,
     devtools: { enabled: true },
     modules: [
         "@nuxtjs/google-fonts",
