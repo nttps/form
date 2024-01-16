@@ -3,7 +3,7 @@ const isDev = process.env.NODE_ENV === "development";
 // const apiBaseUrl = 'http://localhost:3001'
 const apiBaseUrl = process.env.NUXT_PUBLIC_API_URL;
 const version = process.env.NUXT_PUBLIC_VERSION;
-const assetsDir = process.env.NUXT_BUILD_ASSETSDIR;
+const baseURL = process.env.NUXT_BASE_URL;
 
 
 
@@ -11,13 +11,17 @@ const assetsDir = process.env.NUXT_BUILD_ASSETSDIR;
 export default defineNuxtConfig({
     app: {
         pageTransition: { name: "page", mode: "out-in" },
+        baseURL: baseURL || "/",
+        buildAssetsDir: `${baseURL}_nuxt/`,
     },
-    vite: {
-        build: {
-            assetsDir
-        }
+    nitro: {
+        runtimeConfig: {
+            app: {
+                baseURL: baseURL || "/",
+                //buildAssetsDir: "_nuxt",
+            },
+        },
     },
-    buildDir: assetsDir,
     devtools: { enabled: true },
     modules: [
         "@nuxtjs/google-fonts",
