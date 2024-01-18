@@ -1,7 +1,13 @@
 <template>
     <div>
         <PartialsTitle prefix="ผล" v-if="form" :title="type" icon="i-ri-chat-poll-fill" :export="exportUrl" back="/lists"/>
+       
         <div class="px-8 mt-4 ">
+            <div class="mb-4 flex space-x-4">
+                <NuxtLink target="_blank" :to="downloadExcel" v-if="downloadExcel" class="text-xl font-bold rounded-lg px-4 py-2 bg-[#FFA133] flex space-x-2 items-center" download>
+                    <span>ดาวน์โหลดคำตอบแบบสอบถาม</span>
+                </NuxtLink>
+            </div>
             <UCard class="mb-4" :ui="{ ring: 'ring-1 ring-[#FFA800] dark:ring-gray-800', header: { background: 'bg-[#FFA800]'}}" id="print-me">
                 <template #header>
                     <h2 class="font-bold text-3xl leading-8" v-if="form">หัวข้อ {{ form.survey_name  }}</h2>
@@ -30,6 +36,33 @@
             </UCard>
         </div>
     </div>
+
+    <UModal v-model="printRegister" fullscreen>
+        <UCard :ui="{
+            base: 'h-full flex flex-col',
+            rounded: '',
+            divide: 'divide-y divide-gray-100 dark:divide-gray-800',
+            body: {
+                base: 'grow'
+            }
+            }">
+            <template #header>
+                <div class="flex items-center">
+                    <h3 class="text-xl text-gray-900 dark:text-white">
+                        รายงานผู้ทำรายการแบบสอบถาม
+                    </h3>
+                    <div class="ml-auto text-xl">
+                        <UButton color="gray" variant="ghost" icon="i-heroicons-x-mark-20-solid" class="-my-1" @click="printRegister = false" />
+                    </div>
+                </div>
+            </template>
+            <div class="font-bold text-xl">
+                <iframe :src="printUrl" width="100%" style="position: absolute; height: 100%; border: none" frameborder="0"></iframe>
+            </div>
+
+        
+        </UCard>
+    </UModal>
 </template>
 
 <script setup>
@@ -47,6 +80,8 @@ const questionnaire = ref([]);
 const vote = ref([])
 const comments = ref([])
 const exportUrl = ref('')
+const config = useRuntimeConfig();
+
 
 const commentColumns = [{
     key: 'username',
@@ -77,15 +112,13 @@ onMounted(() => {
     fetchData()
 })
 
-
+const downloadExcel = ref(config.public.apiUrl + `/api/servey/Submit/ExportSurveyExcelResult?sv_id=${route.params.id}`)
 
 const fetchData = async () => {
     const response = await useApi(`/api/servey/ServeyInfo/GetDocSet?survey_id=${route.params.id}`, 'GET');
     form.value = response.surveyInfo
 
-    if(form.value.survey_type === 'ฟอร์มสมัคร') {
-        fetchRegistrants()
-    }
+    fetchRegistrants()
     if(form.value.survey_type === 'แบบสอบถาม') {
         fetchQuestionnaire()
     }
@@ -130,6 +163,10 @@ const fetchVote = async () => {
     vote.value = response.resultVote
     comments.value = response.comments
 }
+
+const printRegister = ref(false)
+const printUrl = ref(false)
+
 </script>
 
 <style lang="scss" scoped>
