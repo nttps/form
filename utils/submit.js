@@ -134,3 +134,24 @@ export const uploadQuizImage = async (id, file) => {
         return error;
     }
 };
+
+export const uploadAnsImage = async (submitId, quizId, file) => {
+    var formdata = new FormData();
+    formdata.append("file", file);
+
+    var requestOptions = {
+        method: "POST",
+        body: formdata,
+    };
+
+    try {
+        const response = await fetch(
+            `${config.public.apiUrl}/api/survey/Upload/UploadAnswerInRegisterFormImage?submit_id=${submitId}&quiz_id=${quizId}`,
+            requestOptions
+        );
+        const result = await response.json();
+        return result;
+    } catch (error) {
+        return error;
+    }
+};

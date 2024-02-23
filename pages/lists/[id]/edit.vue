@@ -1,6 +1,6 @@
 <template>
     <div>
-        <PartialsTitle prefix="ระบบ" title="โหวตและแบบสอบถาม" icon="i-mdi-file-document-plus" back="/lists"/>
+        <PartialsTitle prefix="ระบบ" v-if="form" :title="type" icon="i-mdi-file-document-plus" back="/lists"/>
         <div class="px-8 mt-4">
             <h3 class="text-xl md:text-2xl font-bold mb-4 flex items-center space-x-2">
                 <div>แก้ไข<span class="color-primary">แบบฟอร์ม</span></div> 
@@ -21,7 +21,7 @@
     const route = useRoute()
     const toast = useToast()
     const form = ref(null)
-
+    const type = computed(() => form.value.survey_type)
     const permissions = ref({
         all: [],
         user: []
@@ -43,7 +43,7 @@
             form.value.choices = response.quizSetList[0].answers
         }
 
-        if(response.surveyInfo.survey_type == "แบบสอบถาม") {
+        if(response.surveyInfo.survey_type == "แบบสอบถาม" || response.surveyInfo.survey_type == "ฟอร์มสมัคร") {
             form.value.questions = response.quizSetList
         }
     }
@@ -53,16 +53,12 @@
 
         let status;
 
-        if(survey.surveyInfo.survey_type == "ฟอร์มสมัคร") {
-            status = (survey.outputAction.result === 'ok')
-        }
-
         if(survey.surveyInfo.survey_type == "ระบบโหวต") {
             const res = await submitVote(form, survey)
 
             status = res.status
         }
-        if(survey.surveyInfo.survey_type == "แบบสอบถาม") {
+        if(survey.surveyInfo.survey_type == "แบบสอบถาม" || survey.surveyInfo.survey_type == "ฟอร์มสมัคร") {
             const res = await submitQuestion(form, survey)
             status = res.status
         }
@@ -75,8 +71,10 @@
                 icon: 'i-heroicons-check-badge',
                 timeout: 1000,
             })
+
+            navigateTo(`/lists`)
         }
-        fetchData()
+        //fetchData()
     }
 
 </script>

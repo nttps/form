@@ -3,12 +3,24 @@ const isDev = process.env.NODE_ENV === "development";
 // const apiBaseUrl = 'http://localhost:3001'
 const apiBaseUrl = process.env.NUXT_PUBLIC_API_URL;
 const version = process.env.NUXT_PUBLIC_VERSION;
+const baseURL = process.env.NUXT_BASE_URL;
+
+console.log(baseURL);
+
 
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
     app: {
-        pageTransition: { name: "page", mode: "out-in" },
+        baseURL: baseURL ? "/" + baseURL : "/",
+    },
+    nitro: {
+        runtimeConfig: {
+            app: {
+                //baseURL: baseURL || "/",
+                buildAssetsDir: `${baseURL ? "/" + baseURL : "/"}_nuxt/`,
+            },
+        },
     },
     devtools: { enabled: true },
     modules: [
@@ -28,9 +40,12 @@ export default defineNuxtConfig({
         display: "swap",
         prefetch: true,
         preconnect: true,
+        download: false,
         families: {
             Kanit: true,
         },
+        preload: true,
+        useStylesheet: true,
     },
     css: [
         // CSS file in the project
@@ -47,14 +62,14 @@ export default defineNuxtConfig({
             cookieLifetime: 7,
             version: version,
             apiUrl: apiBaseUrl,
+            baseFileUrl: "",
+            authUrl: "",
         },
     },
     routeRules: {
         // Render these routes on the client (SPA)
-        "/**": { ssr: true },
-        "/lists/**": { ssr: false },
-        "/create/**": { ssr: false },
-        "/settings/**": { ssr: false },
+        "/**": { ssr: false },
+        "/forms/**/public": { ssr: true },
     },
     vite: {
         build: {

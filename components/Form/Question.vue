@@ -15,9 +15,9 @@
                         </div>
                         <div class="md:w-4/5">
                             <UFormGroup label="ชื่อแบบสอบถาม" name="survey_name" size="xl" class="mb-2">
-                                <UInput v-model="props.form.survey_name" placeholder="กรอกชื่อแบบสอบถาม" size="md" />
+                                <UInput v-model="props.form.survey_name" placeholder="กรอกชื่อแบบสอบถาม" size="md" :disabled="props.form.status === 'เปิด'" />
                             </UFormGroup>
-                            <UFormGroup label="รายละเอียด" name="description" size="xl" class="mb-2">
+                            <UFormGroup label="รายละเอียดแบบสอบถาม" name="description" size="xl" class="mb-2">
                                 <ClientOnly>
                                     <Editor v-model="props.form.description" height="500px" />
                                 </ClientOnly>
@@ -42,58 +42,59 @@
                                 class="list-group-item rounded-md mb-2 relative"
                                 v-for="(question, index) in props.form.questions" :key="question.quiz.quiz_sort"
                             >
-                                <div class="list-group-item-drag text-center bg-[#FFA133] rounded-t-lg cursor-move">
+                                
+                                <div class="absolute bottom-full right-0"  v-if="props.form.questions.length > 1">
+                                    <UTooltip text="ลบคำถาม">
+                                        <UButton square icon="i-heroicons-x-circle-20-solid" variant="link" type="button" @click="deleteQuestion(index)" :disabled="props.form.status === 'เปิด'" size="xl" :ui="{ icon: {size: { xl: 'h-7 w-7'}}}" color="white" :padded="false"/>
+                                    </UTooltip>
+                                </div>
+                                <div class="list-group-item-drag bg-[#FFA133] rounded-t-lg cursor-move text-center">
                                     <Icon name="i-uil-draggabledots" class="rotate-90" size="25"/>
                                 </div>
+                               
                                 <div class="p-4 bg-white">
+                                    
                                     <div class="flex flex-wrap space-x-4 mb-2">
                                         <div :class="`${question.quiz.answer_type === 'ตัวเลือกได้ข้อเดียว' || question.quiz.answer_type === 'เลือกได้หลายข้อ' ? `basis-1/2-gap-4` : `w-full` }`">
-                                            <UInput v-model="question.quiz.quiz_title" :placeholder="question.quiz.answer_type === 'image' ? `หัวข้อของภาพ ( ไม่จำเป็นต้องกรอก )` : question.quiz.placeholder" size="md" :required="question.quiz.answer_type !== 'image'" />
+                                            <UInput v-model="question.quiz.quiz_title" :placeholder="question.quiz.answer_type === 'image' ? `คำถามแบบใส่รูปภาพ` : question.quiz.placeholder" size="md" :required="question.quiz.answer_type !== 'image'" :disabled="props.form.status === 'เปิด'" />
                                         </div>
                                         <div class="basis-1/2-gap-4" v-if="question.quiz.answer_type === 'ตัวเลือกได้ข้อเดียว' || question.quiz.answer_type === 'เลือกได้หลายข้อ'">
-                                            <USelect size="md" :options="types" v-model="question.quiz.answer_type" placeholder="ประเภทคำถาม" option-attribute="name" required/>
+                                            <USelect size="md" :options="types" v-model="question.quiz.answer_type" placeholder="ประเภทคำถาม" option-attribute="name" required :disabled="props.form.status === 'เปิด'"/>
                                         </div>
                                     </div>
                                     <div v-if="question.quiz.answer_type !== 'image'">
                                         <UFormGroup label="รายละเอียด" name="description" size="xl" class="mb-2">
                                             <ClientOnly>
-                                                <Editor v-model="question.quiz.quiz_desc" :height="question.quiz.answer_type == 'ข้อความ' ? `350px` : `300px`" />
+                                                <Editor v-model="question.quiz.quiz_desc" :height="question.quiz.answer_type == 'ข้อเขียน' ? `350px` : `300px`" />
                                             </ClientOnly>
                                         </UFormGroup>
                                     </div>
                                     <div v-if="question.quiz.answer_type === 'ตัวเลือกได้ข้อเดียว' || question.quiz.answer_type === 'เลือกได้หลายข้อ'" class="mt-2">
                                         <label for="" class="px-6">ตัวเลือก</label>
-                                        <FormAnswer :index="index" :question="question" @delete-answer="deleteAnswer" @add-answer="addAnswer"/>
+                                        <FormAnswer :index="index" :question="question" :status="props.form.status" @delete-answer="deleteAnswer" @add-answer="addAnswer"/>
                                     </div>
                                     <div v-if="question.quiz.answer_type === 'image'" class="mt-2">
-                                        <UTooltip text="แก้ไขรูปภาพ">
-                                            <button @click="editImage(index)" type="button" class="text-gray-600 flex items-center space-x-2 px-1">
-                                                <Icon name="i-ic-round-image" size="35" />
-                                            </button>
-                                        </UTooltip>
-                                        <img :src="question.quiz.quiz_img_url" alt="" class="mx-auto" />
+                                        คำถามแบบใส่รูปภาพ
                                     </div>
                                 </div>
-                                <div class="text-right">
-                                    <button type="button" @click="deleteQuestion(index)" v-if="props.form.questions.length > 1"><Icon name="i-mdi-close" /></button>
-                                </div>
+                               
                             </div>
                         </transition-group>
                     </draggable>
                     <div class="flex justify-end mb-4">
                         <div class="border border-gray-400 rounded-lg bg-white flex px-2">
                             <UTooltip text="เพิ่มคำถามทั่วไป">
-                                <button @click="addQuestion" type="button" class="text-gray-600 flex items-center space-x-2 px-1">
+                                <button @click="addQuestion" type="button" class="text-gray-600 flex items-center space-x-2 px-1" :disabled="props.form.status === 'เปิด'">
                                     <Icon name="i-mdi-plus-circle-outline" size="35" />
                                 </button>
                             </UTooltip>
-                            <UTooltip text="เพิ่มข้อความ">
-                                <button @click="addText" type="button" class="text-gray-600 flex items-center space-x-2 px-1">
+                            <UTooltip text="เพิ่มคำถามแบบกรอกข้อความ">
+                                <button @click="addText" type="button" class="text-gray-600 flex items-center space-x-2 px-1" :disabled="props.form.status === 'เปิด'">
                                     <Icon name="i-ic-twotone-text-fields" size="35" />
                                 </button>
                             </UTooltip>
-                            <UTooltip text="เพิ่มรูปภาพ">
-                                <button @click="addImage" type="button" class="text-gray-600 flex items-center space-x-2 px-1">
+                            <UTooltip text="เพิ่มคำถามแบบใส่รูปภาพ">
+                                <button @click="addImage" type="button" class="text-gray-600 flex items-center space-x-2 px-1" :disabled="props.form.status === 'เปิด'">
                                     <Icon name="i-ic-round-image" size="35" />
                                 </button>
                             </UTooltip>
@@ -126,10 +127,7 @@
                 <img :src="previewImage" v-if="previewImage" class="mx-auto mb-4" alt="">
                 <UButton @click="confirmImage" label="แทรก"/>
             </div>
-            
-
         </UCard>
-        
     </UModal>
 </template>
 
@@ -200,7 +198,7 @@
             },
             answers: [{
                 answer_id: "",
-                answer: 'ตัวเลือกที่ 1',
+                answer: '',
                 image_path: '',
                 answer_img_url: null,
                 answer_sort: 1,
@@ -213,7 +211,19 @@
     const quizImage = ref(null)
 
     const addImage = () => {
-        uploadImageModal.value = true
+        props.form.questions.push({
+            quiz: {
+                quiz_title: '',
+                quiz_desc: '',
+                answer_type: 'image',
+                placeholder: 'หัวข้อของภาพ ( ไม่จำเป็นต้องกรอก )',
+                description: '',
+                image_path: fileImage.value,
+                quiz_img_url: previewImage.value,
+                quiz_sort: (props.form.questions.length + 1),
+            },
+            answers: []
+        })
     }
 
     const editImage = (index) => {
@@ -266,7 +276,7 @@
             quiz: {
                 quiz_title: '',
                 quiz_desc: '',
-                answer_type: 'ข้อความ',
+                answer_type: 'ข้อเขียน',
                 placeholder: 'หัวข้อ',
                 description: '',
                 image_path: null,
@@ -281,19 +291,32 @@
         props.form.questions.splice(index, 1)
     }
 
-    const addAnswer = (indexQuestion) => {
+     const addAnswer = (indexQuestion) => {
         const question = props.form.questions[indexQuestion];
         question.answers.push({
-            answer: `ตัวเลือกที่ ${question.answers.length + 1}`,
+            answer: ``,
             answer_id: "",
             image_path: '',
             answer_img_url: null,
             answer_sort: (question.answers.length + 1),
         })
     }
-    const deleteAnswer = (value) => {
+    
+    const { username } = useAuthStore();
+
+    const deleteAnswer = async (value) => {
+
         const question = props.form.questions[value.index];
+        const answer = question.answers[value.indexA]
         question.answers.splice(value.indexA, 1)
+
+        if(answer?.answer_id) {
+            const response = await useApi(`/api/servey/Quiz/DeleteAnswer`, 'DELETE', {
+                AnswerID: answer.answer_id,
+                ActionBy: username
+            });
+        }
+
     }
 </script>
 

@@ -12,6 +12,32 @@
                 <template #created_date-data="{ row }">
                     <div class="text-center">{{ fomatDate(row.created_date) }}</div>
                 </template>
+
+                <template #comment-data="{ row }">
+                    <div class="text-center">{{ row.comment || '-' }}</div>
+                </template>
+                
+                <template #details-data="{ row }">
+                    <div>Username: {{ row.username }}</div>
+                    <div>
+                      <div>
+                        ชื่อ - นามสกุล: {{ row.title }} {{ row.fullname }}
+                      </div>
+                      <div>
+                        เลขประจำตัวประชาชน: {{ row.people_id }}  
+                      </div>
+                      <div>
+                        เบอร์โทรศัพท์: {{ row.phone }}
+                      </div>
+                      <div>
+                        อีเมล์: {{ row.email }}
+                      </div>
+                      <div>
+                        ที่อยู่: {{ row.house_no }} {{ row.moo_no }} {{ row.soi }} {{ row.road }} {{ row.t_name }} {{ row.a_name }} {{ row.p_name }} {{ row.post_code }}
+                      </div>
+                    </div>
+                </template>
+                
             </UTable>
         </div>
     </div>
@@ -27,7 +53,11 @@ const columns = [{
   class: 'text-center'
 }, {
   key: 'comment',
-  label: 'หมายเหตุ',
+  label: 'ข้อเสนอแนะ',
+  class: 'text-center'
+}, {
+  key: 'details',
+  label: 'ข้อมูลผู้สมัคร',
   class: 'text-center'
 }, {
   key: 'created_date',

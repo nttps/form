@@ -1,13 +1,21 @@
 
 
-export const useAuthStore = defineStore("auth-store", {
+export const useAuthStore = defineStore("auth-questionaire", {
     state: () => ({
-        user: useCookie("user"),
+        user: null,
     }),
 
     getters: {
         isLoggedIn: (state) => !!state.user,
-        username: (state) => state.user.currentUser || '',
+        isAdmin: (state) =>
+            state.user.userInGroups.some((p) =>
+                p.userGroupId.includes("SurveyAdmin")
+            ),
+        username: (state) => state.user?.currentUser || "",
+        fullName: (state) => state.user?.currentUserInfo?.fullName || "",
+        firstName: (state) => state.user?.currentUserInfo?.firstName || "",
+        lastName: (state) => state.user?.currentUserInfo?.lastName || "",
+        prefix: (state) => state.user?.currentUserInfo?.title || "",
     },
     actions: {
         async login(loginForm) {
@@ -15,33 +23,32 @@ export const useAuthStore = defineStore("auth-store", {
 
             const baseUrl = `${config.public.apiUrl}/api/AppsLogin/LoginMini`;
 
-            const lifetime = (60 * 24 * config.public.cookieLifetime);
+            const lifetime = 60 * 60 * 24 * config.public.cookieLifetime;
 
-            await $fetch(`${baseUrl}`, {
+            const response = await $fetch(`${baseUrl}`, {
                 method: "POST",
                 body: loginForm,
-            })
-                .then((response) => {
-                    /* Update Pinia state */
-                    if (response.loginResult == "fail")
-                        throw response.loginResultInfo;
+            });
 
-                    this.user = response;
+            console.log(response);
 
-                    const newCookie = useCookie("user", {
-                        maxAge: lifetime,
-                        sameSite: true,
-                        secure: true,
-                    });
-                    newCookie.value = this.user;
-                })
-                .catch((error) => {
-                    throw error;
-                });
+            /* Update Pinia state */
+            if (response.loginResult == "fail") throw response.loginResultInfo;
+
+            this.user = response;
+
+            const newCookie = useCookie("user", {
+                maxAge: lifetime,
+                sameSite: true,
+                secure: true,
+            });
+
+            newCookie.value = this.user;
         },
         logout() {
             const user = useCookie("user");
             user.value = null;
+            this.user = null;
         },
         fetchUser() {
             return this.user;

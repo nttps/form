@@ -1,7 +1,7 @@
-node_modules
-*.log*
-.nuxt
-.nitro
-.cache
-.output
-.env
+# .dockerignore
+/.nuxt
+/.output
+/node_modules
+
+.gitignore
+README.md

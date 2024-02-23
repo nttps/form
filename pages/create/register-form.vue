@@ -53,13 +53,17 @@
         status: "ปิด",
         remark:"",
         created_by: username,
-        modified_by: ""
+        modified_by: "",
+        questions: []
     })
     const confirm = ref(false)
 
     const submit = async () => {
         const survey = await surveySubmit(form.value);
-        if(survey.outputAction.result === 'ok') {
+        const { status } = await submitQuestion(form, survey)
+        
+        if(status) {
+
             toast.add({
                 id: 'create_form',
                 color: 'green',
@@ -68,7 +72,7 @@
                 timeout: 2000,
             })
 
-            navigateTo(`/lists/${survey.surveyInfo.survey_id}/edit`)
+            navigateTo(`/lists`)
         }
     }
 

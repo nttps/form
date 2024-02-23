@@ -1,7 +1,8 @@
-const { username } = useAuthStore();
+
 
 export const submitQuestion = async (form, survey) => {
     let status = false;
+    const { username } = useAuthStore();
 
     if (survey.outputAction.result === "ok") {
         for (let index = 0; index < form.value.questions.length; index++) {
