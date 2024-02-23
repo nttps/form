@@ -5,7 +5,7 @@
                 <div>{{ props.prefix ?? `ระบบ` }}<span class="color-primary">{{ props.title }}</span></div> <Icon v-if="props.icon" :name="props.icon" />
             </div>
             <NuxtLink target="_blank" :to="props.export" v-if="props.export" class="text-xl font-bold rounded-lg px-4 py-2 bg-[#FFA133] flex space-x-2 items-center" download>
-                <span>Export</span>
+                <span>รายงานผู้ทำรายการแบบสอบถาม</span>
                 <Icon name="i-uil-file-export" size="25" />
             </NuxtLink>
             <button v-if="props.share == ''" @click="emit('share')" class="text-xl font-bold rounded-lg px-4 py-2 bg-[#FFA133]">

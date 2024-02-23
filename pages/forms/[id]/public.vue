@@ -1,6 +1,6 @@
 <template>
     <div>
-        <PartialsTitle prefix="ระบบ" title="แบบสอบถาม" icon="i-mdi-vote" back share @share="shareModal"/>
+        <PartialsTitle prefix="ระบบ" :title="submitData?.submit?.survey_type" icon="i-mdi-vote" back share @share="shareModal"/>
 
         <UForm :state="submitData.submit" :schema="schema" class="px-8 mt-4" @submit="confirm = true" v-if="submitData.submit">
             <div class="mb-4">
@@ -209,7 +209,7 @@
 
     const title = computed(() => submitData.value.submit.survey_name )
     const description = computed(() => submitData.value.submit.description.replace(/<\/?[^>]+(>|$)/g, "") )
-    const image = computed(() => submitData.value.submit.photo_cover_url ? submitData.value.submit.photo_cover_url : `/images/no-cover.jpg` )
+    const image = computed(() => submitData.value.submit.photo_cover_url ? submitData.value.submit.photo_cover_url : `~/images/no-cover.jpg` )
 
     useHead({
         title: title,

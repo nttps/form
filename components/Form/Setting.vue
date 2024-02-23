@@ -1,8 +1,10 @@
 <template>
     
     <div class="block font-medium text-gray-700 dark:text-gray-200">รูปภาพ <span class="text-red-500 text-sm">*ขนาดรูปภาพ 320*200 pixel</span></div>
-    <div class="text-center">
-        <img :src="(props.form.photo_cover || props.form.cover_path) ? props.form.photo_cover_url : `/images/no-cover.jpg`" class="w-full h-[200px] object-contain" alt="">
+    <div class="text-center relative">
+        <img v-if="(props.form.photo_cover || props.form.cover_path)" :src="props.form.photo_cover_url" class="w-full h-[200px] object-contain" alt="">
+        <img v-else src="~assets/images/no-cover.jpg" class="w-full h-[200px] object-cover">
+       
         <label class="inline-block mt-2 rounded-full mr-4 py-2 px-4 bg-amber-50 text-amber-500 cursor-pointer text-sm" for="coverImage">
             {{ (props.form.photo_cover || props.form.cover_path) ? `เปลี่ยน` : `เลือก` }}รูปภาพหน้าปก
             <input type="file" id="coverImage" class="hidden" @change="pickImage"/>
