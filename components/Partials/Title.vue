@@ -8,14 +8,14 @@
                 <span>รายงานผู้ทำรายการแบบสอบถาม</span>
                 <Icon name="i-uil-file-export" size="25" />
             </NuxtLink>
-            <button v-if="props.share == ''" @click="emit('share')" class="text-xl font-bold rounded-lg px-4 py-2 bg-[#FFA133]">
+            <button v-if="props.share == ''" @click="emit('share')" class="text-xl font-bold rounded-lg px-4 py-2 bg-white">
                 แบ่งปัน
             </button>
         </div>
         <div class="mt-4 md:mr-8 mx-auto">
             <ul class="font-bold text-xl flex space-x-4 place-content-center">
                 <li>
-                    <NuxtLink :to="`${props.back ? props.back : `/`}`" class="ml-8 md:ml-0" v-if="props.back !== undefined"><Icon name="i-mdi-arrow-left-circle" class="text-[#FFA133]" size="40" /></NuxtLink>
+                    <NuxtLink :to="`${props.back ? props.back : `/`}`" class="ml-8 md:ml-0" v-if="props.back !== undefined"><Icon name="i-mdi-arrow-left-circle" :class="{ 'text-[#FFA133]': props.color === undefined, 'text-white': props.color}" size="40" /></NuxtLink>
                 </li>
                 <li class="bg-white py-1 px-4 rounded-full shadow-primary" v-if="props.back === undefined && props.create !== undefined">
                     <NuxtLink to="/lists">รายการของฉัน</NuxtLink>
@@ -30,12 +30,12 @@
 </template>
 
 <script setup>
-    const props = defineProps(['title', 'icon', 'back', 'prefix', 'export', 'share', 'create'])
+    const props = defineProps(['title', 'icon', 'back', 'prefix', 'export', 'share', 'create', 'color'])
     const emit = defineEmits(['share'])
     
     const { isAdmin } = useAuthStore();
 
-    console.log(isAdmin);
+    console.log(props.color);
 
 </script>
 
