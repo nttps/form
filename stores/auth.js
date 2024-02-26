@@ -8,7 +8,7 @@ export const useAuthStore = defineStore("auth-questionaire", {
     getters: {
         isLoggedIn: (state) => !!state.user,
         isAdmin: (state) =>
-            state.user.userInGroups.some((p) =>
+            state.user?.userInGroups.some((p) =>
                 p.userGroupId.includes("SurveyAdmin")
             ),
         username: (state) => state.user?.currentUser || "",
