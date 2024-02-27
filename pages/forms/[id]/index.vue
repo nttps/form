@@ -11,11 +11,11 @@
             </div>
             <ViewForm :form="submitData" v-if="submitData.submit" :submitId="submitData?.submit?.submit_id" @setAnswer="submitAnswer" @setImage="submitImage" :preview="submitStatus"/>
 
-            <div class="mb-4">
+            <div class="mb-4" v-if="submitData.submit.survey_type === 'ฟอร์มสมัคร'">
                 <div class="text-center bg-[#ff8c09] rounded-t-lg py-2 "></div>
                 <div class="p-4 bg-white border-l border-r border-b border-[#ffc583]">
                     <div v-if="submitStatus" class="text-red-600 font-bold text-lg font">*ไม่สามารถแก้ไขข้อมูลได้ เนื่องจากคุณได้ทำรายการของแบบฟอร์มนี้ไปเรียบร้อยแล้ว</div>
-                    <div class="grid grid-cols-1 xl:grid-cols-3 xl:gap-4" v-if="submitData.submit.survey_type === 'ฟอร์มสมัคร'">
+                    <div class="grid grid-cols-1 xl:grid-cols-3 xl:gap-4" >
                         <div>
                             <div class="text-lg font-bold mb-2 mt-2">คำนำหน้าชื่อ</div>
                             <USelect :options="['นาย', 'นาง', 'นางสาว']" required v-model="submitData.submit.title" placeholder="คำนำหน้าชื่อ" :disabled="submitStatus"/>
@@ -43,7 +43,7 @@
                 </div>
             </div>
             <div class="text-center" v-if="!submitStatus">
-                <button class="rounded-lg px-6 py-1.5 bg-[#FFA133]" type="submit">{{ submitData.submit.survey_type === 'ฟอร์มสมัคร' ? 'สมัคร' : 'ส่ง' }}</button>
+                <button class="rounded-lg px-6 py-1.5 bg-white" type="submit">{{ submitData.submit.survey_type === 'ฟอร์มสมัคร' ? 'ลงทะเบียน' : 'ส่ง' }}</button>
             </div>
         </UForm>
 
