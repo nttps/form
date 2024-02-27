@@ -4,7 +4,7 @@
         <div class="px-8 mt-4">
             <h3 class="text-2xl font-bold mb-4">เข้าร่วมการ<span class="color-primary">โหวตและแบบสอบถาม</span></h3>
             <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-10" v-if="!pending && forms">
-                <CardItem :item="row" v-for="row in rows" @share="shareModal(`/e-form/forms/${row.survey_id}/public`, row.survey_name)"/>
+                <CardItem :item="row" v-for="row in rows" @share="shareModal(`/forms/${row.survey_id}/public`, row.survey_name)"/>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-10" v-else>
                 <div class="rounded-lg bg-white pb-4" v-for="i in 8">
@@ -102,6 +102,7 @@ const rows = computed(() => {
     return forms.value.slice((page.value - 1) * pageCount, (page.value) * pageCount)
 })
 
+const config = useRuntimeConfig()
 const { copy } = useCopyToClipboard()
 
 const share = ref(false)
@@ -112,7 +113,7 @@ const nameShare = ref('')
 
 const shareModal = (url, name) => {
     share.value = true
-    urlShare.value = origin + url
+    urlShare.value = origin + config.app.baseURL + url
     nameShare.value = name
 
 }
