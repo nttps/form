@@ -1,7 +1,7 @@
 <template>
     <div class="bg-gradient-to-t from-white to-[#ffc760] py-4 warpper min-h-screen">
         <div class="max-w-screen-lg mx-auto h-full">
-            <PartialsTitle prefix="ระบบ" v-if="submitData.submit" :title="submitData.submit.survey_type" color="white" icon="i-mdi-vote" back share @share="shareModal"/>
+            <PartialsTitle prefix="ระบบ" v-if="submitData.submit" :title="submitData.submit.survey_type" color="white" icon="i-mdi-vote" share @share="shareModal"/>
             <UForm :state="submitData.submit" :schema="schema" class="mt-4" @submit="confirm = true" v-if="submitData.submit">
                 <div class="mb-4">
                     <div class="text-center bg-white rounded py-4 text-2xl font-bold text-amber-500">{{ submitData.submit.survey_name }}</div>
