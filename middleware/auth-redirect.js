@@ -10,7 +10,7 @@ export default defineNuxtRouteMiddleware(async (_to, from) => {
     ) {
         return ;
     }else {
-        return navigateTo(`/e-form/${_to.params.id}`);
+        return navigateTo(`/e-form/forms/${_to.params.id}`);
     }
 
     
