@@ -1,20 +1,19 @@
 <template>
-    <div>
-        <PartialsTitle prefix="" v-if="submitData.submit" :title="submitData.submit.survey_type" icon="i-mdi-vote" back/>
-
-        <UForm :state="submitData.submit" :schema="schema" class="px-8 mt-4" @submit="confirmSubmit" v-if="submitData.submit">
-            <div class="mb-4">
-                <div class="text-center bg-[#FFA133] rounded-t-lg py-4"></div>
-                <div class="p-4 bg-white">
-                    <h2 class="text-xl font-bold">{{ submitData.submit.survey_name }}</h2>
+    <div class="bg-gradient-to-t from-white to-[#ffc760] py-4 warpper">
+        <div class="max-w-screen-lg mx-auto ">
+            <PartialsTitle prefix="" v-if="submitData.submit" :title="submitData.submit.survey_type" color="white" icon="i-mdi-vote" back/>
+            <UForm :state="submitData.submit" :schema="schema" class="mt-4" @submit="confirmSubmit" v-if="submitData.submit">
+             <div class="mb-4">
+                <div class="text-center bg-white rounded py-4 text-2xl font-bold text-amber-500">{{ submitData.submit.survey_name }}</div>
+                <div class="p-4 bg-white" v-if="submitData.submit.description">
                     <p class="code-description el-tiptap-editor__content" v-dompurify-html="submitData.submit.description"></p>
                 </div>
             </div>
             <ViewForm :form="submitData" v-if="submitData.submit" :submitId="submitData?.submit?.submit_id" @setAnswer="submitAnswer" @setImage="submitImage" :preview="submitStatus"/>
 
             <div class="mb-4">
-                <div class="text-center bg-[#FFA133] rounded-t-lg py-4"></div>
-                <div class="p-4 bg-white">
+                <div class="text-center bg-[#ff8c09] rounded-t-lg py-2 "></div>
+                <div class="p-4 bg-white border-l border-r border-b border-[#ffc583]">
                     <div v-if="submitStatus" class="text-red-600 font-bold text-lg font">*ไม่สามารถแก้ไขข้อมูลได้ เนื่องจากคุณได้ทำรายการของแบบฟอร์มนี้ไปเรียบร้อยแล้ว</div>
                     <div class="grid grid-cols-1 xl:grid-cols-3 xl:gap-4" v-if="submitData.submit.survey_type === 'ฟอร์มสมัคร'">
                         <div>
@@ -34,56 +33,13 @@
                             <UInput v-model="submitData.submit.phone" placeholder="กรอกเบอร์โทรศัพท์" v-maska data-maska="###-###-####" required :disabled="submitStatus" />
                         </div>
                         <div>
-                            <div class="text-lg font-bold mb-2">บัตรประชาชน</div>
-                            <UInput v-model="submitData.submit.people_id" 
-                                v-maska
-                                data-maska="#-####-#####-##-#" 
-                                placeholder="กรอกบัตรประชาชน" 
-                                required 
-                                :disabled="submitStatus" 
-                            />
-                        </div>
-                        <div>
                             <div class="text-lg font-bold mb-2">อีเมล์</div>
                             <UFormGroup name="email" >
                                 <UInput v-model="submitData.submit.email" placeholder="กรอกอีเมล์" required :disabled="submitStatus" />
                             </UFormGroup>
                         </div>
                     </div>
-                    <div v-if="submitData.submit.survey_type === 'ฟอร์มสมัคร'">
-                        <div class="text-lg font-bold mb-2 mt-2">ที่อยู่</div>
-                        <div class="grid grid-cols-4 gap-4 mb-4">
-                            <UInput v-model="submitData.submit.house_no" placeholder="เลขที่" required :disabled="submitStatus"  />
-                            <UInput v-model="submitData.submit.moo_no" placeholder="หมู่ที่" :disabled="submitStatus"  />
-                            <UInput v-model="submitData.submit.soi" placeholder="ดรอก/ซอย" :disabled="submitStatus"  />
-                            <UInput v-model="submitData.submit.road" placeholder="ถนน" required :disabled="submitStatus"  />
-                        </div>
-                        <div class="mb-2">
-                            <UInput v-model="textSearchAddress" @input="searchAddress" placeholder="พิมพ์ชื่อ ตำบล, อำเภอ หรือจังหวัด เพื่อค้นหาข้อมูลที่อยู่ของคุณ" :disabled="submitStatus" />
-
-                            <div v-if="listAddress.length" class="mt-2 border rounded">
-                                <div class="px-2 font-bold py-2 text-blue-500">คลิกรายการข้างล่างเพื่อเลือกข้อมูลที่อยู่ของคุณ</div>
-                                <div class="px-2 py-1 border-b cursor-pointer hover:bg-slate-300" v-for="address in listAddress" @click="selectAddress(address)">{{ address.fulladdr }}</div>
-                            </div>
-                        </div>
-                        <div class="grid grid-cols-4 gap-4">
-                            <UFormGroup name="t_name" >
-                                <UInput v-model="submitData.submit.t_name" placeholder="ตำบล / แขวง" required readonly :disabled="submitStatus" />
-                            </UFormGroup>
-                            <UFormGroup name="a_name">
-                                <UInput v-model="submitData.submit.a_name" placeholder="อำเภอ / เขต" required readonly :disabled="submitStatus" />
-                            </UFormGroup>
-                            <UFormGroup name="p_name">
-                                <UInput v-model="submitData.submit.p_name" placeholder="จังหวัด" required readonly :disabled="submitStatus" />
-                            </UFormGroup>
-                            <UFormGroup name="post_code">
-                                <UInput v-model="submitData.submit.post_code" placeholder="รหัสไปรษณีย์" required readonly :disabled="submitStatus" />
-                            </UFormGroup>
-                        </div>
-                           
-                    </div>
-                    <div class="text-lg font-bold mb-2 mt-4">ข้อเสนอแนะ <span class="text-red-600"> (*ไม่จำเป็นต้องกรอก)</span></div>
-                    <UTextarea v-model="submitData.submit.comment" placeholder="กรอกข้อเสนอแนะ" color="gray" :rows="5" size="xl" :disabled="submitStatus"/>
+                   
                 </div>
             </div>
             <div class="text-center" v-if="!submitStatus">
@@ -91,6 +47,9 @@
             </div>
         </UForm>
 
+
+        </div>
+    
         
 
         <ModalSuccess v-model="confirm" title="แจ้งเตือน" close>
@@ -281,5 +240,9 @@
 </script>
 
 <style lang="scss" scoped>
-
+  .warpper {
+        background-image: url('~/assets/images/bg.jpg');
+        background-position: center;
+        background-size: cover;
+    }
 </style>
