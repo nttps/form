@@ -69,7 +69,7 @@ export default defineNuxtConfig({
     routeRules: {
         // Render these routes on the client (SPA)
         "/**": { ssr: false },
-        "/e-form/**/public": { ssr: true },
+        "/forms/**/public": { ssr: true },
     },
     vite: {
         build: {
