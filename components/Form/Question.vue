@@ -45,7 +45,7 @@
                                 
                                 <div class="absolute bottom-full right-0"  v-if="props.form.questions.length > 1">
                                     <UTooltip text="ลบคำถาม">
-                                        <UButton square icon="i-heroicons-x-circle-20-solid" variant="link" type="button" @click="deleteQuestion(index)" :disabled="props.form.status === 'เปิด'" size="xl" :ui="{ icon: {size: { xl: 'h-7 w-7'}}}" color="white" :padded="false"/>
+                                        <UButton square icon="i-heroicons-x-circle-20-solid" variant="link" type="button" @click="confirmDeleteQuestion(index)" :disabled="props.form.status === 'เปิด'" size="xl" :ui="{ icon: {size: { xl: 'h-7 w-7'}}}" color="white" :padded="false"/>
                                     </UTooltip>
                                 </div>
                                 <div class="list-group-item-drag bg-[#FFA133] rounded-t-lg cursor-move text-center">
@@ -129,6 +129,14 @@
             </div>
         </UCard>
     </UModal>
+
+    <ModalSuccess v-model="alertQuestionDelete" title="แจ้งเตือน" close>
+        <div class="text-2xl text-center font-bold pb-4">คำถามจะถูกลบโดยไม่ต้องบันทึกรายการ ยืนยันการลบคำถามนี้ใช่หรือไม่</div>
+        <div class="flex justify-end space-x-3">
+            <button type="button" class="px-4 py-2 bg-green-600 text-base rounded-[5px] text-white" @click="deleteQuestion">ยืนยัน</button>
+            <button type="button" class="px-4 py-2 bg-gray-500 text-base rounded-[5px] text-white" @click="alertQuestionDelete = false">ทำรายการต่อ</button>
+        </div>
+    </ModalSuccess>
 </template>
 
 <script setup>
@@ -286,9 +294,30 @@
             answers: []
         })
     }
+    
+    const questionIndexDel = ref(null)
 
-    const deleteQuestion = (index) => {
-        props.form.questions.splice(index, 1)
+    const alertQuestionDelete = ref(false)
+    const confirmDeleteQuestion = (index) =>{
+        alertQuestionDelete.value = true
+        questionIndexDel.value = index
+    }
+
+    const deleteQuestion = async () => {
+
+        const question = props.form.questions[questionIndexDel.value];
+
+        props.form.questions.splice(questionIndexDel, 1)
+
+
+        if(question?.quiz.quiz_id) {
+            const response = await useApi(`/api/servey/Quiz/DeleteQuiz`, 'DELETE', {
+                QuizID: question?.quiz.quiz_id,
+                ActionBy: username
+            });
+        }
+
+        alertQuestionDelete.value = false
     }
 
      const addAnswer = (indexQuestion) => {
