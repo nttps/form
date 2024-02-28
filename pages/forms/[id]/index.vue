@@ -31,6 +31,7 @@
                         <div>
                             <div class="text-lg font-bold mb-2">เบอร์โทรศัพท์</div>
                             <UInput v-model="submitData.submit.phone" placeholder="กรอกเบอร์โทรศัพท์" v-maska data-maska="###-###-####" required :disabled="submitStatus" />
+                            
                         </div>
                         <div>
                             <div class="text-lg font-bold mb-2">อีเมล์</div>
@@ -102,22 +103,6 @@
             is: (survey_type) =>  survey_type === 'ฟอร์มสมัคร',
             then: (schema) => schema.email('คุณใส่รูปแบบอีเมล์ผิด').required('กรอกอีเมล์ของคุณ'),
         }),
-        t_name: string().when('survey_type', {
-            is: (survey_type) =>  survey_type === 'ฟอร์มสมัคร',
-            then: (schema) => schema.required('ค้นหาข้อมูลที่อยู่ของคุณ')
-        }),
-        a_name: string().when('survey_type', {
-            is: (survey_type) =>  survey_type === 'ฟอร์มสมัคร',
-            then: (schema) => schema.required('ค้นหาข้อมูลที่อยู่ของคุณ')
-        }),
-        p_name: string().when('survey_type', {
-            is: (survey_type) => survey_type === 'ฟอร์มสมัคร',
-            then: (schema) => schema.required('ค้นหาข้อมูลที่อยู่ของคุณ')
-        }),
-        post_code: string().when('survey_type', {
-            is: (survey_type) =>  survey_type === 'ฟอร์มสมัคร',
-            then: (schema) => schema.required('ค้นหาข้อมูลที่อยู่ของคุณ')
-        })
     })
     const submitStatus = ref(false)
     
@@ -244,5 +229,6 @@
         background-image: url('~/assets/images/bg.jpg');
         background-position: center;
         background-size: cover;
+        height: 100%;
     }
 </style>

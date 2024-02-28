@@ -16,7 +16,7 @@
                         <div class="grid grid-cols-1 xl:grid-cols-3 xl:gap-4">
                             <div>
                                 <div class="text-lg font-bold mb-2 mt-2">คำนำหน้าชื่อ</div>
-                                <USelect :options="['นาย', 'นาง', 'นางสาว']"  v-model="submitData.submit.title" placeholder="คำนำหน้าชื่อ" :disabled="submitStatus"/>
+                                <USelect :options="['นาย', 'นาง', 'นางสาว']"  v-model="submitData.submit.title" placeholder="คำนำหน้าชื่อ" required :disabled="submitStatus"/>
                             </div>
                             <div>
                                 <div class="text-lg font-bold mb-2 mt-2">ชื่อ</div>
@@ -33,7 +33,9 @@
                         
                             <div>
                                 <div class="text-lg font-bold mb-2 mt-2">อีเมล์</div>
-                                <UInput v-model="submitData.submit.email" placeholder="กรอกอีเมล์" required :disabled="submitStatus" />
+                                <UFormGroup name="email" >
+                                    <UInput v-model="submitData.submit.email" placeholder="กรอกอีเมล์" required :disabled="submitStatus" />
+                                </UFormGroup>
                             </div>
                         </div>
                     </div>
@@ -128,22 +130,6 @@
             is: (survey_type) =>  survey_type === 'ฟอร์มสมัคร',
             then: (schema) => schema.email('คุณใส่รูปแบบอีเมล์ผิด').required('กรอกอีเมล์ของคุณ'),
         }),
-        t_name: string().when('survey_type', {
-            is: (survey_type) =>  survey_type === 'ฟอร์มสมัคร',
-            then: (schema) => schema.required('ค้นหาข้อมูลที่อยู่ของคุณ')
-        }),
-        a_name: string().when('survey_type', {
-            is: (survey_type) =>  survey_type === 'ฟอร์มสมัคร',
-            then: (schema) => schema.required('ค้นหาข้อมูลที่อยู่ของคุณ')
-        }),
-        p_name: string().when('survey_type', {
-            is: (survey_type) => survey_type === 'ฟอร์มสมัคร',
-            then: (schema) => schema.required('ค้นหาข้อมูลที่อยู่ของคุณ')
-        }),
-        post_code: string().when('survey_type', {
-            is: (survey_type) =>  survey_type === 'ฟอร์มสมัคร',
-            then: (schema) => schema.required('ค้นหาข้อมูลที่อยู่ของคุณ')
-        })
     })
 
     const share = ref(false)
@@ -276,5 +262,6 @@
         background-image: url('~/assets/images/bg.jpg');
         background-position: center;
         background-size: cover;
+        height: 100%;
     }
 </style>

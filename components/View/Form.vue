@@ -143,6 +143,8 @@
 
         if(quizImage.value) {
             const q = props.form.quizSet[quizImage.value]
+            q.quiz.answer_img = previewImage.value
+
             q.quiz.answer_img_url = previewImage.value
 
 

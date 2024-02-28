@@ -76,6 +76,13 @@
                                     </div>
                                     <div v-if="question.quiz.answer_type === 'image'" class="mt-2">
                                         คำถามแบบใส่รูปภาพ
+                                         <!-- <UTooltip text="แทรกรูปภาพตัวเลือก">
+                                            <label :for="`question_image_${index}`" :class="props.status === 'เปิด' ? 'cursor-not-allowed' : 'cursor-pointer'" >
+                                                <Icon name="i-mdi-file-image-box" size="25" @click="editImage(index)" />
+                                            </label>
+                                        </UTooltip>
+
+                                        <img :src="question.quiz.quiz_img_url" class="h-[200px]"> -->
                                     </div>
                                 </div>
                                
@@ -123,7 +130,7 @@
             <template #header>
                 <div class="text-center">ตัวอย่างรูปภาพ</div>
             </template>
-            <UInput type="file" @change="pickImage"/>
+            <UInput type="file"  accept="image/x-png,image/gif,image/jpeg" @change="pickImage"/>
             <div class="text-center mt-2">
                 <img :src="previewImage" v-if="previewImage" class="mx-auto mb-4" alt="">
                 <UButton @click="confirmImage" label="แทรก"/>
@@ -308,7 +315,7 @@
 
         const question = props.form.questions[questionIndexDel.value];
 
-        props.form.questions.splice(questionIndexDel, 1)
+        props.form.questions.splice(questionIndexDel.value, 1)
 
 
         if(question?.quiz.quiz_id) {

@@ -1,7 +1,7 @@
 <template>
   <div class="bg-[#EAEAEA] flex flex-col min-h-screen">
     <PartialsHeader />
-        <main class="min-h-[calc(100vh-75px)] lg:min-h-[calc(100vh-5rem)] flex flex-col my-4">
+        <main class="min-h-[calc(100vh-75px)] h-[calc(100vh-75px)] lg:min-h-[calc(100vh-5rem)] lg:h-[calc(100vh-5rem)] flex flex-col my-4">
           <slot />
         </main>
     <PartialsFooter />
