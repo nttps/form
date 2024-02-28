@@ -24,16 +24,10 @@
                         ชื่อ - นามสกุล: {{ row.title }} {{ row.fullname }}
                       </div>
                       <div>
-                        เลขประจำตัวประชาชน: {{ row.people_id }}  
-                      </div>
-                      <div>
                         เบอร์โทรศัพท์: {{ row.phone }}
                       </div>
                       <div>
                         อีเมล์: {{ row.email }}
-                      </div>
-                      <div>
-                        ที่อยู่: {{ row.house_no }} {{ row.moo_no }} {{ row.soi }} {{ row.road }} {{ row.t_name }} {{ row.a_name }} {{ row.p_name }} {{ row.post_code }}
                       </div>
                     </div>
                 </template>
