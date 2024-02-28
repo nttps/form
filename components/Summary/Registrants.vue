@@ -26,7 +26,7 @@
                     <div v-if="row.full_name">Username: {{ row.username }}</div>
                     <div>
                       <div>
-                        ชื่อ - นามสกุล: {{ row.title }} {{ row.fullname }}
+                        ชื่อ - นามสกุล: {{ row.title }} {{ row.fullname ? row.fullname : row.firstname + ' ' + row.lastname }}
                       </div>
                       <div>
                         เบอร์โทรศัพท์: {{ row.phone }}
