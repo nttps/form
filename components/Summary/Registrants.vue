@@ -13,12 +13,17 @@
                     <div class="text-center">{{ fomatDate(row.created_date) }}</div>
                 </template>
 
+                <template #full_name-data="{ row }">
+                    <div class="text-center">{{ row.full_name || 'บุคคลทั่วไป' }}</div>
+                </template>
+
+                
                 <template #comment-data="{ row }">
                     <div class="text-center">{{ row.comment || '-' }}</div>
                 </template>
                 
                 <template #details-data="{ row }">
-                    <div>Username: {{ row.username }}</div>
+                    <div v-if="row.full_name">Username: {{ row.username }}</div>
                     <div>
                       <div>
                         ชื่อ - นามสกุล: {{ row.title }} {{ row.fullname }}
