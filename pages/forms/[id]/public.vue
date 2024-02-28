@@ -155,7 +155,7 @@
 
     const { data: submitData } = await useAsyncData('submitData', async () => await useApi(`/api/servey/Submit/Save`, 'POST', {
         survey_id:  route.params.id,//แบบแบบสอบถาม
-        username:   username || 'guest',
+        username:   username || `guest_${moment().format('DD-MM-YYYYHH:mm:ss')}`,
         full_name: fullName || '', 
         created_by: "",
         modified_by: ""
