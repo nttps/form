@@ -1,5 +1,5 @@
 <template>
-    <div v-for="({ quiz, answers }, index) in props.data">
+    <div v-for="({ quiz, answers }, index) in props.data.filter(q => q.quiz.answer_type !== 'ข้อเขียน')">
         <UCard class="mb-4" :ui="{ header: { background: 'bg-[#FFA800]'}}">
             <template #header>
                 <h3 class="text-2xl font-bold">คำถามที่ {{ index +1 }} {{ quiz.quiz_title }}</h3>
