@@ -262,6 +262,6 @@
         background-image: url('~/assets/images/bg.jpg');
         background-position: center;
         background-size: cover;
-        height: 100%;
+        min-height: 100vh;
     }
 </style>
