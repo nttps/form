@@ -106,6 +106,13 @@
                 <button type="button" class="px-4 py-2 bg-green-600 text-base rounded-[5px] text-white" @click="success = false">ตกลง</button>
             </div>
         </ModalSuccess>
+
+        <ModalSuccess v-model="completeForm" title="แจ้งเตือน">
+            <div class="text-2xl text-center font-bold pb-2">กรอกข้อมูลเสร็จสิ้น</div>
+            <div class="flex justify-center space-x-3">
+                <button type="button" class="px-4 py-2 bg-green-600 text-base rounded-[5px] text-white" @click="completeForm = false">ตกลง</button>
+            </div>
+        </ModalSuccess>
         
     </div>
 </template>
@@ -119,11 +126,14 @@
     const url = useRequestURL()
     const route = useRoute()
 
-    const { username, fullName, firstName, lastName } = useAuthStore();
+    const { username, fullName, firstName, lastName, setGuest, guestId } = useAuthStore();
+
+    setGuest(`guest_${moment().format('DD-MM-YYYYHHmmss')}`)
 
     const listAddress = ref([])
     const textSearchAddress = ref('')
     const showInputAddress = ref(false)
+    const completeForm = ref(false)
 
     const schema = object({
         email: string().when('survey_type', {
@@ -139,15 +149,18 @@
     const confirm = ref(false)
     const success = ref(false)
 
+    console.log(guestId);
+
+    const stateGuest = ref(guestId)
+
     const { data: submitData } = await useAsyncData('submitData', async () => await useApi(`/api/servey/Submit/Save`, 'POST', {
         survey_id:  route.params.id,//แบบแบบสอบถาม
-        username:   username || `guest_${moment().format('DD-MM-YYYYHH:mm:ss')}`,
+        username:   username || `${stateGuest.value}`,
         full_name: fullName || '', 
         created_by: "",
         modified_by: ""
     }))
 
-    console.log(submitData.va);
 
     submitData.value.submit.firstname = firstName
     submitData.value.submit.lastname = lastName
@@ -229,7 +242,19 @@
             confirm.value = false
             success.value = true
 
-            navigateTo(`/`)
+
+            completeForm.value = true
+
+            const data = await useApi(`/api/servey/Submit/Save`, 'POST', {
+                survey_id:  route.params.id,//แบบแบบสอบถาม
+                username:   username || `${stateGuest.value}`,
+                full_name: fullName || '', 
+                created_by: "",
+                modified_by: ""
+            })
+
+            submitData.value = data
+            //navigateTo(`/`)
         }
     }
 

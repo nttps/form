@@ -3,6 +3,7 @@
 export const useAuthStore = defineStore("auth-questionaire", {
     state: () => ({
         user: null,
+        guestId: null,
     }),
 
     getters: {
@@ -52,6 +53,9 @@ export const useAuthStore = defineStore("auth-questionaire", {
         },
         fetchUser() {
             return this.user;
+        },
+        setGuest(value) {
+            this.guestId = this.guestId !== null ? this.guestId : value;
         },
     },
     persist: {
