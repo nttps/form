@@ -33,11 +33,13 @@
                                 <UInput type="file" :name="`image_${indexA}`" :disabled="props.status === 'เปิด'" accept="image/x-png,image/gif,image/jpeg" @change="pickImage($event, indexA)" :id="`image_${indexA}`" class="hidden" />
                             </label>
                         </UTooltip>
-                        <UTooltip text="ลบตัวเลือก" v-if="props.question.answers.length > 1" >
-                            <button class="hover:bg-black/5 text-gray-600" :class="props.status === 'เปิด' ? 'cursor-not-allowed' : ''" :disabled="props.status === 'เปิด'" type="button" @click="confirmDeleteAnswer(props.index, indexA)"> 
+                        <UTooltip text="ลบตัวเลือก" v-if="props.question.answers.length > 1 && props.status !== 'เปิด'" >
+                            <button class="hover:bg-black/5 text-gray-600" :class="props.status === 'เปิด' ? 'cursor-not-allowed' : ''" type="button" @click="confirmDeleteAnswer(props.index, indexA)"> 
                                 <Icon name="i-mdi-close" size="30"/> 
                             </button>
+                            
                         </UTooltip>
+                        <div v-else class="text-xs text-red-600 self-center">ฟอร์มถูกแสดงอยู่ ไม่สามารถลบได้</div>
                     </div>
                 </div>
 

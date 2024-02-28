@@ -44,9 +44,10 @@
                             >
                                 
                                 <div class="absolute bottom-full right-0"  v-if="props.form.questions.length > 1">
-                                    <UTooltip text="ลบคำถาม">
-                                        <UButton square icon="i-heroicons-x-circle-20-solid" variant="link" type="button" @click="confirmDeleteQuestion(index)" :disabled="props.form.status === 'เปิด'" size="xl" :ui="{ icon: {size: { xl: 'h-7 w-7'}}}" color="white" :padded="false"/>
+                                    <UTooltip text="ลบคำถาม" v-if="props.form.status !== 'เปิด'">
+                                        <UButton square icon="i-heroicons-x-circle-20-solid" variant="link" type="button" @click="confirmDeleteQuestion(index)" size="xl" :ui="{ icon: {size: { xl: 'h-7 w-7'}}}" color="white" :padded="false"/>
                                     </UTooltip>
+                                    <div v-else class="text-xs text-red-600">ฟอร์มถูกแสดงอยู่ ไม่สามารถลบได้</div>
                                 </div>
                                 <div class="list-group-item-drag bg-[#FFA133] rounded-t-lg cursor-move text-center">
                                     <Icon name="i-uil-draggabledots" class="rotate-90" size="25"/>
