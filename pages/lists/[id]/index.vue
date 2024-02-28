@@ -18,7 +18,7 @@
                 <SummaryVote v-if="form && type === 'ระบบโหวต' && vote.length > 0 " :data="vote"/>
             </UCard>
 
-            <UCard class="mb-4" :ui="{ ring: 'ring-1 ring-[#FFA800] dark:ring-gray-800', header: { background: 'bg-[#FFA800]'}}" id="print-me" v-if="form && type !== 'ฟอร์มสมัคร'">
+            <!-- <UCard class="mb-4" :ui="{ ring: 'ring-1 ring-[#FFA800] dark:ring-gray-800', header: { background: 'bg-[#FFA800]'}}" id="print-me" v-if="form && type !== 'ฟอร์มสมัคร'">
                 <template #header>
                     <h2 class="font-bold text-3xl leading-8" v-if="form">ข้อแสนอแนะ</h2>
                 </template>
@@ -33,7 +33,7 @@
                         />
                     </div>
                 </div>
-            </UCard>
+            </UCard> -->
         </div>
     </div>
 
