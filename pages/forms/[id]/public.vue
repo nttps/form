@@ -119,6 +119,8 @@
 
 <script setup>
     import moment from 'moment';
+    import { v4 as uuidv4 } from 'uuid';
+
     import { object, string } from 'yup'
     moment.locale('th')
     import { SFacebook, SLine } from 'vue-socials';
@@ -126,17 +128,9 @@
     const url = useRequestURL()
     const route = useRoute()
 
-    const { username, fullName, firstName, lastName, setGuest, guestId } = useAuthStore();
+    const { username, fullName, firstName, lastName, setGuest, machineId } = useAuthStore();
 
-    let uid
-    var navigator_info = window.navigator;
-    var screen_info = window.screen;
-    uid += navigator_info.userAgent.replace(/\D+/g, '');
-    uid += screen_info.height || '';
-    uid += screen_info.width || '';
-    uid += screen_info.pixelDepth || '';
-
-    setGuest(uid)
+    setGuest(uuidv4())
 
     const listAddress = ref([])
     const textSearchAddress = ref('')
@@ -158,11 +152,10 @@
     const success = ref(false)
 
 
-    const stateGuest = ref(guestId)
 
     const { data: submitData } = await useAsyncData('submitData', async () => await useApi(`/api/servey/Submit/Save`, 'POST', {
         survey_id:  route.params.id,//แบบแบบสอบถาม
-        username:   username || `${stateGuest.value}`,
+        username:   username || `${machineId}`,
         full_name: fullName || '', 
         created_by: "",
         modified_by: ""
@@ -254,7 +247,7 @@
 
             const data = await useApi(`/api/servey/Submit/Save`, 'POST', {
                 survey_id:  route.params.id,//แบบแบบสอบถาม
-                username:   username || `${stateGuest.value}`,
+                username:   username || `${machineId}`,
                 full_name: fullName || '', 
                 created_by: "",
                 modified_by: ""
