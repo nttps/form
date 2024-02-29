@@ -9,7 +9,7 @@
                         <p class="code-description el-tiptap-editor__content" v-dompurify-html="submitData.submit.description"></p>
                     </div>
                 </div>
-                <ViewForm :form="submitData" v-if="submitData?.submit?.survey_type" :submitId="submitData?.submit?.submit_id" @setAnswer="submitAnswer" :preview="submitStatus"/>
+                <ViewForm :form="submitData" v-if="stateGuest && submitData?.submit?.survey_type" :submitId="submitData?.submit?.submit_id" @setAnswer="submitAnswer" :preview="submitStatus"/>
                 <div class="mb-4">
                     <div class="text-center bg-[#ff8c09] rounded-t-lg py-2"></div>
                     <div class="p-4 bg-white border-l border-r border-b border-[#ffc583]">
@@ -152,6 +152,7 @@
     const success = ref(false)
 
 
+    const stateGuest = ref(machineId)
 
     const { data: submitData } = await useAsyncData('submitData', async () => await useApi(`/api/servey/Submit/Save`, 'POST', {
         survey_id:  route.params.id,//แบบแบบสอบถาม
@@ -247,7 +248,7 @@
 
             const data = await useApi(`/api/servey/Submit/Save`, 'POST', {
                 survey_id:  route.params.id,//แบบแบบสอบถาม
-                username:   username || `${machineId}`,
+                username:   username || `${stateGuest.value}`,
                 full_name: fullName || '', 
                 created_by: "",
                 modified_by: ""
