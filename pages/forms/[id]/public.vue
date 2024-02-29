@@ -128,6 +128,7 @@
 
     const { username, fullName, firstName, lastName, setGuest, guestId } = useAuthStore();
 
+    let uid
     var navigator_info = window.navigator;
     var screen_info = window.screen;
     uid += navigator_info.userAgent.replace(/\D+/g, '');
