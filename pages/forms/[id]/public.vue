@@ -9,7 +9,7 @@
                         <p class="code-description el-tiptap-editor__content" v-dompurify-html="submitData.submit.description"></p>
                     </div>
                 </div>
-                <ViewForm :form="submitData" v-if="stateGuest && submitData?.submit?.survey_type" :submitId="submitData?.submit?.submit_id" @setAnswer="submitAnswer" :preview="submitStatus"/>
+                <ViewForm :form="submitData" v-if="submitData?.submit?.survey_type" :submitId="submitData?.submit?.submit_id" @setAnswer="submitAnswer" :preview="submitStatus"/>
                 <div class="mb-4">
                     <div class="text-center bg-[#ff8c09] rounded-t-lg py-2"></div>
                     <div class="p-4 bg-white border-l border-r border-b border-[#ffc583]">
