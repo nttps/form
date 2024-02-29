@@ -128,7 +128,14 @@
 
     const { username, fullName, firstName, lastName, setGuest, guestId } = useAuthStore();
 
-    setGuest(`guest_${moment().format('DD-MM-YYYYHHmmss')}`)
+    var navigator_info = window.navigator;
+    var screen_info = window.screen;
+    uid += navigator_info.userAgent.replace(/\D+/g, '');
+    uid += screen_info.height || '';
+    uid += screen_info.width || '';
+    uid += screen_info.pixelDepth || '';
+
+    setGuest(uid)
 
     const listAddress = ref([])
     const textSearchAddress = ref('')
@@ -149,7 +156,6 @@
     const confirm = ref(false)
     const success = ref(false)
 
-    console.log(guestId);
 
     const stateGuest = ref(guestId)
 
