@@ -64,7 +64,7 @@ export default defineNuxtConfig({
             apiUrl: apiBaseUrl,
             baseFileUrl: "",
             authUrl: "",
-            homeUrl: "https://dxportal.disaster.go.th",
+            homeUrl: "https://dxportal.disaster.go.th/DX/DXMenu",
         },
     },
     routeRules: {
