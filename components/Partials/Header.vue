@@ -9,7 +9,7 @@
             justify-between
             w-full
             md:py-0
-            2xl:px-4
+            2xl:px-2
             text-lg text-gray-700
             bg-white
             "
