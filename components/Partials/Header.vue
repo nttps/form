@@ -15,13 +15,13 @@
             "
         >
             <div>
-                <NuxtLink to="/" class="flex justify-center items-center">
-                    <img src="~/assets/images/logo.png" class="w-[50px]" alt="E-Learning Logo">
-                    <div class="text-lg 2xl:text-2xl ml-4">
-                        <div class="font-semibold">ระบบโหวตและแบบสอบถาม</div> 
+                <a href="/" class="flex justify-center items-center">
+                    <img src="~/assets/images/logo.png" class="w-[70px]" alt="E-Booking Logo">
+                    <div class="text-lg 2xl:text-xl ml-4">
+                        <div>ระบบโหวตและแบบสอบถาม</div> 
                         <div class="text-[#FFA133]">กรมป้องกันและบรรเทาสาธาร</div> 
                     </div>
-                </NuxtLink>
+                </a>
             </div>
             <div class="flex space-x-2 relative">
                 <NuxtLink to="/" class="relative">
