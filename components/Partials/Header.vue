@@ -18,8 +18,8 @@
                 <NuxtLink to="/" class="flex justify-center items-center">
                     <img src="~/assets/images/logo.png" class="w-[50px]" alt="E-Learning Logo">
                     <div class="text-lg 2xl:text-2xl ml-4">
-                        <div class="font-semibold">ระบบงานดิจิทัล</div> 
-                        <div class="text-[#FFA133]">กรมป้องกันและบรรเทาสาธารณภัย</div> 
+                        <div class="font-semibold">ระบบโหวตและแบบสอบถาม</div> 
+                        <div class="text-[#FFA133]">กรมป้องกันและบรรเทาสาธาร</div> 
                     </div>
                 </NuxtLink>
             </div>
