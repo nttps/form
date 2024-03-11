@@ -11,7 +11,9 @@
                     <UInput type="password" placeholder="รหัสผ่าน" v-model="loginForm.password" required/>
                 </div>
                 
-                <button type="submit" :disabled="waitingLogin" class="w-full border text-white py-3 text-xl rounded-[20px] bg-[#FFA133] border-[#FFA133] my-4">เข้าสู่ระบบ</button>
+                <div class="text-center">
+                    <UButton type="submit" :loading="waitingLogin" size="xl" class="mt-4 text-center">เข้าสู่ระบบ</UButton>
+                </div>
             </form>
         </div>
         
@@ -38,8 +40,8 @@ definePageMeta({
 })
 
 const loginForm = ref({
-  username: "tammon.y",
-  password: "1234",
+  username: "",
+  password: "",
   AppsID: "SURVEY"
 })
 

@@ -60,9 +60,21 @@
                           </template>
                           <template #others-data="{ row }">
                               <div class="flex justify-center">
-                                  <NuxtLink :to="`/lists/${row.survey_id}`" class="border-r-2 border-black pr-2"><Icon name="i-mdi-clipboard-text-search-outline" size="25" color="green"  /></NuxtLink>
-                                  <NuxtLink :to="`/lists/${row.survey_id}/edit`" class="pl-2 border-r-2 border-black pr-2"><Icon name="i-mdi-pencil" size="25" color="orange" /></NuxtLink>
-                                  <button type="button" @click="deletePopup(row.survey_id)" class="pl-2"><Icon name="i-mdi-trash" size="25" color="red" /></button>
+                                  <UTooltip text="สถิติ" :popper="{ offsetDistance: 16 }">
+                                    <NuxtLink :to="`/lists/${row.survey_id}`" class="border-r-2 border-black pr-2"><Icon name="i-mdi-clipboard-text-search-outline" size="25" color="green"  /></NuxtLink>
+                                  </UTooltip>
+                                 
+                                  <UTooltip text="แก้ไข" :popper="{ offsetDistance: 16 }">
+                                    <NuxtLink :to="`/lists/${row.survey_id}/edit`" class="pl-2 border-r-2 border-black pr-2"><Icon name="i-mdi-pencil" size="25" color="orange" /></NuxtLink>
+                                  </UTooltip>
+                                 
+                                  <UTooltip text="คัดลอก" :popper="{ offsetDistance: 16 }">
+                                    <button type="button" @click="duplicate(row.survey_id)" class="pl-2 border-r-2 border-black pr-2"><Icon name="heroicons:document-duplicate-solid" size="25" color="sky" /></button>
+                                  </UTooltip>
+                                  <UTooltip text="ลบ" :popper="{ offsetDistance: 16 }">
+                                    <button type="button" @click="deletePopup(row.survey_id)" class="pl-2"><Icon name="i-mdi-trash" size="25" color="red" /></button>
+                                  </UTooltip>
+                                  
                               </div>
                           </template>
                       </UTable>
@@ -300,6 +312,29 @@ const deleteAll = async () => {
 
   selectedRows.value = []
 
+}
+
+const duplicate = async (id) => {
+  const response = await useApi(`/api/servey/ServeyInfo/GetDocSet?survey_id=${id}`, 'GET');
+
+  const formStore = useFormStore()
+  let form;
+  form = response.surveyInfo
+  form.choices = []
+  form.questions = []
+
+  if(response.surveyInfo.survey_type == "ระบบโหวต") {
+      form.choices = response.quizSetList[0].answers
+  }
+
+  if(response.surveyInfo.survey_type == "แบบสอบถาม" || response.surveyInfo.survey_type == "ฟอร์มสมัคร") {
+      form.questions = response.quizSetList
+  }
+
+  formStore.assign(form)
+
+  navigateTo('/create/duplicate')
+  
 }
 </script>
 
