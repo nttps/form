@@ -57,36 +57,36 @@
                         </div>
                     </div>
                 </template>
-                <div class="flex items-center space-x-2">
-                    <div class="text-lg max-w-max">ลิงก์</div>
-                    <input class="form-input relative block w-full disabled:cursor-not-allowed disabled:opacity-75 focus:outline-none border-0 rounded-md placeholder-gray-400 dark:placeholder-gray-500 text-sm px-3 py-2 shadow-sm bg-white dark:bg-gray-900 text-gray-900 dark:text-white ring-1 ring-inset ring-gray-300 dark:ring-gray-700 focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400" type="text" readonly  ref="shareUrl" @click="$event.target.select()" :value="urlShare" />
-                    <UButton variant="outline" label="คัดลอก" size="xl" @click="copyToClipboard" />
-                </div>
-                <div class="flex items-center mt-4 space-x-2">
-                    <div class="text-lg">แชร์</div>
-                    <s-facebook
-                        :window-features="{ width: 685, height: 600, }"
-                        :use-native-behavior="true"
-                        :share-options="shareFBOptions"
-                        @popup-close="onClose"
-                        @popup-open="onOpen"
-                        @popup-block="onBlock"
-                        @popup-focus="onFocus"
-                    >
-                        <Icon name="i-logos-facebook" size="25" />
-                    </s-facebook>
+                <div class="flex items-center w-full">
+                    <div class="w-full lg:w-1/3"> <img v-if="imgQRCode" :src="imgQRCode" class="image-render-pixel h-[200px] mx-auto" /></div>
+                    <div class="w-full lg:w-2/3">
+                        <div class="text-lg max-w-max">ลิงก์</div>
+                        <input class="form-input relative block w-full disabled:cursor-not-allowed disabled:opacity-75 focus:outline-none border-0 rounded-md placeholder-gray-400 dark:placeholder-gray-500 text-sm px-3 py-2 shadow-sm bg-white dark:bg-gray-900 text-gray-900 dark:text-white ring-1 ring-inset ring-gray-300 dark:ring-gray-700 focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400" type="text" readonly  ref="shareButton" @click="$event.target.select()" :value="urlShare" />
+                           
+                        <div class="mt-4">
+                            <UButton variant="outline" label="คัดลอกลิงก์" size="xl" @click="copyToClipboard" />
+                            <UButton variant="solid" color="sky" class="ml-4" label="ดาวน์โหลด QRCODE" size="xl" @click="downloadQRCode" />
+                        </div>
+                        <div class="flex items-center mt-4 space-x-2">
+                            <div class="text-lg">แชร์</div>
+                            <s-facebook
+                                :window-features="{ width: 685, height: 600, }"
+                                :use-native-behavior="true"
+                                :share-options="shareFBOptions"
+                            >
+                                <Icon name="i-logos-facebook" size="25" />
+                            </s-facebook>
 
-                    <s-line
-                        :window-features="{ width: 685, height: 600, }"
-                        :use-native-behavior="true"
-                        :share-options="shareLineOptions"
-                        @popup-close="onClose"
-                        @popup-open="onOpen"
-                        @popup-block="onBlock"
-                        @popup-focus="onFocus"
-                    >
-                        <Icon name="i-bi-line" color="green" size="25" />
-                    </s-line>
+                            <s-line
+                                :window-features="{ width: 685, height: 600, }"
+                                :use-native-behavior="true"
+                                :share-options="shareLineOptions"
+                            >
+                                <Icon name="i-bi-line" color="green" size="25" />
+                            </s-line>
+                        </div>
+                        
+                    </div>
                 </div>
             </UCard>
             
@@ -120,7 +120,7 @@
 <script setup>
     import moment from 'moment';
     import { v4 as uuidv4 } from 'uuid';
-
+    import { generate } from "lean-qr";
     import { object, string } from 'yup'
     moment.locale('th')
     import { SFacebook, SLine } from 'vue-socials';
@@ -187,8 +187,57 @@
         middleware: ['auth-redirect']
     })
 
+    const blackRGBA  = [0, 0, 0, 255];
+    const whiteRGBA = [255, 255, 255, 255];
+    const qrConfig = {
+        on: blackRGBA,
+        off: whiteRGBA,
+    };
+
+    const qrcode = generate(urlShare);
+    const canvas = ref();
+    const filename = ref("");
+    const size = ref(300);
+    const imgQRCode = ref()
+    async function genQRCode() {
+        size.value = Math.min(Math.max(size.value, 32), 2000);
+
+        const canvas = document.createElement("canvas"),
+            ctx = canvas.getContext("2d"),
+            imgData = qrcode.toImageData(ctx, qrConfig);
+
+        canvas.width = canvas.height = size.value;
+        ctx.putImageData(imgData, 0, 0);
+        ctx.imageSmoothingEnabled = false;
+        ctx.globalCompositeOperation = "copy";
+
+        ctx.drawImage(
+            canvas,
+            0,
+            0,
+            imgData.width,
+            imgData.height,
+            0,
+            0,
+            canvas.width,
+            canvas.height
+        );
+
+        imgQRCode.value = canvas.toDataURL("image/png", 1)
+
+    }
+
+    async function downloadQRCode() {
+        const link = document.createElement("a");
+        link.download = filename.value || "qrcode.png";
+        link.href = imgQRCode.value;
+        link.click();
+    }
+
+
     const shareModal = () => {
         share.value = true
+        genQRCode()
     }
 
     const copyToClipboard = () => {
