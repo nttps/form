@@ -11,7 +11,7 @@
         </div>
         <div class="flex items-center justify-between px-4 pt-2">
             <div>
-                <UBadge :label="props.item.created_by" color="emerald" />
+                <UBadge :label="props.item.created_by_fullname" color="emerald" />
             </div>
             <div>
                 <UButton label="แบ่งปัน" color="blue" :ui="{ rounded: 'rounded-full' }" size="xl" @click="emit('share')"/>
